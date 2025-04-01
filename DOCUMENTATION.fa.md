@@ -1,27 +1,4 @@
-<!DOCTYPE html>
-<html dir="rtl" lang="fa">
-<head>
-    <meta charset="UTF-8">
-    <style>
-        body {
-            direction: rtl;
-            text-align: right;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        pre, code {
-            direction: ltr;
-            text-align: left;
-            font-family: 'Consolas', 'Monaco', monospace;
-        }
-        .mermaid {
-            direction: ltr;
-        }
-        .mermaid svg {
-            direction: ltr;
-        }
-    </style>
-</head>
-<body>
+<style> body { direction: rtl; text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; } pre, code { direction: ltr; text-align: left; font-family: 'Consolas', 'Monaco', monospace; } .mermaid { direction: ltr; } .mermaid svg { direction: ltr; } </style>
 
 # مستندات فریمورک میکرو پایتون
 
