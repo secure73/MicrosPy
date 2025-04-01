@@ -1,0 +1,30 @@
+{
+    "folders": [
+        {
+            "path": ".."
+        }
+    ],
+    "settings": {
+        "python.analysis.extraPaths": [
+            "./helper",
+            "./controller",
+            "./model",
+            "./table",
+            "./interface"
+        ],
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.formatting.provider": "black",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-python.python",
+            "ms-python.vscode-pylance",
+            "njpwerner.autodocstring"
+        ]
+    }
+} 

@@ -49,7 +49,9 @@ micro_py_framework/
     ├── HttpHandler.py    # HTTP request handler
     ├── Response.py       # Response formatting
     ├── JWTManager.py     # JWT authentication
-    └── FormatCheck.py    # Input validation
+    ├── FormatCheck.py    # Input validation
+    ├── CodeAssistant.py  # AI-powered code generation
+    └── ai_assistant_usage.py  # AI Assistant usage examples
 ```
 
 ## Running the Application
@@ -614,3 +616,91 @@ The framework includes JWT (JSON Web Token) support for authentication:
    - Tokens expire after 60 minutes by default
    - Uses industry-standard HS256 algorithm
    - Handles token expiration gracefully 
+
+## AI Assistant
+
+### Overview
+The framework includes an AI-powered code assistant that helps developers by:
+- Analyzing code patterns
+- Generating CRUD endpoints
+- Providing code suggestions
+- Generating documentation
+
+### Features
+
+1. **Code Analysis**
+   ```python
+   from helper.CodeAssistant import CodeAssistant
+   assistant = CodeAssistant()
+   assistant.analyze_codebase("path/to/project")
+   ```
+   - Analyzes project structure
+   - Identifies patterns and relationships
+   - Understands code organization
+
+2. **CRUD Endpoint Generation**
+   ```python
+   # Generate complete CRUD endpoints for a new resource
+   endpoints = assistant.generate_crud_endpoints("Product")
+   ```
+   - Creates controller, model, and table files
+   - Implements standard CRUD operations
+   - Follows framework conventions
+
+3. **Code Suggestions**
+   ```python
+   # Get suggestions while writing code
+   suggestions = assistant.suggest_code(your_code_context, "filename.py")
+   ```
+   - Provides contextual suggestions
+   - Identifies common patterns
+   - Suggests improvements
+
+4. **Documentation Generation**
+   ```python
+   # Generate documentation based on code patterns
+   docs = assistant.generate_documentation("controller")
+   ```
+   - Creates documentation from code
+   - Identifies component relationships
+   - Documents patterns and conventions
+
+### Usage Example
+```python
+from helper.CodeAssistant import CodeAssistant
+from pathlib import Path
+
+def main():
+    # Initialize the AI Assistant
+    assistant = CodeAssistant()
+    
+    # Analyze the codebase
+    root_dir = Path(__file__).parent.parent
+    assistant.analyze_codebase(str(root_dir))
+    
+    # Generate CRUD endpoints
+    product_endpoints = assistant.generate_crud_endpoints("Product")
+    
+    # Get code suggestions
+    suggestions = assistant.suggest_code(context, "UserController.py")
+    
+    # Generate documentation
+    controller_docs = assistant.generate_documentation("controller")
+
+if __name__ == "__main__":
+    main()
+```
+
+### Best Practices
+1. Always analyze the codebase before generating code
+2. Review generated code before using in production
+3. Use suggestions as guidance, not absolute rules
+4. Customize generated code to match your needs
+5. Keep documentation up to date
+
+### Limitations
+1. Generated code may need manual adjustments
+2. Suggestions are based on existing patterns
+3. May not understand complex business logic
+4. Requires existing codebase for analysis
+5. Limited to framework conventions

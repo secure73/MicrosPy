@@ -616,4 +616,92 @@ graph LR
    - توکن‌ها پس از 60 دقیقه به طور پیش‌فرض منقضی می‌شوند
    - استفاده از الگوریتم HS256 استاندارد صنعتی
    - مدیریت مناسب انقضای توکن
+
+## دستیار هوشمند
+
+### بررسی اجمالی
+فریمورک شامل یک دستیار کد هوشمند است که به توسعه‌دهندگان کمک می‌کند از طریق:
+- تحلیل الگوهای کد
+- تولید نقاط پایانی CRUD
+- پیشنهادات کد
+- تولید مستندات
+
+### قابلیت‌ها
+
+1. **تحلیل کد**
+   ```python
+   from helper.CodeAssistant import CodeAssistant
+   assistant = CodeAssistant()
+   assistant.analyze_codebase("path/to/project")
+   ```
+   - تحلیل ساختار پروژه
+   - شناسایی الگوها و روابط
+   - درک سازماندهی کد
+
+2. **تولید نقاط پایانی CRUD**
+   ```python
+   # تولید نقاط پایانی CRUD کامل برای یک منبع جدید
+   endpoints = assistant.generate_crud_endpoints("Product")
+   ```
+   - ایجاد فایل‌های کنترلر، مدل و جدول
+   - پیاده‌سازی عملیات CRUD استاندارد
+   - پیروی از قراردادهای فریمورک
+
+3. **پیشنهادات کد**
+   ```python
+   # دریافت پیشنهادات هنگام نوشتن کد
+   suggestions = assistant.suggest_code(your_code_context, "filename.py")
+   ```
+   - ارائه پیشنهادات مبتنی بر متن
+   - شناسایی الگوهای رایج
+   - پیشنهاد بهبودها
+
+4. **تولید مستندات**
+   ```python
+   # تولید مستندات بر اساس الگوهای کد
+   docs = assistant.generate_documentation("controller")
+   ```
+   - ایجاد مستندات از کد
+   - شناسایی روابط بین اجزا
+   - مستندسازی الگوها و قراردادها
+
+### مثال استفاده
+```python
+from helper.CodeAssistant import CodeAssistant
+from pathlib import Path
+
+def main():
+    # مقداردهی اولیه دستیار هوشمند
+    assistant = CodeAssistant()
+    
+    # تحلیل پایگاه کد
+    root_dir = Path(__file__).parent.parent
+    assistant.analyze_codebase(str(root_dir))
+    
+    # تولید نقاط پایانی CRUD
+    product_endpoints = assistant.generate_crud_endpoints("Product")
+    
+    # دریافت پیشنهادات کد
+    suggestions = assistant.suggest_code(context, "UserController.py")
+    
+    # تولید مستندات
+    controller_docs = assistant.generate_documentation("controller")
+
+if __name__ == "__main__":
+    main()
+```
+
+### بهترین شیوه‌ها
+1. همیشه پایگاه کد را قبل از تولید کد تحلیل کنید
+2. کد تولید شده را قبل از استفاده در تولید بررسی کنید
+3. از پیشنهادات به عنوان راهنما استفاده کنید، نه قوانین مطلق
+4. کد تولید شده را متناسب با نیازهای خود تنظیم کنید
+5. مستندات را به‌روز نگه دارید
+
+### محدودیت‌ها
+1. کد تولید شده ممکن است نیاز به تنظیمات دستی داشته باشد
+2. پیشنهادات بر اساس الگوهای موجود است
+3. ممکن است منطق پیچیده کسب و کار را درک نکند
+4. نیاز به پایگاه کد موجود برای تحلیل دارد
+5. محدود به قراردادهای فریمورک است
 </div> 
