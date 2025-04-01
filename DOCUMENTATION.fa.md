@@ -1,6 +1,6 @@
-<style> body { direction: rtl; text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; } pre, code { direction: ltr; text-align: left; font-family: 'Consolas', 'Monaco', monospace; } .mermaid { direction: ltr; } .mermaid svg { direction: ltr; } </style>
-
 # مستندات فریمورک میکرو پایتون
+
+<div dir="rtl">
 
 ## نمای کلی
 این یک فریمورک میکرو است که برای یادگیری اصول اولیه پایتون و توسعه API های RESTful طراحی شده است. این فریمورک یک معماری MVC (مدل-نمایش-کنترلر) ساده را پیاده‌سازی می‌کند و قابلیت‌های پایه API های RESTful را فراهم می‌کند.
@@ -616,4 +616,4 @@ graph LR
    - توکن‌ها پس از 60 دقیقه به طور پیش‌فرض منقضی می‌شوند
    - استفاده از الگوریتم HS256 استاندارد صنعتی
    - مدیریت مناسب انقضای توکن
-</rewritten_file> 
+</div> 
