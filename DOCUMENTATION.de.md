@@ -1,45 +1,45 @@
-# Micro Python Framework Documentation
+# Micro Python Framework Dokumentation
 
-## Overview
-This is a minimal micro-framework designed **exclusively for educational purposes** to help beginners understand the fundamentals of Python and RESTful API development. It implements a simple MVC (Model-View-Controller) architecture and provides basic RESTful API functionality.
+## Überblick
+Dies ist ein minimales Micro-Framework, das **ausschließlich für Bildungszwecke** entwickelt wurde, um Anfängern die Grundlagen von Python und der RESTful API-Entwicklung zu vermitteln. Es implementiert eine einfache MVC (Model-View-Controller) Architektur und bietet grundlegende RESTful API-Funktionalität.
 
-> ⚠️ **Important Note**: This framework is **NOT suitable for production use**. It is designed solely as a learning tool to help you understand:
-> - How frameworks like Django and FastAPI work under the hood
-> - Python OOP principles and design patterns
-> - Layered architecture and separation of concerns
-> - Basic REST API principles and HTTP request handling
-> - Database operations and ORM concepts
-> - Basic MVC architecture implementation
+> ⚠️ **Wichtiger Hinweis**: Dieses Framework ist **NICHT für den Produktionseinsatz geeignet**. Es wurde ausschließlich als Lernwerkzeug entwickelt, um Ihnen zu helfen:
+> - Zu verstehen, wie Frameworks wie Django und FastAPI funktionieren
+> - Python OOP-Prinzipien und Entwurfsmuster zu verstehen
+> - Schichtarchitektur und Trennung der Zuständigkeiten zu verstehen
+> - Grundlegende REST API-Prinzipien und HTTP-Anfragebehandlung zu verstehen
+> - Datenbankoperationen und ORM-Konzepte zu verstehen
+> - Grundlegende MVC-Architekturimplementierung zu verstehen
 
-> ⚠️ **Security Warning**: This framework has **minimal security implementations** and should never be used in production environments. It lacks:
-> - Proper authentication and authorization
-> - Input sanitization
-> - CSRF protection
-> - Rate limiting
-> - Production-grade error handling
-> - Security headers
-> - And many other essential security features
+> ⚠️ **Sicherheitswarnung**: Dieses Framework hat **minimale Sicherheitsimplementierungen** und sollte niemals in Produktionsumgebungen verwendet werden. Es fehlt:
+> - Angemessene Authentifizierung und Autorisierung
+> - Eingabesanierung
+> - CSRF-Schutz
+> - Ratenbegrenzung
+> - Produktionsreife Fehlerbehandlung
+> - Sicherheitsheader
+> - Und viele andere wesentliche Sicherheitsfunktionen
 
-This framework serves as an excellent first step for learning REST API principles and understanding how web frameworks are structured, but it should be treated as a learning tool rather than a production-ready solution.
+Dieses Framework dient als ausgezeichneter erster Schritt zum Erlernen von REST API-Prinzipien und zum Verständnis der Struktur von Web-Frameworks, sollte aber als Lernwerkzeug und nicht als produktionsreife Lösung behandelt werden.
 
-## Prerequisites
-- Python 3.13.2 or higher
-- Virtual environment (recommended)
+## Voraussetzungen
+- Python 3.13.2 oder höher
+- Virtuelle Umgebung (empfohlen)
 
-## Installation and Setup
+## Installation und Einrichtung
 
-> ⚠️ **Important**: Always create and activate the virtual environment immediately after cloning the repository and before installing any dependencies. This ensures a clean, isolated environment for your project.
+> ⚠️ **Wichtig**: Erstellen und aktivieren Sie die virtuelle Umgebung immer unmittelbar nach dem Klonen des Repositorys und vor der Installation von Abhängigkeiten. Dies gewährleistet eine saubere, isolierte Umgebung für Ihr Projekt.
 
-1. Clone the repository:
+1. Repository klonen:
    ```bash
    git clone https://github.com/secure73/micro_py_framework.git
    ```
-2. go to your cloned local folder for example micro_py_framework is your local target directory where repository is cloned:
+2. Gehen Sie zu Ihrem geklonten lokalen Ordner, zum Beispiel ist micro_py_framework Ihr lokales Zielverzeichnis, in dem das Repository geklont wurde:
    ```bash
    cd micro_py_framework
    ```
 
-4.  ⚠️ **Important** Create and activate virtual environment inside project directory(IMPORTANT - do this immediately after cloning):
+4. ⚠️ **Wichtig** Virtuelle Umgebung im Projektverzeichnis erstellen und aktivieren (WICHTIG - tun Sie dies unmittelbar nach dem Klonen):
    ```bash
    # Windows
    python -m venv venv
@@ -49,111 +49,111 @@ This framework serves as an excellent first step for learning REST API principle
    python -m venv venv
    source venv/bin/activate
 
-   # Verify activation (should show virtual environment path)
+   # Überprüfen der Aktivierung (sollte den Pfad der virtuellen Umgebung anzeigen)
    # Windows: where python
    # Linux/Mac: which python
    ```
 
-5. Install dependencies to set up the application:
+5. Abhängigkeiten installieren, um die Anwendung einzurichten:
    ```bash
-   # Install dependencies
+   # Abhängigkeiten installieren
    pip install -r requirements.txt
    ```
 
-6. Migrate Database for sample Database:
+6. Datenbank für Beispieldatenbank migrieren:
    ```bash
-   # Run database migration
+   # Datenbankmigration ausführen
    python migrate.py
    ```
-7. Run App:
+7. Anwendung starten:
    ```bash
-   # Start the application
-   python app.py   # Server will start on port 8001
+   # Anwendung starten
+   python app.py   # Server startet auf Port 8001
    ```
 
-### Database Migration And Create New Table in Your Database(migrate.py)
-   - easily and anytime after Creating any Table Class Example AutoController.py , open migrate.py on the root and run it , or write python migrate.py on terminal in project root!
-1. **Migration Features**
-   - Automatic table discovery and creation
-   - Column change detection
-   - Migration status tracking
-   - Clear progress indicators with emojis
-   - Detailed migration summary
-   - Example output:
+### Datenbankmigration und Erstellen einer neuen Tabelle in Ihrer Datenbank (migrate.py)
+   - Einfach und jederzeit nach dem Erstellen einer Tabellenklasse, zum Beispiel AutoController.py, öffnen Sie migrate.py im Stammverzeichnis und führen es aus, oder schreiben Sie python migrate.py im Terminal im Projektstammverzeichnis!
+1. **Migrationsfunktionen**
+   - Automatische Tabellenerkennung und -erstellung
+   - Spaltenänderungserkennung
+   - Migrationsstatusverfolgung
+   - Klare Fortschrittsindikatoren mit Emojis
+   - Detaillierte Migrationszusammenfassung
+   - Beispielausgabe:
      ```
-     🚀 Starting database migration...
-     📝 Creating table: users
-     📝 Creating table: autos
+     🚀 Datenbankmigration wird gestartet...
+     📝 Tabelle wird erstellt: users
+     📝 Tabelle wird erstellt: autos
      
-     ✅ Tables created successfully:
+     ✅ Tabellen erfolgreich erstellt:
        - users
        - autos
      
-     === Migration Summary ===
-     📦 Created Tables:
+     === Migrationszusammenfassung ===
+     📦 Erstellte Tabellen:
        ✓ users
        ✓ autos
      
-     ✨ Migration process completed!
+     ✨ Migrationsprozess abgeschlossen!
      ```
      
-2. **Key Benefits**
-   - No manual SQL writing required
-   - Consistent database schema across installations
-   - Automatic schema updates when models change
-   - Clear feedback during migration process
-   - Error detection and reporting
+2. **Hauptvorteile**
+   - Kein manuelles SQL-Schreiben erforderlich
+   - Konsistentes Datenbankschema über Installationen hinweg
+   - Automatische Schemaaktualisierungen bei Modelländerungen
+   - Klare Rückmeldung während des Migrationsprozesses
+   - Fehlererkennung und -berichterstattung
 
-### Troubleshooting Virtual Environment
-1. **Virtual environment not activating**:
-   - Check Python installation
-   - Ensure execution policy allows scripts (Windows)
-   - Try creating a new virtual environment
+### Fehlerbehebung bei der virtuellen Umgebung
+1. **Virtuelle Umgebung aktiviert sich nicht**:
+   - Python-Installation überprüfen
+   - Sicherstellen, dass die Ausführungsrichtlinie Skripte zulässt (Windows)
+   - Versuchen Sie, eine neue virtuelle Umgebung zu erstellen
 
-2. **Package installation fails**:
-   - Verify virtual environment is activated
-   - Check internet connection
-   - Update pip: `python -m pip install --upgrade pip`
+2. **Paketinstallation schlägt fehl**:
+   - Überprüfen Sie, ob die virtuelle Umgebung aktiviert ist
+   - Internetverbindung überprüfen
+   - pip aktualisieren: `python -m pip install --upgrade pip`
 
-3. **Wrong Python version**:
-   - Delete the virtual environment
-   - Create new one with correct Python version
-   - Reinstall dependencies
+3. **Falsche Python-Version**:
+   - Virtuelle Umgebung löschen
+   - Neue mit korrekter Python-Version erstellen
+   - Abhängigkeiten neu installieren
 
-## Project Structure
+## Projektstruktur
 ```
 micro_py_framework/
-├── app.py                 # Main application entry point
-├── controller/            # Controllers directory
-│   ├── UserController.py  # User-related operations
-│   └── AutoController.py  # Auto-related operations
-├── model/                # Models directory
-│   ├── UserModel.py      # User data operations
-│   └── AutoModel.py      # Auto data operations
-├── table/                # Database tables
-│   ├── DBConnection.py   # Database connection management
-│   ├── DBMigrate.py      # Database migration and schema
-│   ├── UserTable.py      # User table schema
-│   └── AutoTable.py      # Auto table schema
-├── interface/            # Interfaces directory
-│   └── IController.py    # Controller interface
-└── helper/              # Helper utilities
-    ├── HttpHandler.py    # HTTP request handler
-    ├── Response.py       # Response formatting
-    ├── JWTManager.py     # JWT authentication
-    ├── FormatCheck.py    # Input validation
-    ├── CodeAssistant.py  # AI-powered code generation
-    └── DatabaseMigration.py  # Database migration helper
+├── app.py                 # Hauptanwendungseinstiegspunkt
+├── controller/            # Controller-Verzeichnis
+│   ├── UserController.py  # Benutzerbezogene Operationen
+│   └── AutoController.py  # Auto-bezogene Operationen
+├── model/                # Modelle-Verzeichnis
+│   ├── UserModel.py      # Benutzerdatenoperationen
+│   └── AutoModel.py      # Autodatenoperationen
+├── table/                # Datenbanktabellen
+│   ├── DBConnection.py   # Datenbankverbindungsverwaltung
+│   ├── DBMigrate.py      # Datenbankmigration und Schema
+│   ├── UserTable.py      # Benutzertabellenschema
+│   └── AutoTable.py      # Autotabellenschema
+├── interface/            # Schnittstellen-Verzeichnis
+│   └── IController.py    # Controller-Schnittstelle
+└── helper/              # Hilfsprogramme
+    ├── HttpHandler.py    # HTTP-Anfragehandler
+    ├── Response.py       # Antwortformatierung
+    ├── JWTManager.py     # JWT-Authentifizierung
+    ├── FormatCheck.py    # Eingabevalidierung
+    ├── CodeAssistant.py  # KI-gestützte Codegenerierung
+    └── DatabaseMigration.py  # Datenbankmigrationshelfer
 ```
 
-## API Endpoints
+## API-Endpunkte
 
-### User Controller Endpoints
+### Benutzer-Controller-Endpunkte
 
-1. **Create User**
-   - Method: POST
+1. **Benutzer erstellen**
+   - Methode: POST
    - URL: `/user`
-   - Request Body:
+   - Anfragekörper:
      ```json
      {
          "email": "user@example.com",
@@ -161,18 +161,18 @@ micro_py_framework/
          "name": "John Doe"
      }
      ```
-   - Response: Success message or error details
+   - Antwort: Erfolgsmeldung oder Fehlerdetails
 
-2. **Get User(s)**
-   - Method: GET
-   - URL: `/user` (list all users)
-   - URL: `/user/{id}` (get specific user)
-   - Response: User data or error message
+2. **Benutzer abrufen**
+   - Methode: GET
+   - URL: `/user` (alle Benutzer auflisten)
+   - URL: `/user/{id}` (bestimmten Benutzer abrufen)
+   - Antwort: Benutzerdaten oder Fehlermeldung
 
-3. **Update User**
-   - Method: PUT
+3. **Benutzer aktualisieren**
+   - Methode: PUT
    - URL: `/user`
-   - Request Body:
+   - Anfragekörper:
      ```json
      {
          "id": 1,
@@ -180,43 +180,43 @@ micro_py_framework/
          "password": "newpassword"  // optional
      }
      ```
-   - Response: Updated user data or error message
+   - Antwort: Aktualisierte Benutzerdaten oder Fehlermeldung
 
-4. **Delete User**
-   - Method: DELETE
+4. **Benutzer löschen**
+   - Methode: DELETE
    - URL: `/user`
-   - Request Body:
+   - Anfragekörper:
      ```json
      {
          "id": 1
      }
      ```
-   - Response: Success message or error details
+   - Antwort: Erfolgsmeldung oder Fehlerdetails
 
-### Auto Controller Endpoints
+### Auto-Controller-Endpunkte
 
-1. **Create Auto**
-   - Method: POST
+1. **Auto erstellen**
+   - Methode: POST
    - URL: `/auto`
-   - Request Body:
+   - Anfragekörper:
      ```json
      {
          "name": "Mercedes Benz",
          "ps": 750
      }
      ```
-   - Response: Success message or error details
+   - Antwort: Erfolgsmeldung oder Fehlerdetails
 
-2. **Get Auto(s)**
-   - Method: GET
-   - URL: `/auto` (list all autos)
-   - URL: `/auto/{id}` (get specific auto)
-   - Response: Auto data or error message
+2. **Auto(s) abrufen**
+   - Methode: GET
+   - URL: `/auto` (alle Autos auflisten)
+   - URL: `/auto/{id}` (bestimmtes Auto abrufen)
+   - Antwort: Autodaten oder Fehlermeldung
 
-3. **Update Auto**
-   - Method: PUT
+3. **Auto aktualisieren**
+   - Methode: PUT
    - URL: `/auto`
-   - Request Body:
+   - Anfragekörper:
      ```json
      {
          "id": 1,
@@ -224,64 +224,63 @@ micro_py_framework/
          "ps": 800
      }
      ```
-   - Response: Updated auto data or error message
+   - Antwort: Aktualisierte Autodaten oder Fehlermeldung
 
-4. **Delete Auto**
-   - Method: DELETE
+4. **Auto löschen**
+   - Methode: DELETE
    - URL: `/auto`
-   - Request Body:
+   - Anfragekörper:
      ```json
      {
          "id": 1
      }
      ```
-   - Response: Success message or error details
+   - Antwort: Erfolgsmeldung oder Fehlerdetails
 
-## Data Validation
+## Datenvalidierung
 
-### User Data Validation Rules
-- Email: Must follow standard email format
-- Password: Minimum 6 characters
-- Name: Minimum 2 characters
+### Benutzerdaten-Validierungsregeln
+- E-Mail: Muss dem Standard-E-Mail-Format entsprechen
+- Passwort: Mindestens 6 Zeichen
+- Name: Mindestens 2 Zeichen
 
-### Auto Data Validation Rules
-- Name: Minimum 2 characters
-- PS (horsepower): Must be a positive integer
+### Autodaten-Validierungsregeln
+- Name: Mindestens 2 Zeichen
+- PS (Leistung): Muss eine positive Ganzzahl sein
 
-## Database
+## Datenbank
 
-### SQLite Database
-- The application uses SQLite as the default database
-- Database file: `db.db`
-- Tables are automatically created on first run
+### SQLite-Datenbank
+- Die Anwendung verwendet SQLite als Standarddatenbank
+- Datenbankdatei: `db.db`
+- Tabellen werden beim ersten Start automatisch erstellt
 
-### Database Connection Management (DBConnection.py)
-The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It provides:
+### Datenbankverbindungsverwaltung (DBConnection.py)
+Die Datei `DBConnection.py` verwaltet Datenbankverbindungen mit SQLAlchemy ORM. Sie bietet:
 
-1. **SQLAlchemy Integration**
-   - Uses SQLAlchemy for Object-Relational Mapping (ORM)
-   - Provides a declarative base for model definitions
-   - Manages database sessions efficiently
+1. **SQLAlchemy-Integration**
+   - Verwendet SQLAlchemy für Object-Relational Mapping (ORM)
+   - Bietet eine deklarative Basis für Modelldefinitionen
+   - Verwaltet Datenbanksitzungen effizient
 
-2. **Connection Configuration**
+2. **Verbindungskonfiguration**
    ```python
    engine = create_engine("sqlite:///db.db", echo=False)
    ```
-   - Default configuration uses SQLite database
-   - Supports MySQL/MariaDB through connection string modification
-   - `echo=False` disables SQL query logging for better performance
+   - Standardkonfiguration verwendet SQLite-Datenbank
+   - Unterstützt MySQL/MariaDB durch Verbindungsstring-Modifikation
+   - `echo=False` deaktiviert SQL-Abfrageprotokollierung für bessere Leistung
 
-3. **Session Management**
+3. **Sitzungsverwaltung**
    ```python
    Session = sessionmaker(bind=engine)
    ```
-   - Creates a session factory for database operations
-   - Manages database connections and transactions
-   - Provides thread-safe database access
+   - Erstellt eine Sitzungsfabrik für Datenbankoperationen
+   - Verwaltet Datenbankverbindungen und Transaktionen
+   - Bietet threadsicheren Datenbankzugriff
 
-
-4. **Database Support**
-   - **SQLite** (Default):
+4. **Datenbankunterstützung**
+   - **SQLite** (Standard):
      ```python
      engine = create_engine("sqlite:///db.db")
      ```
@@ -290,11 +289,11 @@ The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It
      engine = create_engine("mysql+pymysql://username:password@localhost:3306/database_name")
      ```
 
-5. **Error Handling**
-   - Catches and reports database connection failures
-   - Provides clear error messages for troubleshooting
+5. **Fehlerbehandlung**
+   - Fängt Datenbankverbindungsfehler ab und meldet sie
+   - Bietet klare Fehlermeldungen für die Fehlerbehebung
 
-6. **Usage in Models**
+6. **Verwendung in Modellen**
    ```python
    from table.DBConnection import DBConnection
    
@@ -303,222 +302,222 @@ The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It
            self.Session = DBConnection.Session
    ```
 
-7. **Best Practices**
-   - Implements proper session management
-   - Follows SQLAlchemy best practices
+7. **Beste Praktiken**
+   - Implementiert angemessene Sitzungsverwaltung
+   - Folgt SQLAlchemy-Best-Practices
 
-### MySQL Support
-- The framework also supports MySQL databases
-- To use MySQL, modify the connection string in `table/DBConnection.py`:
+### MySQL-Unterstützung
+- Das Framework unterstützt auch MySQL-Datenbanken
+- Um MySQL zu verwenden, ändern Sie den Verbindungsstring in `table/DBConnection.py`:
   ```python
   engine = create_engine("mysql+pymysql://username:password@localhost:3306/database_name")
   ```
 
-## Error Handling
-The framework includes comprehensive error handling for:
-- Invalid input data
-- Database operations
-- HTTP request validation
-- Resource not found
-- Data type validation
-- Missing required fields
+## Fehlerbehandlung
+Das Framework umfasst umfassende Fehlerbehandlung für:
+- Ungültige Eingabedaten
+- Datenbankoperationen
+- HTTP-Anfragevalidierung
+- Nicht gefundene Ressourcen
+- Datentypvalidierung
+- Fehlende Pflichtfelder
 
-## Security Notes
-1. This is an educational framework and is not recommended for production use
-2. Password hashing is implemented using bcrypt
-3. Basic input validation is provided through FormatCheck.py
-4. JWT authentication support is available through JWTManager.py
-5. No built-in authentication/authorization system
+## Sicherheitshinweise
+1. Dies ist ein Bildungsframework und wird nicht für den Produktionseinsatz empfohlen
+2. Passwort-Hashing wird mit bcrypt implementiert
+3. Grundlegende Eingabevalidierung wird durch FormatCheck.py bereitgestellt
+4. JWT-Authentifizierungsunterstützung ist über JWTManager.py verfügbar
+5. Kein eingebautes Authentifizierungs-/Autorisierungssystem
 
-## Input Validation
-The framework includes a FormatCheck utility for validating input data:
+## Eingabevalidierung
+Das Framework enthält ein FormatCheck-Utility zur Validierung von Eingabedaten:
 
-1. **Email Validation**
+1. **E-Mail-Validierung**
    ```python
    FormatCheck.email("user@example.com")
    ```
-   - Uses regex pattern: `^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-z]+$`
-   - Validates:
-     - Username part: letters, numbers, dots, underscores, plus signs, hyphens
-     - Domain part: letters, numbers, hyphens
-     - TLD: letters only
-   - Returns: True if valid, False otherwise
+   - Verwendet Regex-Muster: `^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-z]+$`
+   - Validiert:
+     - Benutzernamenteil: Buchstaben, Zahlen, Punkte, Unterstriche, Pluszeichen, Bindestriche
+     - Domänenteil: Buchstaben, Zahlen, Bindestriche
+     - TLD: Nur Buchstaben
+   - Gibt zurück: True wenn gültig, False wenn ungültig
 
-2. **Length Validation**
+2. **Längenvalidierung**
    ```python
    FormatCheck.minimumLength("password", 6)
    ```
-   - Checks if string meets minimum length requirement
-   - Parameters:
-     - input_string: string to validate
-     - min_length: minimum required length
-   - Returns: True if length >= min_length, False otherwise
+   - Prüft, ob der String die Mindestlängenanforderung erfüllt
+   - Parameter:
+     - input_string: zu validierender String
+     - min_length: erforderliche Mindestlänge
+   - Gibt zurück: True wenn Länge >= min_length, False wenn nicht
 
-3. **Usage Examples**
+3. **Verwendungsbeispiele**
    ```python
-   # Email validation
+   # E-Mail-Validierung
    if not FormatCheck.email(user_email):
-       return Response.bad_request("Invalid email format")
+       return Response.bad_request("Ungültiges E-Mail-Format")
 
-   # Password length check
+   # Passwortlängenprüfung
    if not FormatCheck.minimumLength(password, 6):
-       return Response.bad_request("Password must be at least 6 characters")
+       return Response.bad_request("Passwort muss mindestens 6 Zeichen lang sein")
 
-   # Name length check
+   # Namenslängenprüfung
    if not FormatCheck.minimumLength(name, 2):
-       return Response.bad_request("Name must be at least 2 characters")
+       return Response.bad_request("Name muss mindestens 2 Zeichen lang sein")
    ```
 
-4. **Validation Rules**
-   - Email: Must follow standard email format with valid characters
-   - Password: Minimum 6 characters
-   - Name: Minimum 2 characters
+4. **Validierungsregeln**
+   - E-Mail: Muss dem Standard-E-Mail-Format mit gültigen Zeichen entsprechen
+   - Passwort: Mindestens 6 Zeichen
+   - Name: Mindestens 2 Zeichen
 
-## Example Usage
+## Verwendungsbeispiel
 
-### Creating a New Auto
+### Neues Auto erstellen
 ```bash
 curl -X POST http://localhost:8001/auto \
   -H "Content-Type: application/json" \
   -d '{"name": "Mercedes Benz", "ps": 750}'
 ```
 
-### Getting All Autos
+### Alle Autos abrufen
 ```bash
 curl http://localhost:8001/auto
 ```
 
-### Getting a Specific Auto
+### Bestimmtes Auto abrufen
 ```bash
 curl http://localhost:8001/auto/1
 ```
 
-### Updating an Auto
+### Auto aktualisieren
 ```bash
 curl -X PUT http://localhost:8001/auto \
   -H "Content-Type: application/json" \
   -d '{"id": 1, "name": "Updated Name", "ps": 800}'
 ```
 
-### Deleting an Auto
+### Auto löschen
 ```bash
 curl -X DELETE http://localhost:8001/auto \
   -H "Content-Type: application/json" \
   -d '{"id": 1}'
 ```
 
-## Postman Collection
-The framework includes a Postman collection (`Micro Python.postman_collection.json`) that contains pre-configured requests for example API endpoints. This makes it easy to test the API without writing curl commands.
+## Postman-Sammlung
+Das Framework enthält eine Postman-Sammlung (`Micro Python.postman_collection.json`), die vorkonfigurierte Anfragen für Beispiel-API-Endpunkte enthält. Dies erleichtert das Testen der API ohne curl-Befehle schreiben zu müssen.
 
-### Importing the Collection
-1. Open Postman
-2. Click the "Import" button in the top-left corner
-3. Select the "File" tab
-4. Click "Upload Files" and select `Micro Python.postman_collection.json`
-5. Click "Import"
+### Sammlung importieren
+1. Postman öffnen
+2. Auf den "Import"-Button in der oberen linken Ecke klicken
+3. Den "File"-Tab auswählen
+4. Auf "Upload Files" klicken und `Micro Python.postman_collection.json` auswählen
+5. Auf "Import" klicken
 
-### Using the Collection
-The collection includes the following pre-configured requests:
+### Sammlung verwenden
+Die Sammlung enthält folgende vorkonfigurierte Anfragen:
 
-#### Auto Endpoints
-- **GET /auto**: List all autos
-- **POST /auto**: Create a new auto
-  - Body: JSON with `name` and `ps` fields
-- **PUT /auto**: Update an existing auto
-  - Body: JSON with `id`, `name`, and `ps` fields
-- **DELETE /auto**: Delete an auto
-  - Body: JSON with `id` field
+#### Auto-Endpunkte
+- **GET /auto**: Alle Autos auflisten
+- **POST /auto**: Neues Auto erstellen
+  - Body: JSON mit `name` und `ps` Feldern
+- **PUT /auto**: Bestehendes Auto aktualisieren
+  - Body: JSON mit `id`, `name` und `ps` Feldern
+- **DELETE /auto**: Auto löschen
+  - Body: JSON mit `id` Feld
 
-### Collection Features
-- Pre-configured headers (Content-Type: application/json)
-- Example request bodies
-- Organized folder structure
-- Environment variables support
-- Documentation for each endpoint
+### Sammlungsfunktionen
+- Vorkonfigurierte Header (Content-Type: application/json)
+- Beispielanfragekörper
+- Organisierte Ordnerstruktur
+- Umgebungsvariablenunterstützung
+- Dokumentation für jeden Endpunkt
 
-### Tips for Using Postman
-1. **Environment Setup**
-   - Create a new environment
-   - Add a variable `base_url` with value `http://localhost:8001`
-   - Use `{{base_url}}` in request URLs
+### Tipps für die Verwendung von Postman
+1. **Umgebung einrichten**
+   - Neue Umgebung erstellen
+   - Variable `base_url` mit Wert `http://localhost:8001` hinzufügen
+   - `{{base_url}}` in Anfrage-URLs verwenden
 
-2. **Testing Workflow**
-   - Start with GET requests to view data
-   - Use POST to create new entries
-   - Use PUT to modify existing entries
-   - Use DELETE to remove entries
+2. **Testworkflow**
+   - Mit GET-Anfragen beginnen, um Daten anzuzeigen
+   - POST für neue Einträge verwenden
+   - PUT für bestehende Einträge verwenden
+   - DELETE für das Entfernen von Einträgen verwenden
 
-3. **Response Handling**
-   - Check status codes
-   - View formatted JSON responses
-   - Use Postman's test scripts for automation
+3. **Antwortbehandlung**
+   - Statuscodes überprüfen
+   - Formatierte JSON-Antworten anzeigen
+   - Postman-Testskripte für Automatisierung verwenden
 
-## Development Guidelines
+## Entwicklungsrichtlinien
 
-### Creating New Controllers
-1. Create a new file in the `controller` directory
-2. Implement the `IController` interface
-3. Add your controller methods (get, post, put, destroy)
+### Neue Controller erstellen
+1. Neue Datei im `controller`-Verzeichnis erstellen
+2. `IController`-Schnittstelle implementieren
+3. Controller-Methoden hinzufügen (get, post, put, destroy)
 
-### Creating New Models
-1. Create a new file in the `model` directory
-2. Implement the `IModel` interface
-3. Create corresponding table in `table` directory
-4. Implement database operations
+### Neue Modelle erstellen
+1. Neue Datei im `model`-Verzeichnis erstellen
+2. `IModel`-Schnittstelle implementieren
+3. Entsprechende Tabelle im `table`-Verzeichnis erstellen
+4. Datenbankoperationen implementieren
 
-## Limitations
-1. No built-in authentication system
-2. Limited error handling
-3. Basic input validation
-4. No request rate limiting
-5. No built-in logging system
-6. No built-in caching mechanism
+## Einschränkungen
+1. Kein eingebautes Authentifizierungssystem
+2. Begrenzte Fehlerbehandlung
+3. Grundlegende Eingabevalidierung
+4. Keine Anfrage-Ratenbegrenzung
+5. Kein eingebautes Protokollierungssystem
+6. Kein eingebauter Caching-Mechanismus
 
-## Best Practices
-1. Always use virtual environment
-2. Keep controllers thin, move business logic to models
-3. Validate input data before processing
-4. Handle database errors appropriately
-5. Use proper HTTP status codes in responses
-6. Follow consistent error handling patterns
-7. Use type hints for better code clarity
-8. Document API endpoints and their requirements
+## Beste Praktiken
+1. Immer virtuelle Umgebung verwenden
+2. Controller schlank halten, Geschäftslogik in Modelle verschieben
+3. Eingabedaten vor der Verarbeitung validieren
+4. Datenbankfehler angemessen behandeln
+5. Geeignete HTTP-Statuscodes in Antworten verwenden
+6. Konsistente Fehlerbehandlungsmuster befolgen
+7. Typ-Hinweise für bessere Code-Klarheit verwenden
+8. API-Endpunkte und ihre Anforderungen dokumentieren
 
-## Troubleshooting
-1. If database connection fails:
-   - Check if database file exists
-   - Verify database credentials (if using MySQL)
-   - Check database permissions
+## Fehlerbehebung
+1. Wenn die Datenbankverbindung fehlschlägt:
+   - Überprüfen Sie, ob die Datenbankdatei existiert
+   - Datenbankanmeldedaten überprüfen (bei MySQL)
+   - Datenbankberechtigungen überprüfen
 
-2. If server fails to start:
-   - Check if port 8001 is available
-   - Verify all dependencies are installed
-   - Check Python version compatibility
+2. Wenn der Server nicht startet:
+   - Überprüfen Sie, ob Port 8001 verfügbar ist
+   - Überprüfen Sie, ob alle Abhängigkeiten installiert sind
+   - Python-Version-Kompatibilität überprüfen
 
-3. If requests fail:
-   - Verify request format
-   - Check input validation rules
-   - Ensure proper HTTP method is used
-   - Verify content-type header is set correctly
-   - Check if required fields are provided
+3. Wenn Anfragen fehlschlagen:
+   - Anfrageformat überprüfen
+   - Eingabevalidierungsregeln überprüfen
+   - Sicherstellen, dass die richtige HTTP-Methode verwendet wird
+   - Überprüfen, ob der content-type-Header korrekt gesetzt ist
+   - Überprüfen, ob Pflichtfelder bereitgestellt werden
 
-## HTTP Request Lifecycle
+## HTTP-Anfrage-Lebenszyklus
 
-### General Request Flow
+### Allgemeiner Anfragefluss
 ```mermaid
 graph TD
-    A[Client Request] --> B[HttpHandler]
-    B --> C{Request Validation}
-    C -->|Valid| D[Route to Controller]
-    C -->|Invalid| E[Return 400 Error]
-    D --> F[Execute Controller Method]
-    F --> G[Process Model Operations]
-    G --> H[Database Operations]
-    H --> I[Format Response]
-    I --> J[Send Response to Client]
+    A[Client-Anfrage] --> B[HttpHandler]
+    B --> C{Anfragevalidierung}
+    C -->|Gültig| D[An Controller weiterleiten]
+    C -->|Ungültig| E[400-Fehler zurückgeben]
+    D --> F[Controller-Methode ausführen]
+    F --> G[Modelloperationen verarbeiten]
+    G --> H[Datenbankoperationen]
+    H --> I[Antwort formatieren]
+    I --> J[Antwort an Client senden]
 ```
 
-### User Creation Flow
+### Benutzererstellungsfluss
 ```mermaid
 sequenceDiagram
     participant Client
@@ -528,141 +527,141 @@ sequenceDiagram
     participant Database
 
     Client->>HttpHandler: POST /user
-    Note over HttpHandler: Validate request
-    HttpHandler->>UserController: Route to Controller
+    Note over HttpHandler: Anfrage validieren
+    HttpHandler->>UserController: An Controller weiterleiten
     UserController->>UserModel: create()
-    UserModel->>UserModel: Validate email
-    UserModel->>UserModel: Hash password
-    UserModel->>Database: INSERT query
-    Database-->>UserModel: Success
-    UserModel-->>UserController: Success
+    UserModel->>UserModel: E-Mail validieren
+    UserModel->>UserModel: Passwort hashen
+    UserModel->>Database: INSERT-Abfrage
+    Database-->>UserModel: Erfolg
+    UserModel-->>UserController: Erfolg
     UserController-->>HttpHandler: 200 OK
-    HttpHandler-->>Client: Response
+    HttpHandler-->>Client: Antwort
 ```
 
-### Error Handling Flow
+### Fehlerbehandlungsfluss
 ```mermaid
 graph TD
-    A[Error Occurs] --> B{Error Type}
-    B -->|Validation| C[Format Validation Error]
-    B -->|Database| D[Format Database Error]
-    B -->|Not Found| E[Format 404 Error]
-    C --> F[Set Error Status Code]
+    A[Fehler tritt auf] --> B{Fehlertyp}
+    B -->|Validierung| C[Validierungsfehler formatieren]
+    B -->|Datenbank| D[Datenbankfehler formatieren]
+    B -->|Nicht gefunden| E[404-Fehler formatieren]
+    C --> F[Fehlerstatuscode setzen]
     D --> F
     E --> F
-    F --> G[Send Error Response]
+    F --> G[Fehlerantwort senden]
 ```
 
-### Component Interaction
+### Komponenteninteraktion
 ```mermaid
 graph LR
-    A[HttpHandler] -->|Routes| B[Controller]
-    B -->|Uses| C[Models]
-    C -->|Interacts| D[Database]
-    B -->|Implements| E[IController Interface]
-    C -->|Implements| F[IModel Interface]
-    D -->|Managed by| G[DBConnection]
-    D -->|Schema by| H[DBMigrate]
+    A[HttpHandler] -->|Weiterleiten| B[Controller]
+    B -->|Verwendet| C[Modelle]
+    C -->|Interagiert| D[Datenbank]
+    B -->|Implementiert| E[IController-Schnittstelle]
+    C -->|Implementiert| F[IModel-Schnittstelle]
+    D -->|Verwaltet von| G[DBConnection]
+    D -->|Schema von| H[DBMigrate]
 ```
 
-## Response Format
-All API responses follow a consistent format:
+## Antwortformat
+Alle API-Antworten folgen einem konsistenten Format:
 
-### Success Response
+### Erfolgsantwort
 ```json
 {
     "status_code": 200,
     "status": "success",
     "message": {
-        // Response data
+        // Antwortdaten
     }
 }
 ```
 
-### Error Response
+### Fehlerantwort
 ```json
 {
     "status_code": 400,
     "status": "error",
-    "message": "Error description"
+    "message": "Fehlerbeschreibung"
 }
 ```
 
-## VS Code Integration
-The framework includes VS Code integration features:
-1. Custom snippets for quick code generation
-2. IntelliSense support for framework components
-3. Recommended extensions for Python development
-4. Automatic code formatting with Black
-5. Linting with Pylint
-6. Import organization
-7. Documentation generation support
+## VS Code-Integration
+Das Framework enthält VS Code-Integrationsfunktionen:
+1. Benutzerdefinierte Snippets für schnelle Codegenerierung
+2. IntelliSense-Unterstützung für Framework-Komponenten
+3. Empfohlene Erweiterungen für Python-Entwicklung
+4. Automatische Codeformatierung mit Black
+5. Linting mit Pylint
+6. Importorganisation
+7. Dokumentationsgenerierungsunterstützung
 
-## AI Assistant Features
+## KI-Assistent-Funktionen
 
-The framework includes an intelligent code assistant that can help you with:
-- Generating CRUD endpoints
-- Providing code suggestions
-- Generating documentation
-- Analyzing your codebase
+Das Framework enthält einen intelligenten Code-Assistenten, der Ihnen helfen kann mit:
+- Generierung von CRUD-Endpunkten
+- Bereitstellung von Code-Vorschlägen
+- Generierung von Dokumentation
+- Analyse Ihrer Codebasis
 
-### Getting Started with the AI Assistant
+### Erste Schritte mit dem KI-Assistenten
 
-1. **Run the AI Assistant Demo**
-   Simply run the `ai.py` file in your terminal:
+1. **KI-Assistent-Demo ausführen**
+   Führen Sie einfach die Datei `ai.py` in Ihrem Terminal aus:
    ```bash
    python ai.py
    ```
-   This will show you examples of what the assistant can do:
-   - Generate CRUD endpoints for a "Product" resource
-   - Show code suggestions for UserController
-   - Generate documentation for controllers
+   Dies zeigt Ihnen Beispiele für das, was der Assistent kann:
+   - CRUD-Endpunkte für eine "Product"-Ressource generieren
+   - Code-Vorschläge für UserController anzeigen
+   - Dokumentation für Controller generieren
 
-2. **Understanding the Demo Output**
-   When you run `ai.py`, you'll see:
-   - The codebase analysis results
-   - Generated CRUD endpoints for a sample resource
-   - Code suggestions for common tasks
-   - Generated documentation examples
+2. **Demo-Ausgabe verstehen**
+   Wenn Sie `ai.py` ausführen, sehen Sie:
+   - Die Codebasis-Analyseergebnisse
+   - Generierte CRUD-Endpunkte für eine Beispielressource
+   - Code-Vorschläge für häufige Aufgaben
+   - Generierte Dokumentationsbeispiele
 
-3. **Using the Generated Code**
-   The demo generates complete code examples that you can:
-   - Copy and use in your own controllers
-   - Use as templates for new resources
-   - Study to understand the framework patterns
+3. **Generierten Code verwenden**
+   Die Demo generiert vollständige Codebeispiele, die Sie können:
+   - Kopieren und in Ihren eigenen Controllern verwenden
+   - Als Vorlagen für neue Ressourcen verwenden
+   - Studieren, um Framework-Muster zu verstehen
 
-4. **Generating Documentation**
-   You can also generate documentation for specific components:
+4. **Dokumentation generieren**
+   Sie können auch Dokumentation für bestimmte Komponenten generieren:
    ```python
-   # Example: Generate documentation for controllers
+   # Beispiel: Dokumentation für Controller generieren
    docs = assistant.generate_documentation("controller")
    print(docs)
    ```
 
-### Important Notes
-- The assistant analyzes your codebase to provide context-aware suggestions
-- Generated code should be reviewed and customized for your specific needs
-- The assistant is designed for educational purposes and may not cover all edge cases
-- Always test generated code before using it in production
+### Wichtige Hinweise
+- Der Assistent analysiert Ihre Codebasis, um kontextbewusste Vorschläge zu machen
+- Generierter Code sollte überprüft und an Ihre spezifischen Bedürfnisse angepasst werden
+- Der Assistent ist für Bildungszwecke konzipiert und deckt möglicherweise nicht alle Randfälle ab
+- Testen Sie generierten Code immer vor der Verwendung in der Produktion
 
-### Example Workflow
-1. Run `python ai.py` to see examples
-2. Review the generated code and documentation
-3. Use the patterns shown to create your own resources
-4. Get code suggestions when needed
-5. Generate documentation for your code
-6. Review and customize the generated code
-7. Test your implementation
+### Beispielworkflow
+1. Führen Sie `python ai.py` aus, um Beispiele zu sehen
+2. Überprüfen Sie den generierten Code und die Dokumentation
+3. Verwenden Sie die gezeigten Muster, um Ihre eigenen Ressourcen zu erstellen
+4. Holen Sie sich Code-Vorschläge bei Bedarf
+5. Generieren Sie Dokumentation für Ihren Code
+6. Überprüfen und passen Sie den generierten Code an
+7. Testen Sie Ihre Implementierung
 
-Remember: This is an educational framework. Always review generated code and understand what it does before using it in your project.
+Denken Sie daran: Dies ist ein Bildungsframework. Überprüfen Sie generierten Code immer und verstehen Sie, was er tut, bevor Sie ihn in Ihrem Projekt verwenden.
 
-## A Note from the Developer
+## Eine Notiz vom Entwickler
 
-Thank you for taking the time to explore this educational framework! I created this project to help beginners understand the fundamental concepts of web development and Python programming.
+Vielen Dank, dass Sie sich die Zeit genommen haben, dieses Bildungsframework zu erkunden! Ich habe dieses Projekt erstellt, um Anfängern zu helfen, die grundlegenden Konzepte der Webentwicklung und Python-Programmierung zu verstehen.
 
-I hope this framework serves as a helpful stepping stone in your learning journey. Remember that every expert was once a beginner, and the key to mastering programming is consistent practice and curiosity.
+Ich hoffe, dieses Framework dient als hilfreicher Schritt in Ihrer Lernreise. Denken Sie daran, dass jeder Experte einmal ein Anfänger war und dass der Schlüssel zum Beherrschen der Programmierung in konsequenter Praxis und Neugier liegt.
 
-Best wishes for your learning journey!
+Alles Gute für Ihre Lernreise!
 
 Ali Khorsandfard
-Developer & Educator
+Entwickler & Pädagoge
