@@ -223,22 +223,8 @@ micro_py_framework/
 - Tables are automatically created on first run
 
 ### Database Migration (DatabaseMigration.py)
-The `DatabaseMigration.py` file is responsible for automatic database initialization and table creation. It handles:
-
-1. **Database Connection**
-   - Creates a connection to SQLite database (`db.db`)
-   - Manages database cursor for executing SQL commands
-   - Uses SQLAlchemy for database operations
-
-2. **Automatic Table Creation**
-   - Automatically discovers and creates all tables defined in the `table` directory
-   - Uses SQLAlchemy models to define table structure
-   - Currently manages tables like:
-     - `users`: Stores user information with email, password, and name
-     - `autos`: Stores auto information with name and horsepower (ps)
-   - No manual SQL creation needed - tables are created from model definitions
-
-3. **Migration Features**
+   - easily and anytime after Creating any Table Class , open migrate.py on the root and run it , or write python migrate.py on terminal in project root!
+1. **Migration Features**
    - Automatic table discovery and creation
    - Column change detection
    - Migration status tracking
@@ -262,18 +248,8 @@ The `DatabaseMigration.py` file is responsible for automatic database initializa
      ✨ Migration process completed!
      ```
 
-4. **Migration Script (migrate.py)**
-   easily open migrate.py on the root and run it , or write python migrate.py on terminal in project root!
-   
-   Features:
-   - Automatic table creation from model definitions
-   - Schema version tracking
-   - Column modification detection
-   - Clear progress indicators
-   - Migration summary generation
-   - Error handling with descriptive messages
 
-5. **Key Benefits**
+2. **Key Benefits**
    - No manual SQL writing required
    - Consistent database schema across installations
    - Automatic schema updates when models change
@@ -330,9 +306,7 @@ The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It
    ```
 
 7. **Best Practices**
-   - Uses connection pooling for better performance
    - Implements proper session management
-   - Supports multiple database backends
    - Follows SQLAlchemy best practices
 
 ### MySQL Support
