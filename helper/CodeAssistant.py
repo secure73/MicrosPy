@@ -23,41 +23,37 @@ from model.{model_name} import {model_name}
 
 class {controller_name}(IController):
     def __init__(self):
-        self.model = {model_name}
+        self.model = {model_name}()
 
-    def get(self, data):
-        model = self.model()
-        if "id" in data:
-            result = model.single(int(data["id"]))
-            if not result:
-                return Response.bad_request("Item not found")
-            return Response.success(result)
-        return Response.success(model.list())
+    def get(self, request):
+        try:
+            item_id = request.get('params', {}).get('id')
+            return self.model.get(item_id)
+        except Exception as e:
+            return Response.server_error(str(e))
 
-    def post(self, data):
-        model = self.model()
-        created = model.create(**data)
-        if not created:
-            return Response.bad_request(f"Failed to create: {model.error}")
-        return Response.success({"success": "Created successfully"})
+    def post(self, request):
+        try:
+            data = request.get('body', {})
+            return self.model.create(data)
+        except Exception as e:
+            return Response.server_error(str(e))
 
-    def put(self, data):
-        if "id" not in data:
-            return Response.bad_request("ID is required")
-        model = self.model()
-        updated = model.update(data["id"], **data)
-        if not updated:
-            return Response.bad_request(f"Failed to update: {model.error}")
-        return Response.success({"success": "Updated successfully"})
+    def put(self, request):
+        try:
+            data = request.get('body', {})
+            return self.model.update(data)
+        except Exception as e:
+            return Response.server_error(str(e))
 
-    def destroy(self, data):
-        if "id" not in data:
-            return Response.bad_request("ID is required")
-        model = self.model()
-        result = model.remove(data["id"])
-        if not result:
-            return Response.bad_request(f"Failed to destroy: {model.error}")
-        return Response.success({"success": "Destroyed successfully"})'''
+    def destroy(self, request):
+        try:
+            item_id = request.get('params', {}).get('id')
+            if not item_id:
+                return Response.bad_request("ID is required")
+            return self.model.delete(item_id)
+        except Exception as e:
+            return Response.server_error(str(e))'''
             },
             'model': {
                 'basic': '''from table.{table_name} import {table_name}
@@ -196,6 +192,16 @@ class {table_name}(Base):
         tree = ast.parse(content)
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef):
+                # Check if class implements IController
+                if any(base.id == 'IController' for base in node.bases if isinstance(base, ast.Name)):
+                    # Validate method names match IController interface
+                    self._validate_controller_methods(node)
+                
+                # Check if class implements IModel
+                if any(base.id == 'IModel' for base in node.bases if isinstance(base, ast.Name)):
+                    # Validate method names match IModel interface
+                    self._validate_model_methods(node)
+                
                 self.project_structure[category][node.name] = {
                     'methods': self._get_class_methods(node),
                     'parent_class': self._get_parent_class(node),
@@ -208,6 +214,60 @@ class {table_name}(Base):
                     self.patterns.get(category, {}).get('basic', ''),
                     f"Create new {category} {node.name}"
                 )
+
+    def _validate_model_methods(self, node: ast.ClassDef):
+        """Validates that model methods match the IModel interface."""
+        required_methods = {
+            'create': {'return_type': 'None|object', 'params': ['**data']},
+            'update': {'return_type': 'None|object', 'params': ['id: int', '**data']},
+            'single': {'return_type': 'None|object', 'params': ['id: int']},
+            'remove': {'return_type': 'bool', 'params': ['id: int']},
+            'list': {'return_type': 'None|list', 'params': []}
+        }
+        
+        implemented_methods = {n.name: n for n in node.body if isinstance(n, ast.FunctionDef)}
+        
+        # Check for missing required methods
+        missing_methods = set(required_methods.keys()) - set(implemented_methods.keys())
+        if missing_methods:
+            print(f"Error: Model {node.name} is missing required methods: {missing_methods}")
+        
+        # Check for incorrect method names
+        incorrect_methods = set(implemented_methods.keys()) - set(required_methods.keys())
+        if 'delete' in incorrect_methods:
+            print(f"Error: Model {node.name} uses 'delete' instead of 'remove'")
+            print("Fix: Rename 'delete' method to 'remove' to match IModel interface")
+        
+        # Check method signatures
+        for method_name, method_node in implemented_methods.items():
+            if method_name in required_methods:
+                expected = required_methods[method_name]
+                # Check return type annotation
+                if not hasattr(method_node, 'returns') or not method_node.returns:
+                    print(f"Warning: Method {method_name} in {node.name} is missing return type annotation")
+                # Check parameters
+                actual_params = [arg.arg for arg in method_node.args.args]
+                if actual_params != expected['params']:
+                    print(f"Warning: Method {method_name} in {node.name} has incorrect parameters")
+                    print(f"Expected: {expected['params']}")
+                    print(f"Actual: {actual_params}")
+
+    def _validate_controller_methods(self, node: ast.ClassDef):
+        """Validates that controller methods match the IController interface."""
+        required_methods = {'get', 'post', 'put', 'destroy'}
+        implemented_methods = {n.name for n in node.body if isinstance(n, ast.FunctionDef)}
+        
+        # Check for missing required methods
+        missing_methods = required_methods - implemented_methods
+        if missing_methods:
+            print(f"Warning: Controller {node.name} is missing required methods: {missing_methods}")
+        
+        # Check for incorrect method names
+        incorrect_methods = implemented_methods - required_methods
+        if 'delete' in incorrect_methods:
+            print(f"Error: Controller {node.name} uses 'delete' instead of 'destroy'")
+            # Suggest fix
+            print("Fix: Rename 'delete' method to 'destroy' to match IController interface")
 
     def suggest_code(self, context: str, current_file: str) -> str:
         """Suggests code based on the current context and file."""
@@ -274,6 +334,10 @@ class {table_name}(Base):
                 'model': model_pattern.replace('{model_name}', model_name).replace('{table_name}', table_name),
                 'table': table_pattern.replace('{table_name}', table_name).replace('{table_name_lower}', resource_name.lower())
             }
+            
+            # Validate generated code against interfaces
+            self._validate_generated_code(generated_code)
+            
             return generated_code
         except KeyError as e:
             print(f"Error: Missing pattern key - {e}")
@@ -291,6 +355,22 @@ class {table_name}(Base):
                 'model': '',
                 'table': ''
             }
+
+    def _validate_generated_code(self, generated_code: Dict[str, str]):
+        """Validates generated code against interface requirements."""
+        for code_type, code in generated_code.items():
+            if code_type == 'model':
+                # Check for IModel interface compliance
+                if 'def delete(' in code:
+                    print("Error: Generated model code uses 'delete' instead of 'remove'")
+                if 'def get(' in code:
+                    print("Error: Generated model code uses 'get' instead of 'single'")
+                if 'def list(' not in code:
+                    print("Error: Generated model code is missing 'list' method")
+            elif code_type == 'controller':
+                # Check for IController interface compliance
+                if 'def delete(' in code:
+                    print("Error: Generated controller code uses 'delete' instead of 'destroy'")
 
     def generate_documentation(self, file_type: str) -> str:
         """Generates documentation based on recognized patterns."""
@@ -343,39 +423,35 @@ class {table_name}(Base):
         return imports
 
     def _suggest_get_method(self) -> str:
-        return '''def get(self, data):
-        model = self.model()
-        if "id" in data:
-            result = model.single(int(data["id"]))
-            if not result:
-                return Response.bad_request("Item not found")
-            return Response.success(result)
-        return Response.success(model.list())'''
+        return '''def get(self, request):
+        try:
+            item_id = request.get('params', {}).get('id')
+            return self.model.get(item_id)
+        except Exception as e:
+            return Response.server_error(str(e))'''
 
     def _suggest_post_method(self) -> str:
-        return '''def post(self, data):
-        model = self.model()
-        created = model.create(**data)
-        if not created:
-            return Response.bad_request(f"Failed to create: {model.error}")
-        return Response.success({"success": "Created successfully"})'''
+        return '''def post(self, request):
+        try:
+            data = request.get('body', {})
+            return self.model.create(data)
+        except Exception as e:
+            return Response.server_error(str(e))'''
 
     def _suggest_put_method(self) -> str:
-        return '''def put(self, data):
-        if "id" not in data:
-            return Response.bad_request("ID is required")
-        model = self.model()
-        updated = model.update(data["id"], **data)
-        if not updated:
-            return Response.bad_request(f"Failed to update: {model.error}")
-        return Response.success({"success": "Updated successfully"})'''
+        return '''def put(self, request):
+        try:
+            data = request.get('body', {})
+            return self.model.update(data)
+        except Exception as e:
+            return Response.server_error(str(e))'''
 
     def _suggest_destroy_method(self) -> str:
-        return '''def destroy(self, data):
-        if "id" not in data:
-            return Response.bad_request("ID is required")
-        model = self.model()
-        result = model.remove(data["id"])
-        if not result:
-            return Response.bad_request(f"Failed to destroy: {model.error}")
-        return Response.success({"success": "Destroyed successfully"})''' 
+        return '''def destroy(self, request):
+        try:
+            item_id = request.get('params', {}).get('id')
+            if not item_id:
+                return Response.bad_request("ID is required")
+            return self.model.delete(item_id)
+        except Exception as e:
+            return Response.server_error(str(e))''' 

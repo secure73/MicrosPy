@@ -5,7 +5,8 @@ import bcrypt
 from helper.FormatCheck import FormatCheck
 from interface.IModel import IModel
 from sqlalchemy import update
-class AutoModel(IModel): 
+
+class UserModel(IModel): 
     def __init__(self):
         self.Session = DBConnection.Session
         self.error = None
@@ -48,37 +49,42 @@ class AutoModel(IModel):
                 self.error = f"Database failure: {str(e)}"
                 return None
 
-    def update(self, user_id: int , name:str = None , password: str = None)->UserTable|None:
-        user = self.single(user_id)
+    def update(self, id: int, **data) -> None|object:
+        user = self.single(id)
         if not user:
             self.error = "User not found"
             return None
-        self.__validateUserInfo(name=name)
+
+        if 'name' in data:
+            if not self.__validateUserInfo(name=data['name']):
+                return None
 
         with self.Session() as session:
             try:
-                if name:
-                    session.query(UserTable).filter(UserTable.id == user_id).update({
-                        UserTable.name:name
+                if 'name' in data:
+                    session.query(UserTable).filter(UserTable.id == id).update({
+                        UserTable.name: data['name']
                     })
 
-                if password:
-                    session.query(UserTable).filter(UserTable.id == user_id).update({
-                        UserTable.password:self.__setPassword(password)
+                if 'password' in data:
+                    hashed_password = self.__setPassword(data['password'])
+                    if not hashed_password:
+                        return None
+                    session.query(UserTable).filter(UserTable.id == id).update({
+                        UserTable.password: hashed_password
                     })
                 session.commit()
-                #return {"success": "User updated successfully"}
-                return self.single(user_id)
+                return self.single(id)
             except SQLAlchemyError as e:
                 session.rollback()
-                self.error = f"DAtabase Error: {str(e)}"
-            return None
+                self.error = f"Database Error: {str(e)}"
+                return None
 
     def remove(self, id:int)->bool:
         user = self.single(id)
         if not user:
             self.error = "User not found"
-            return None
+            return False
         with self.Session() as session:
             try:
                 session.delete(user)
@@ -86,6 +92,7 @@ class AutoModel(IModel):
                 return True
             except SQLAlchemyError as e:
                 session.rollback()
+                self.error = f"Database Error: {str(e)}"
                 return False
 
 
@@ -95,19 +102,19 @@ class AutoModel(IModel):
     def __validateUserInfo(self, name: str = None , email: str = None)->bool:
         if name:
             if not FormatCheck.minimumLength(name,2):
-                self.error = "name lenght must have at least 2 charechters"
+                self.error = "name length must have at least 2 characters"
                 return False
         if email:
             if not FormatCheck.email(email=email):
-                self.error = "your given email address dont follow email format, pleache check email address and try again"
+                self.error = "your given email address doesn't follow email format, please check email address and try again"
                 return False
         return True
     
     def __setPassword(self, password:str)->None|str:
-            if not FormatCheck.minimumLength(password,6):
-                self.error = "password lenght must have at least 6 charechters"
-                return None
-            return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+        if not FormatCheck.minimumLength(password,6):
+            self.error = "password length must have at least 6 characters"
+            return None
+        return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
     
     def __insert(self,email:str, password:str , name: str)->bool:
         with self.Session() as session:
@@ -119,5 +126,6 @@ class AutoModel(IModel):
                 session.commit()
                 return True
             except SQLAlchemyError as e:
+                session.rollback()
                 self.error = f"Database failure: {str(e)}"
                 return False
