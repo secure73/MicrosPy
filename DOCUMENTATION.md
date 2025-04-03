@@ -71,6 +71,40 @@ This framework serves as an excellent first step for learning REST API principle
    python app.py   # Server will start on port 8001
    ```
 
+### Database Migration And Create New Table in Your Database(migrate.py)
+   - easily and anytime after Creating any Table Class Example AutoController.py , open migrate.py on the root and run it , or write python migrate.py on terminal in project root!
+1. **Migration Features**
+   - Automatic table discovery and creation
+   - Column change detection
+   - Migration status tracking
+   - Clear progress indicators with emojis
+   - Detailed migration summary
+   - Example output:
+     ```
+     🚀 Starting database migration...
+     📝 Creating table: users
+     📝 Creating table: autos
+     
+     ✅ Tables created successfully:
+       - users
+       - autos
+     
+     === Migration Summary ===
+     📦 Created Tables:
+       ✓ users
+       ✓ autos
+     
+     ✨ Migration process completed!
+     ```
+     
+2. **Key Benefits**
+   - No manual SQL writing required
+   - Consistent database schema across installations
+   - Automatic schema updates when models change
+   - Clear feedback during migration process
+   - Error detection and reporting
+   - Safe migration process with rollback support
+
 ### Troubleshooting Virtual Environment
 1. **Virtual environment not activating**:
    - Check Python installation
@@ -221,41 +255,6 @@ micro_py_framework/
 - The application uses SQLite as the default database
 - Database file: `db.db`
 - Tables are automatically created on first run
-
-### Database Migration (DatabaseMigration.py)
-   - easily and anytime after Creating any Table Class , open migrate.py on the root and run it , or write python migrate.py on terminal in project root!
-1. **Migration Features**
-   - Automatic table discovery and creation
-   - Column change detection
-   - Migration status tracking
-   - Clear progress indicators with emojis
-   - Detailed migration summary
-   - Example output:
-     ```
-     🚀 Starting database migration...
-     📝 Creating table: users
-     📝 Creating table: autos
-     
-     ✅ Tables created successfully:
-       - users
-       - autos
-     
-     === Migration Summary ===
-     📦 Created Tables:
-       ✓ users
-       ✓ autos
-     
-     ✨ Migration process completed!
-     ```
-
-
-2. **Key Benefits**
-   - No manual SQL writing required
-   - Consistent database schema across installations
-   - Automatic schema updates when models change
-   - Clear feedback during migration process
-   - Error detection and reporting
-   - Safe migration process with rollback support
 
 ### Database Connection Management (DBConnection.py)
 The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It provides:
