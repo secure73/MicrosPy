@@ -514,6 +514,69 @@ The collection includes the following pre-configured requests:
    - Verify content-type header is set correctly
    - Check if required fields are provided
 
+## HTTP Request Lifecycle
+
+### General Request Flow
+```mermaid
+graph TD
+    A[Client Request] --> B[HttpHandler]
+    B --> C{Request Validation}
+    C -->|Valid| D[Route to Controller]
+    C -->|Invalid| E[Return 400 Error]
+    D --> F[Execute Controller Method]
+    F --> G[Process Model Operations]
+    G --> H[Database Operations]
+    H --> I[Format Response]
+    I --> J[Send Response to Client]
+```
+
+### User Creation Flow
+```mermaid
+sequenceDiagram
+    participant Client
+    participant HttpHandler
+    participant UserController
+    participant UserModel
+    participant Database
+
+    Client->>HttpHandler: POST /user
+    Note over HttpHandler: Validate request
+    HttpHandler->>UserController: Route to Controller
+    UserController->>UserModel: create()
+    UserModel->>UserModel: Validate email
+    UserModel->>UserModel: Hash password
+    UserModel->>Database: INSERT query
+    Database-->>UserModel: Success
+    UserModel-->>UserController: Success
+    UserController-->>HttpHandler: 200 OK
+    HttpHandler-->>Client: Response
+```
+
+### Error Handling Flow
+```mermaid
+graph TD
+    A[Error Occurs] --> B{Error Type}
+    B -->|Validation| C[Format Validation Error]
+    B -->|Database| D[Format Database Error]
+    B -->|Not Found| E[Format 404 Error]
+    C --> F[Set Error Status Code]
+    D --> F
+    E --> F
+    F --> G[Send Error Response]
+```
+
+### Component Interaction
+```mermaid
+graph LR
+    A[HttpHandler] -->|Routes| B[Controller]
+    B -->|Uses| C[Models]
+    C -->|Interacts| D[Database]
+    B -->|Implements| E[IController Interface]
+    C -->|Implements| F[IModel Interface]
+    D -->|Managed by| G[DBConnection]
+    D -->|Schema by| H[DBMigrate]
+```
+
 ## Response Format
 All API responses follow a consistent format:
 
