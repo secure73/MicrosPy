@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "5be7cf85-59c2-479c-8f61-87f6bd80cfb3",
+		"name": "Micro Python",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35908272",
+		"_collection_link": "https://best-teams-ever.postman.co/workspace/best-teams-ever-Workspace~7a4a257f-6e76-4b8d-9edc-1521b8ff98eb/collection/35908272-5be7cf85-59c2-479c-8f61-87f6bd80cfb3?action=share&source=collection_link&creator=35908272"
+	},
+	"item": [
+		{
+			"name": "Auto",
+			"item": [
+				{
+					"name": "auto",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "localhost:8001/auto",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"auto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":2,\"name\":\"mercedes benz\",\"ps\":750}"
+						},
+						"url": {
+							"raw": "localhost:8001/auto",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"auto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n       \"id\": 2\r\n   }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8001/auto",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"auto"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

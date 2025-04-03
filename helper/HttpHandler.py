@@ -106,7 +106,7 @@ class HttpHandler(BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(data).encode("utf-8"))
 
     def _load_data(self, HTTP_method):
-        if HTTP_method in ["POST", "PUT"]:
+        if HTTP_method in ["POST", "PUT", "DELETE"]:
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length).decode('utf-8')
             try:

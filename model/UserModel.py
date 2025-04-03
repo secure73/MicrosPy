@@ -5,7 +5,7 @@ import bcrypt
 from helper.FormatCheck import FormatCheck
 from interface.IModel import IModel
 from sqlalchemy import update
-class UserModel(IModel): 
+class AutoModel(IModel): 
     def __init__(self):
         self.Session = DBConnection.Session
         self.error = None
