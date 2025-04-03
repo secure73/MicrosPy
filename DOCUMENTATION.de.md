@@ -11,7 +11,7 @@ Dies ist ein minimales Micro-Framework, das für das Erlernen der Grundlagen von
 
 1. Repository klonen:
 ```bash
-git clone <repository-url>
+git clone https://github.com/secure73/micro_py_framework.git
 cd micro_py_framework
 ```
 
