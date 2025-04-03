@@ -1,126 +1,128 @@
-# Micro Python Framework Dokumentation
+<div dir="rtl" style="text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;">
 
-## Übersicht
-Dies ist ein minimales Micro-Framework, das **ausschließlich für Bildungszwecke** entwickelt wurde, um Anfängern die Grundlagen von Python und RESTful API-Entwicklung zu vermitteln. Es implementiert eine einfache MVC (Model-View-Controller) Architektur und bietet grundlegende RESTful API-Funktionalität.
+# مستندات فریم‌ورک میکرو پایتون
 
-> ⚠️ **Wichtiger Hinweis**: Dieses Framework ist **NICHT für den Produktionseinsatz geeignet**. Es wurde ausschließlich als Lernwerkzeug entwickelt, um zu verstehen:
-> - Wie Frameworks wie Django und FastAPI funktionieren
-> - Python OOP-Prinzipien und Entwurfsmuster
-> - Schichtenarchitektur und Trennung von Zuständigkeiten
-> - Grundlegende REST API-Prinzipien und HTTP-Anfrageverarbeitung
-> - Datenbankoperationen und ORM-Konzepte
-> - Grundlegende MVC-Architekturimplementierung
+## مرور کلی
+این یک فریم‌ورک میکرو است که **به طور انحصاری برای اهداف آموزشی** طراحی شده است تا به مبتدیان در درک اصول اولیه پایتون و توسعه RESTful API کمک کند. این فریم‌ورک معماری ساده MVC (Model-View-Controller) را پیاده‌سازی می‌کند و عملکرد پایه RESTful API را فراهم می‌کند.
 
-> ⚠️ **Sicherheitswarnung**: Dieses Framework hat **minimale Sicherheitsimplementierungen** und sollte niemals in Produktionsumgebungen verwendet werden. Es fehlt:
-> - Richtige Authentifizierung und Autorisierung
-> - Eingabesanierung
-> - CSRF-Schutz
-> - Ratenbegrenzung
-> - Produktionsreife Fehlerbehandlung
-> - Sicherheits-Header
-> - Und viele andere wichtige Sicherheitsfunktionen
+> ⚠️ **نکته مهم**: این فریم‌ورک **مناسب برای استفاده در محیط تولید نیست**. این فریم‌ورک صرفاً به عنوان یک ابزار یادگیری طراحی شده است تا به شما در درک موارد زیر کمک کند:
+> - نحوه کار فریم‌ورک‌هایی مانند Django و FastAPI
+> - اصول OOP پایتون و الگوهای طراحی
+> - معماری لایه‌ای و جداسازی مسئولیت‌ها
+> - اصول اولیه REST API و مدیریت درخواست‌های HTTP
+> - عملیات پایگاه داده و مفاهیم ORM
+> - پیاده‌سازی معماری پایه MVC
 
-Dieses Framework dient als ausgezeichneter erster Schritt zum Erlernen von REST API-Prinzipien und zum Verständnis, wie Web-Frameworks strukturiert sind, sollte aber als Lernwerkzeug und nicht als produktionsreife Lösung behandelt werden.
+> ⚠️ **هشدار امنیتی**: این فریم‌ورک **پیاده‌سازی‌های امنیتی حداقلی** دارد و هرگز نباید در محیط‌های تولید استفاده شود. این فریم‌ورک فاقد موارد زیر است:
+> - احراز هویت و مجوزدهی مناسب
+> - پاکسازی ورودی
+> - محافظت در برابر CSRF
+> - محدودیت نرخ درخواست
+> - مدیریت خطای مناسب برای محیط تولید
+> - هدرهای امنیتی
+> - و بسیاری از ویژگی‌های امنیتی ضروری دیگر
 
-## Voraussetzungen
-- Python 3.13.2 oder höher
-- Virtuelle Umgebung (empfohlen)
+این فریم‌ورک به عنوان یک گام عالی برای یادگیری اصول REST API و درک نحوه ساختار فریم‌ورک‌های وب عمل می‌کند، اما باید به عنوان یک ابزار یادگیری و نه یک راه‌حل آماده برای تولید در نظر گرفته شود.
 
-## Installation und Einrichtung
+## پیش‌نیازها
+- پایتون 3.13.2 یا بالاتر
+- محیط مجازی (توصیه می‌شود)
 
-> ⚠️ **Wichtig**: Erstellen und aktivieren Sie die virtuelle Umgebung unmittelbar nach dem Klonen des Repositorys und vor der Installation von Abhängigkeiten. Dies gewährleistet eine saubere, isolierte Umgebung für Ihr Projekt.
+## نصب و راه‌اندازی
 
-1. Repository klonen:
+> ⚠️ **مهم**: همیشه محیط مجازی را بلافاصله پس از کلون کردن مخزن و قبل از نصب هرگونه وابستگی ایجاد و فعال کنید. این امر یک محیط تمیز و ایزوله برای پروژه شما تضمین می‌کند.
+
+1. کلون کردن مخزن:
    ```bash
    git clone https://github.com/secure73/micro_py_framework.git
    ```
-2. Gehen Sie zu Ihrem geklonten lokalen Ordner, zum Beispiel ist micro_py_framework Ihr lokales Zielverzeichnis, in dem das Repository geklont wurde:
+2. رفتن به پوشه محلی کلون شده، به عنوان مثال micro_py_framework پوشه هدف محلی شما است که مخزن در آن کلون شده است:
    ```bash
    cd micro_py_framework
    ```
 
-4. ⚠️ **Wichtig** Virtuelle Umgebung im Projektverzeichnis erstellen und aktivieren (WICHTIG - tun Sie dies unmittelbar nach dem Klonen):
+4. ⚠️ **مهم** ایجاد و فعال کردن محیط مجازی در پوشه پروژه (مهم - این کار را بلافاصله پس از کلون کردن انجام دهید):
    ```bash
-   # Windows
+   # ویندوز
    python -m venv venv
    .\venv\Scripts\activate
 
-   # Linux/Mac
+   # لینوکس/مک
    python -m venv venv
    source venv/bin/activate
 
-   # Aktivierung überprüfen (sollte den Pfad der virtuellen Umgebung anzeigen)
-   # Windows: where python
-   # Linux/Mac: which python
+   # تأیید فعال‌سازی (باید مسیر محیط مجازی را نمایش دهد)
+   # ویندوز: where python
+   # لینوکس/مک: which python
    ```
 
-5. Abhängigkeiten installieren:
+5. نصب وابستگی‌ها:
    ```bash
-   # Abhängigkeiten installieren
+   # نصب وابستگی‌ها
    pip install -r requirements.txt
    ```
 
-6. Datenbank migrieren:
+6. مهاجرت پایگاه داده:
    ```bash
-   # Datenbankmigration ausführen
+   # اجرای مهاجرت پایگاه داده
    python migrate.py
    ```
-7. Anwendung starten:
+7. اجرای برنامه:
    ```bash
-   # Anwendung starten
-   python app.py   # Server startet auf Port 8001
+   # راه‌اندازی برنامه
+   python app.py   # سرور روی پورت 8001 شروع می‌شود
    ```
 
-### Fehlerbehebung bei der virtuellen Umgebung
-1. **Virtuelle Umgebung aktiviert sich nicht**:
-   - Python-Installation überprüfen
-   - Sicherstellen, dass die Ausführungsrichtlinie Skripte zulässt (Windows)
-   - Versuchen Sie, eine neue virtuelle Umgebung zu erstellen
+### عیب‌یابی محیط مجازی
+1. **فعال نشدن محیط مجازی**:
+   - بررسی نصب پایتون
+   - اطمینان از اینکه سیاست اجرا اجازه اجرای اسکریپت‌ها را می‌دهد (ویندوز)
+   - تلاش برای ایجاد یک محیط مجازی جدید
 
-2. **Paketinstallation schlägt fehl**:
-   - Überprüfen Sie, ob die virtuelle Umgebung aktiviert ist
-   - Internetverbindung überprüfen
-   - Pip aktualisieren: `python -m pip install --upgrade pip`
+2. **شکست در نصب بسته**:
+   - تأیید فعال بودن محیط مجازی
+   - بررسی اتصال اینترنت
+   - به‌روزرسانی pip: `python -m pip install --upgrade pip`
 
-3. **Falsche Python-Version**:
-   - Virtuelle Umgebung löschen
-   - Neue mit korrekter Python-Version erstellen
-   - Abhängigkeiten neu installieren
+3. **نسخه اشتباه پایتون**:
+   - حذف محیط مجازی
+   - ایجاد محیط جدید با نسخه صحیح پایتون
+   - نصب مجدد وابستگی‌ها
 
-## Projektstruktur
+## ساختار پروژه
 ```
 micro_py_framework/
-├── app.py                 # Hauptanwendungseinstiegspunkt
-├── controller/            # Controller-Verzeichnis
-│   ├── UserController.py  # Benutzerbezogene Operationen
-│   └── AutoController.py  # Auto-bezogene Operationen
-├── model/                # Modelle-Verzeichnis
-│   ├── UserModel.py      # Benutzerdaten-Operationen
-│   └── AutoModel.py      # Auto-Daten-Operationen
-├── table/                # Datenbanktabellen
-│   ├── DBConnection.py   # Datenbankverbindungsverwaltung
-│   ├── DBMigrate.py      # Datenbankmigration und Schema
-│   ├── UserTable.py      # Benutzertabellenschema
-│   └── AutoTable.py      # Auto-Tabellenschema
-├── interface/            # Schnittstellen-Verzeichnis
-│   └── IController.py    # Controller-Schnittstelle
-└── helper/              # Hilfsprogramme
-    ├── HttpHandler.py    # HTTP-Anfragehandler
-    ├── Response.py       # Antwortformatierung
-    ├── JWTManager.py     # JWT-Authentifizierung
-    ├── FormatCheck.py    # Eingabevalidierung
-    ├── CodeAssistant.py  # KI-gestützte Codegenerierung
-    └── DatabaseMigration.py  # Datenbankmigrationshilfe
+├── app.py                 # نقطه ورود اصلی برنامه
+├── controller/            # پوشه کنترلرها
+│   ├── UserController.py  # عملیات مربوط به کاربر
+│   └── AutoController.py  # عملیات مربوط به خودرو
+├── model/                # پوشه مدل‌ها
+│   ├── UserModel.py      # عملیات داده کاربر
+│   └── AutoModel.py      # عملیات داده خودرو
+├── table/                # جداول پایگاه داده
+│   ├── DBConnection.py   # مدیریت اتصال پایگاه داده
+│   ├── DBMigrate.py      # مهاجرت و طرح پایگاه داده
+│   ├── UserTable.py      # طرح جدول کاربر
+│   └── AutoTable.py      # طرح جدول خودرو
+├── interface/            # پوشه رابط‌ها
+│   └── IController.py    # رابط کنترلر
+└── helper/              # ابزارهای کمکی
+    ├── HttpHandler.py    # مدیریت درخواست HTTP
+    ├── Response.py       # فرمت‌بندی پاسخ
+    ├── JWTManager.py     # احراز هویت JWT
+    ├── FormatCheck.py    # اعتبارسنجی ورودی
+    ├── CodeAssistant.py  # تولید کد با کمک هوش مصنوعی
+    └── DatabaseMigration.py  # کمک‌کننده مهاجرت پایگاه داده
 ```
 
-## API-Endpunkte
+## نقاط پایانی API
 
-### Benutzer-Controller-Endpunkte
+### نقاط پایانی کنترلر کاربر
 
-1. **Benutzer erstellen**
-   - Methode: POST
+1. **ایجاد کاربر**
+   - روش: POST
    - URL: `/user`
-   - Anfragekörper:
+   - بدنه درخواست:
      ```json
      {
          "email": "user@example.com",
@@ -128,568 +130,570 @@ micro_py_framework/
          "name": "John Doe"
      }
      ```
-   - Antwort: Erfolgsmeldung oder Fehlerdetails
+   - پاسخ: پیام موفقیت یا جزئیات خطا
 
-2. **Benutzer abrufen**
-   - Methode: GET
-   - URL: `/user` (alle Benutzer auflisten)
-   - URL: `/user/{id}` (spezifischen Benutzer abrufen)
-   - Antwort: Benutzerdaten oder Fehlermeldung
+2. **دریافت کاربر(ها)**
+   - روش: GET
+   - URL: `/user` (لیست تمام کاربران)
+   - URL: `/user/{id}` (دریافت کاربر خاص)
+   - پاسخ: داده‌های کاربر یا پیام خطا
 
-3. **Benutzer aktualisieren**
-   - Methode: PUT
+3. **به‌روزرسانی کاربر**
+   - روش: PUT
    - URL: `/user`
-   - Anfragekörper:
+   - بدنه درخواست:
      ```json
      {
          "id": 1,
-         "name": "Aktualisierter Name",
-         "password": "neuespasswort"  // optional
+         "name": "نام به‌روز شده",
+         "password": "رمز جدید"  // اختیاری
      }
      ```
-   - Antwort: Aktualisierte Benutzerdaten oder Fehlermeldung
+   - پاسخ: داده‌های به‌روز شده کاربر یا پیام خطا
 
-4. **Benutzer löschen**
-   - Methode: DELETE
+4. **حذف کاربر**
+   - روش: DELETE
    - URL: `/user`
-   - Anfragekörper:
+   - بدنه درخواست:
      ```json
      {
          "id": 1
      }
      ```
-   - Antwort: Erfolgsmeldung oder Fehlerdetails
+   - پاسخ: پیام موفقیت یا جزئیات خطا
 
-### Auto-Controller-Endpunkte
+### نقاط پایانی کنترلر خودرو
 
-1. **Auto erstellen**
-   - Methode: POST
+1. **ایجاد خودرو**
+   - روش: POST
    - URL: `/auto`
-   - Anfragekörper:
+   - بدنه درخواست:
      ```json
      {
          "name": "Mercedes Benz",
          "ps": 750
      }
      ```
-   - Antwort: Erfolgsmeldung oder Fehlerdetails
+   - پاسخ: پیام موفقیت یا جزئیات خطا
 
-2. **Auto(s) abrufen**
-   - Methode: GET
-   - URL: `/auto` (alle Autos auflisten)
-   - URL: `/auto/{id}` (spezifisches Auto abrufen)
-   - Antwort: Auto-Daten oder Fehlermeldung
+2. **دریافت خودرو(ها)**
+   - روش: GET
+   - URL: `/auto` (لیست تمام خودروها)
+   - URL: `/auto/{id}` (دریافت خودرو خاص)
+   - پاسخ: داده‌های خودرو یا پیام خطا
 
-3. **Auto aktualisieren**
-   - Methode: PUT
+3. **به‌روزرسانی خودرو**
+   - روش: PUT
    - URL: `/auto`
-   - Anfragekörper:
+   - بدنه درخواست:
      ```json
      {
          "id": 1,
-         "name": "Aktualisierter Name",
+         "name": "نام به‌روز شده",
          "ps": 800
      }
      ```
-   - Antwort: Aktualisierte Auto-Daten oder Fehlermeldung
+   - پاسخ: داده‌های به‌روز شده خودرو یا پیام خطا
 
-4. **Auto löschen**
-   - Methode: DELETE
+4. **حذف خودرو**
+   - روش: DELETE
    - URL: `/auto`
-   - Anfragekörper:
+   - بدنه درخواست:
      ```json
      {
          "id": 1
      }
      ```
-   - Antwort: Erfolgsmeldung oder Fehlerdetails
+   - پاسخ: پیام موفقیت یا جزئیات خطا
 
-## Datenvalidierung
+## اعتبارسنجی داده
 
-### Benutzerdaten-Validierungsregeln
-- E-Mail: Muss dem Standard-E-Mail-Format entsprechen
-- Passwort: Mindestens 6 Zeichen
-- Name: Mindestens 2 Zeichen
+### قوانین اعتبارسنجی داده کاربر
+- ایمیل: باید از فرمت استاندارد ایمیل پیروی کند
+- رمز عبور: حداقل 6 کاراکتر
+- نام: حداقل 2 کاراکتر
 
-### Auto-Daten-Validierungsregeln
-- Name: Mindestens 2 Zeichen
-- PS (Leistung): Muss eine positive Ganzzahl sein
+### قوانین اعتبارسنجی داده خودرو
+- نام: حداقل 2 کاراکتر
+- اسب بخار: باید یک عدد صحیح مثبت باشد
 
-## Datenbank
+## پایگاه داده
 
-### SQLite-Datenbank
-- Die Anwendung verwendet SQLite als Standarddatenbank
-- Datenbankdatei: `db.db`
-- Tabellen werden automatisch beim ersten Start erstellt
+### پایگاه داده SQLite
+- برنامه از SQLite به عنوان پایگاه داده پیش‌فرض استفاده می‌کند
+- فایل پایگاه داده: `db.db`
+- جداول به طور خودکار در اولین اجرا ایجاد می‌شوند
 
-### Datenbankmigration (DatabaseMigration.py)
-Die Datei `DatabaseMigration.py` ist für die automatische Datenbankinitialisierung und Tabellenerstellung verantwortlich. Sie behandelt:
+### مهاجرت پایگاه داده (DatabaseMigration.py)
+فایل `DatabaseMigration.py` مسئول مقداردهی اولیه خودکار پایگاه داده و ایجاد جداول است. این فایل موارد زیر را مدیریت می‌کند:
 
-1. **Datenbankverbindung**
-   - Erstellt eine Verbindung zur SQLite-Datenbank (`db.db`)
-   - Verwaltet den Datenbankcursor für SQL-Befehle
-   - Verwendet SQLAlchemy für Datenbankoperationen
+1. **اتصال پایگاه داده**
+   - ایجاد اتصال به پایگاه داده SQLite (`db.db`)
+   - مدیریت مکان‌نما پایگاه داده برای دستورات SQL
+   - استفاده از SQLAlchemy برای عملیات پایگاه داده
 
-2. **Automatische Tabellenerstellung**
-   - Erkennt und erstellt automatisch alle in dem `table`-Verzeichnis definierten Tabellen
-   - Verwendet SQLAlchemy-Modelle zur Definition der Tabellenstruktur
-   - Verwaltet derzeit Tabellen wie:
-     - `users`: Speichert Benutzerinformationen mit E-Mail, Passwort und Name
-     - `autos`: Speichert Auto-Informationen mit Name und Leistung (PS)
-   - Keine manuelle SQL-Erstellung erforderlich - Tabellen werden aus Modelldefinitionen erstellt
+2. **ایجاد خودکار جداول**
+   - تشخیص و ایجاد خودکار تمام جداول تعریف شده در پوشه `table`
+   - استفاده از مدل‌های SQLAlchemy برای تعریف ساختار جداول
+   - مدیریت جداول فعلی مانند:
+     - `users`: ذخیره اطلاعات کاربر با ایمیل، رمز عبور و نام
+     - `autos`: ذخیره اطلاعات خودرو با نام و قدرت (اسب بخار)
+   - نیازی به ایجاد دستی SQL نیست - جداول از تعاریف مدل ایجاد می‌شوند
 
-3. **Migrationsfunktionen**
-   - Automatische Tabellenerkennung und -erstellung
-   - Spaltenänderungserkennung
-   - Migrationsstatusverfolgung
-   - Klare Fortschrittsindikatoren mit Emojis
-   - Detaillierte Migrationszusammenfassung
-   - Beispielausgabe:
+3. **ویژگی‌های مهاجرت**
+   - تشخیص و ایجاد خودکار جداول
+   - تشخیص تغییرات ستون
+   - پیگیری وضعیت مهاجرت
+   - نشانگرهای پیشرفت واضح با ایموجی‌ها
+   - خلاصه مهاجرت دقیق
+   - خروجی نمونه:
      ```
-     🚀 Datenbankmigration wird gestartet...
-     📝 Tabelle wird erstellt: users
-     📝 Tabelle wird erstellt: autos
+     🚀 شروع مهاجرت پایگاه داده...
+     📝 ایجاد جدول: users
+     📝 ایجاد جدول: autos
      
-     ✅ Tabellen erfolgreich erstellt:
+     ✅ جداول با موفقیت ایجاد شدند:
        - users
        - autos
      
-     === Migrationszusammenfassung ===
-     📦 Erstellte Tabellen:
+     === خلاصه مهاجرت ===
+     📦 جداول ایجاد شده:
        ✓ users
        ✓ autos
      
-     ✨ Migrationsprozess abgeschlossen!
+     ✨ فرآیند مهاجرت تکمیل شد!
      ```
 
-4. **Migrationsskript (migrate.py)**
-   Öffnen Sie einfach migrate.py im Stammverzeichnis und führen Sie es aus, oder schreiben Sie python migrate.py im Terminal im Projektstammverzeichnis!
+4. **اسکریپت مهاجرت (migrate.py)**
+   به سادگی migrate.py را در پوشه ریشه باز کنید و اجرا کنید، یا در ترمینال در پوشه ریشه پروژه بنویسید python migrate.py!
    
-   Funktionen:
-   - Automatische Tabellenerstellung aus Modelldefinitionen
-   - Schema-Versionsverfolgung
-   - Spaltenänderungserkennung
-   - Klare Fortschrittsindikatoren
-   - Migrationszusammenfassungsgenerierung
-   - Fehlerbehandlung mit beschreibenden Meldungen
+   ویژگی‌ها:
+   - ایجاد خودکار جداول از تعاریف مدل
+   - پیگیری نسخه‌های طرح
+   - تشخیص تغییرات ستون
+   - نشانگرهای پیشرفت واضح
+   - تولید خلاصه مهاجرت
+   - مدیریت خطا با پیام‌های توصیفی
 
-5. **Hauptvorteile**
-   - Kein manuelles SQL-Schreiben erforderlich
-   - Konsistentes Datenbankschema über Installationen hinweg
-   - Automatische Schemaaktualisierungen bei Modelländerungen
-   - Klare Rückmeldung während des Migrationsprozesses
-   - Fehlererkennung und -berichterstattung
-   - Sicherer Migrationsprozess mit Rollback-Unterstützung
+5. **مزایای اصلی**
+   - نیازی به نوشتن دستی SQL نیست
+   - طرح پایگاه داده یکنواخت در تمام نصب‌ها
+   - به‌روزرسانی خودکار طرح هنگام تغییر مدل‌ها
+   - بازخورد واضح در طول فرآیند مهاجرت
+   - تشخیص و گزارش خطا
+   - فرآیند مهاجرت ایمن با پشتیبانی از بازگشت
 
-### Datenbankverbindungsverwaltung (DBConnection.py)
-Die Datei `DBConnection.py` verwaltet Datenbankverbindungen mit SQLAlchemy ORM. Sie bietet:
+### مدیریت اتصال پایگاه داده (DBConnection.py)
+فایل `DBConnection.py` اتصالات پایگاه داده را با استفاده از SQLAlchemy ORM مدیریت می‌کند. این فایل موارد زیر را فراهم می‌کند:
 
-1. **SQLAlchemy-Integration**
-   - Verwendet SQLAlchemy für Object-Relational Mapping (ORM)
-   - Bietet eine deklarative Basis für Modelldefinitionen
-   - Verwaltet Datenbanksitzungen effizient
+1. **ادغام SQLAlchemy**
+   - استفاده از SQLAlchemy برای Object-Relational Mapping (ORM)
+   - ارائه پایه اعلانی برای تعاریف مدل
+   - مدیریت کارآمد نشست‌های پایگاه داده
 
-2. **Verbindungskonfiguration**
+2. **پیکربندی اتصال**
    ```python
    engine = create_engine("sqlite:///db.db", echo=False)
    ```
-   - Standardkonfiguration verwendet SQLite-Datenbank
-   - Unterstützt MySQL/MariaDB durch Verbindungsstring-Modifikation
-   - `echo=False` deaktiviert SQL-Abfrageprotokollierung für bessere Leistung
+   - پیکربندی پیش‌فرض از پایگاه داده SQLite استفاده می‌کند
+   - پشتیبانی از MySQL/MariaDB از طریق تغییر رشته اتصال
+   - `echo=False` غیرفعال کردن ثبت پرس و جوهای SQL برای عملکرد بهتر
 
-3. **Sitzungsverwaltung**
+3. **مدیریت نشست**
    ```python
    Session = sessionmaker(bind=engine)
    ```
-   - Erstellt eine Sitzungsfabrik für Datenbankoperationen
-   - Verwaltet Datenbankverbindungen und Transaktionen
-   - Bietet threadsicheren Datenbankzugriff
+   - ایجاد کارخانه نشست برای عملیات پایگاه داده
+   - مدیریت اتصالات و تراکنش‌های پایگاه داده
+   - ارائه دسترسی امن به پایگاه داده برای رشته‌ها
 
-4. **Datenbankunterstützung**
-   - **SQLite** (Standard):
+4. **پشتیبانی پایگاه داده**
+   - **SQLite** (پیش‌فرض):
      ```python
      engine = create_engine("sqlite:///db.db")
      ```
    - **MySQL/MariaDB**:
      ```python
-     engine = create_engine("mysql+pymysql://benutzername:passwort@localhost:3306/datenbankname")
+     engine = create_engine("mysql+pymysql://نام_کاربر:رمز_عبور@localhost:3306/نام_پایگاه_داده")
      ```
 
-5. **Fehlerbehandlung**
-   - Fängt und meldet Datenbankverbindungsfehler
-   - Bietet klare Fehlermeldungen zur Fehlerbehebung
+5. **مدیریت خطا**
+   - گرفتن و گزارش خطاهای اتصال پایگاه داده
+   - ارائه پیام‌های خطای واضح برای عیب‌یابی
 
-6. **Verwendung in Modellen**
+6. **استفاده در مدل‌ها**
    ```python
    from table.DBConnection import DBConnection
    
-   class IhrModell:
+   class مدل_شما:
        def __init__(self):
            self.Session = DBConnection.Session
    ```
 
-7. **Beste Praktiken**
-   - Verwendet Verbindungspooling für bessere Leistung
-   - Implementiert ordnungsgemäße Sitzungsverwaltung
-   - Unterstützt mehrere Datenbank-Backends
-   - Folgt SQLAlchemy-Best-Practices
+7. **بهترین شیوه‌ها**
+   - استفاده از اتصال گروهی برای عملکرد بهتر
+   - پیاده‌سازی مدیریت نشست مناسب
+   - پشتیبانی از چندین بک‌اند پایگاه داده
+   - پیروی از بهترین شیوه‌های SQLAlchemy
 
-### MySQL-Unterstützung
-- Das Framework unterstützt auch MySQL-Datenbanken
-- Um MySQL zu verwenden, ändern Sie den Verbindungsstring in `table/DBConnection.py`:
+### پشتیبانی MySQL
+- این فریم‌ورک از پایگاه داده‌های MySQL نیز پشتیبانی می‌کند
+- برای استفاده از MySQL، رشته اتصال را در `table/DBConnection.py` تغییر دهید:
   ```python
-  engine = create_engine("mysql+pymysql://benutzername:passwort@localhost:3306/datenbankname")
+  engine = create_engine("mysql+pymysql://نام_کاربر:رمز_عبور@localhost:3306/نام_پایگاه_داده")
   ```
 
-## Fehlerbehandlung
-Das Framework umfasst umfassende Fehlerbehandlung für:
-- Ungültige Eingabedaten
-- Datenbankoperationen
-- HTTP-Anfragevalidierung
-- Ressource nicht gefunden
-- Datentypvalidierung
-- Fehlende erforderliche Felder
+## مدیریت خطا
+این فریم‌ورک شامل مدیریت خطای جامع برای موارد زیر است:
+- داده ورودی نامعتبر
+- عملیات پایگاه داده
+- اعتبارسنجی درخواست HTTP
+- منبع یافت نشد
+- اعتبارسنجی نوع داده
+- فیلدهای الزامی گم شده
 
-## Sicherheitshinweise
-1. Dies ist ein Bildungs-Framework und wird nicht für den Produktionseinsatz empfohlen
-2. Passwort-Hashing ist mit bcrypt implementiert
-3. Grundlegende Eingabevalidierung wird durch FormatCheck.py bereitgestellt
-4. JWT-Authentifizierung ist über JWTManager.py verfügbar
-5. Kein eingebautes Authentifizierungs-/Autorisierungssystem
+## نکات امنیتی
+1. این یک فریم‌ورک آموزشی است و برای استفاده در محیط تولید توصیه نمی‌شود
+2. هش کردن رمز عبور با استفاده از bcrypt پیاده‌سازی شده است
+3. اعتبارسنجی ورودی پایه از طریق FormatCheck.py ارائه می‌شود
+4. احراز هویت JWT از طریق JWTManager.py در دسترس است
+5. هیچ سیستم احراز هویت/مجوزدهی داخلی وجود ندارد
 
-## Eingabevalidierung
-Das Framework enthält ein FormatCheck-Utility zur Validierung von Eingabedaten:
+## اعتبارسنجی ورودی
+این فریم‌ورک شامل یک ابزار FormatCheck برای اعتبارسنجی داده ورودی است:
 
-1. **E-Mail-Validierung**
+1. **اعتبارسنجی ایمیل**
    ```python
    FormatCheck.email("user@example.com")
    ```
-   - Verwendet Regex-Muster: `^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-z]+$`
-   - Validiert:
-     - Benutzernamenteil: Buchstaben, Zahlen, Punkte, Unterstriche, Pluszeichen, Bindestriche
-     - Domänenteil: Buchstaben, Zahlen, Bindestriche
-     - TLD: Nur Buchstaben
-   - Gibt zurück: True wenn gültig, False sonst
+   - استفاده از الگوی regex: `^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-z]+$`
+   - اعتبارسنجی:
+     - بخش نام کاربری: حروف، اعداد، نقطه، زیرخط، علامت مثبت، خط تیره
+     - بخش دامنه: حروف، اعداد، خط تیره
+     - TLD: فقط حروف
+   - برمی‌گرداند: True اگر معتبر باشد، False در غیر این صورت
 
-2. **Längenvalidierung**
+2. **اعتبارسنجی طول**
    ```python
-   FormatCheck.minimumLength("passwort", 6)
+   FormatCheck.minimumLength("رمز عبور", 6)
    ```
-   - Überprüft, ob String die Mindestlänge erfüllt
-   - Parameter:
-     - input_string: zu validierender String
-     - min_length: erforderliche Mindestlänge
-   - Gibt zurück: True wenn Länge >= min_length, False sonst
+   - بررسی می‌کند که آیا رشته حداقل طول مورد نیاز را دارد
+   - پارامترها:
+     - input_string: رشته برای اعتبارسنجی
+     - min_length: حداقل طول مورد نیاز
+   - برمی‌گرداند: True اگر طول >= min_length باشد، False در غیر این صورت
 
-3. **Verwendungsbeispiele**
+3. **نمونه‌های استفاده**
    ```python
-   # E-Mail-Validierung
+   # اعتبارسنجی ایمیل
    if not FormatCheck.email(user_email):
-       return Response.bad_request("Ungültiges E-Mail-Format")
+       return Response.bad_request("فرمت ایمیل نامعتبر است")
 
-   # Passwortlängenprüfung
-   if not FormatCheck.minimumLength(passwort, 6):
-       return Response.bad_request("Passwort muss mindestens 6 Zeichen lang sein")
+   # بررسی طول رمز عبور
+   if not FormatCheck.minimumLength(password, 6):
+       return Response.bad_request("رمز عبور باید حداقل 6 کاراکتر باشد")
 
-   # Namenslängenprüfung
+   # بررسی طول نام
    if not FormatCheck.minimumLength(name, 2):
-       return Response.bad_request("Name muss mindestens 2 Zeichen lang sein")
+       return Response.bad_request("نام باید حداقل 2 کاراکتر باشد")
    ```
 
-4. **Validierungsregeln**
-   - E-Mail: Muss dem Standard-E-Mail-Format mit gültigen Zeichen entsprechen
-   - Passwort: Mindestens 6 Zeichen
-   - Name: Mindestens 2 Zeichen
+4. **قوانین اعتبارسنجی**
+   - ایمیل: باید از فرمت استاندارد ایمیل با کاراکترهای معتبر پیروی کند
+   - رمز عبور: حداقل 6 کاراکتر
+   - نام: حداقل 2 کاراکتر
 
-## Beispielverwendung
+## نمونه استفاده
 
-### Neues Auto erstellen
+### ایجاد خودرو جدید
 ```bash
 curl -X POST http://localhost:8001/auto \
   -H "Content-Type: application/json" \
   -d '{"name": "Mercedes Benz", "ps": 750}'
 ```
 
-### Alle Autos abrufen
+### دریافت تمام خودروها
 ```bash
 curl http://localhost:8001/auto
 ```
 
-### Spezifisches Auto abrufen
+### دریافت خودرو خاص
 ```bash
 curl http://localhost:8001/auto/1
 ```
 
-### Auto aktualisieren
+### به‌روزرسانی خودرو
 ```bash
 curl -X PUT http://localhost:8001/auto \
   -H "Content-Type: application/json" \
-  -d '{"id": 1, "name": "Aktualisierter Name", "ps": 800}'
+  -d '{"id": 1, "name": "نام به‌روز شده", "ps": 800}'
 ```
 
-### Auto löschen
+### حذف خودرو
 ```bash
 curl -X DELETE http://localhost:8001/auto \
   -H "Content-Type: application/json" \
   -d '{"id": 1}'
 ```
 
-## Postman-Sammlung
-Das Framework enthält eine Postman-Sammlung (`Micro Python.postman_collection.json`), die vorkonfigurierte Anfragen für Beispiel-API-Endpunkte enthält. Dies macht es einfach, die API zu testen, ohne curl-Befehle schreiben zu müssen.
+## مجموعه Postman
+این فریم‌ورک شامل یک مجموعه Postman (`Micro Python.postman_collection.json`) است که درخواست‌های از پیش پیکربندی شده برای نقاط پایانی نمونه API را شامل می‌شود. این امر تست API را بدون نیاز به نوشتن دستورات curl آسان می‌کند.
 
-### Sammlung importieren
-1. Postman öffnen
-2. Auf den "Import"-Button in der oberen linken Ecke klicken
-3. Den "File"-Tab auswählen
-4. Auf "Upload Files" klicken und `Micro Python.postman_collection.json` auswählen
-5. Auf "Import" klicken
+### وارد کردن مجموعه
+1. Postman را باز کنید
+2. روی دکمه "Import" در گوشه سمت چپ بالا کلیک کنید
+3. تب "File" را انتخاب کنید
+4. روی "Upload Files" کلیک کنید و `Micro Python.postman_collection.json` را انتخاب کنید
+5. روی "Import" کلیک کنید
 
-### Sammlung verwenden
-Die Sammlung enthält folgende vorkonfigurierte Anfragen:
+### استفاده از مجموعه
+این مجموعه شامل درخواست‌های از پیش پیکربندی شده زیر است:
 
-#### Auto-Endpunkte
-- **GET /auto**: Alle Autos auflisten
-- **POST /auto**: Neues Auto erstellen
-  - Body: JSON mit `name` und `ps` Feldern
-- **PUT /auto**: Bestehendes Auto aktualisieren
-  - Body: JSON mit `id`, `name` und `ps` Feldern
-- **DELETE /auto**: Auto löschen
-  - Body: JSON mit `id` Feld
+#### نقاط پایانی خودرو
+- **GET /auto**: لیست تمام خودروها
+- **POST /auto**: ایجاد خودرو جدید
+  - Body: JSON با فیلدهای `name` و `ps`
+- **PUT /auto**: به‌روزرسانی خودرو موجود
+  - Body: JSON با فیلدهای `id`، `name` و `ps`
+- **DELETE /auto**: حذف خودرو
+  - Body: JSON با فیلد `id`
 
-### Sammlungsfunktionen
-- Vorkonfigurierte Header (Content-Type: application/json)
-- Beispielanfragekörper
-- Organisierte Ordnerstruktur
-- Umgebungsvariablen-Unterstützung
-- Dokumentation für jeden Endpunkt
+### ویژگی‌های مجموعه
+- هدرهای از پیش پیکربندی شده (Content-Type: application/json)
+- بدنه‌های درخواست نمونه
+- ساختار پوشه سازماندهی شده
+- پشتیبانی از متغیرهای محیطی
+- مستندات برای هر نقطه پایانی
 
-### Tipps für die Verwendung von Postman
-1. **Umgebung einrichten**
-   - Neue Umgebung erstellen
-   - Variable `base_url` mit Wert `http://localhost:8001` hinzufügen
-   - `{{base_url}}` in Anfrage-URLs verwenden
+### نکات برای استفاده از Postman
+1. **تنظیم محیط**
+   - ایجاد محیط جدید
+   - اضافه کردن متغیر `base_url` با مقدار `http://localhost:8001`
+   - استفاده از `{{base_url}}` در URLهای درخواست
 
-2. **Testworkflow**
-   - Mit GET-Anfragen beginnen, um Daten anzuzeigen
-   - POST zum Erstellen neuer Einträge verwenden
-   - PUT zum Ändern bestehender Einträge verwenden
-   - DELETE zum Entfernen von Einträgen verwenden
+2. **گردش کار تست**
+   - شروع با درخواست‌های GET برای مشاهده داده‌ها
+   - استفاده از POST برای ایجاد ورودی‌های جدید
+   - استفاده از PUT برای تغییر ورودی‌های موجود
+   - استفاده از DELETE برای حذف ورودی‌ها
 
-3. **Antwortbehandlung**
-   - Statuscodes überprüfen
-   - Formatierte JSON-Antworten anzeigen
-   - Postman-Testskripte für Automatisierung verwenden
+3. **مدیریت پاسخ**
+   - بررسی کدهای وضعیت
+   - مشاهده پاسخ‌های JSON فرمت شده
+   - استفاده از اسکریپت‌های تست Postman برای خودکارسازی
 
-## Entwicklungsrichtlinien
+## دستورالعمل‌های توسعه
 
-### Neue Controller erstellen
-1. Neue Datei im `controller`-Verzeichnis erstellen
-2. `IController`-Schnittstelle implementieren
-3. Controller-Methoden hinzufügen (get, post, put, destroy)
+### ایجاد کنترلرهای جدید
+1. ایجاد فایل جدید در پوشه `controller`
+2. پیاده‌سازی رابط `IController`
+3. اضافه کردن متدهای کنترلر (get, post, put, destroy)
 
-### Neue Modelle erstellen
-1. Neue Datei im `model`-Verzeichnis erstellen
-2. `IModel`-Schnittstelle implementieren
-3. Entsprechende Tabelle im `table`-Verzeichnis erstellen
-4. Datenbankoperationen implementieren
+### ایجاد مدل‌های جدید
+1. ایجاد فایل جدید در پوشه `model`
+2. پیاده‌سازی رابط `IModel`
+3. ایجاد جدول مربوطه در پوشه `table`
+4. پیاده‌سازی عملیات پایگاه داده
 
-## Einschränkungen
-1. Kein eingebautes Authentifizierungssystem
-2. Begrenzte Fehlerbehandlung
-3. Grundlegende Eingabevalidierung
-4. Keine Anfrage-Ratenbegrenzung
-5. Kein eingebautes Protokollierungssystem
-6. Kein eingebauter Caching-Mechanismus
+## محدودیت‌ها
+1. هیچ سیستم احراز هویت داخلی وجود ندارد
+2. مدیریت خطای محدود
+3. اعتبارسنجی ورودی پایه
+4. هیچ محدودیت نرخ درخواستی وجود ندارد
+5. هیچ سیستم ثبت داخلی وجود ندارد
+6. هیچ مکانیزم کش داخلی وجود ندارد
 
-## Best Practices
-1. Immer virtuelle Umgebung verwenden
-2. Controller schlank halten, Geschäftslogik in Modelle verschieben
-3. Eingabedaten vor der Verarbeitung validieren
-4. Datenbankfehler angemessen behandeln
-5. Geeignete HTTP-Statuscodes in Antworten verwenden
-6. Konsistenten Fehlerbehandlungsmustern folgen
-7. Typ-Hinweise für bessere Code-Klarheit verwenden
-8. API-Endpunkte und ihre Anforderungen dokumentieren
+## بهترین شیوه‌ها
+1. همیشه از محیط مجازی استفاده کنید
+2. کنترلرها را لاغر نگه دارید، منطق کسب و کار را به مدل‌ها منتقل کنید
+3. داده‌های ورودی را قبل از پردازش اعتبارسنجی کنید
+4. خطاهای پایگاه داده را به درستی مدیریت کنید
+5. از کدهای وضعیت HTTP مناسب در پاسخ‌ها استفاده کنید
+6. از الگوهای مدیریت خطای سازگار پیروی کنید
+7. از اشاره‌های نوع برای وضوح کد بهتر استفاده کنید
+8. نقاط پایانی API و نیازمندی‌های آنها را مستند کنید
 
-## Fehlerbehebung
-1. Bei Datenbankverbindungsfehlern:
-   - Überprüfen, ob Datenbankdatei existiert
-   - Datenbankanmeldedaten überprüfen (bei MySQL)
-   - Datenbankberechtigungen überprüfen
+## عیب‌یابی
+1. در صورت شکست اتصال پایگاه داده:
+   - بررسی وجود فایل پایگاه داده
+   - تأیید اعتبار پایگاه داده (در صورت استفاده از MySQL)
+   - بررسی مجوزهای پایگاه داده
 
-2. Bei Serverstartfehlern:
-   - Überprüfen, ob Port 8001 verfügbar ist
-   - Überprüfen, ob alle Abhängigkeiten installiert sind
-   - Python-Version-Kompatibilität überprüfen
+2. در صورت شکست راه‌اندازی سرور:
+   - بررسی در دسترس بودن پورت 8001
+   - تأیید نصب تمام وابستگی‌ها
+   - بررسی سازگاری نسخه پایتون
 
-3. Bei Anfragefehlern:
-   - Anfrageformat überprüfen
-   - Eingabevalidierungsregeln überprüfen
-   - Sicherstellen, dass die richtige HTTP-Methode verwendet wird
-   - Überprüfen, ob der Content-Type-Header korrekt gesetzt ist
-   - Überprüfen, ob erforderliche Felder bereitgestellt wurden
+3. در صورت شکست درخواست‌ها:
+   - بررسی فرمت درخواست
+   - بررسی قوانین اعتبارسنجی ورودی
+   - اطمینان از استفاده از متد HTTP صحیح
+   - بررسی صحت تنظیم هدر Content-Type
+   - بررسی ارائه فیلدهای الزامی
 
-## HTTP-Anfragelebenszyklus
+## چرخه حیات درخواست HTTP
 
-### Allgemeiner Anfragefluss
+### جریان کلی درخواست
 ```mermaid
 graph TD
-    A[Client-Anfrage] --> B[HttpHandler]
-    B --> C{Anfragevalidierung}
-    C -->|Gültig| D[An Controller weiterleiten]
-    C -->|Ungültig| E[400-Fehler zurückgeben]
-    D --> F[Controller-Methode ausführen]
-    F --> G[Model-Operationen verarbeiten]
-    G --> H[Datenbankoperationen]
-    H --> I[Antwort formatieren]
-    I --> J[Antwort an Client senden]
+    A[درخواست کلاینت] --> B[HttpHandler]
+    B --> C{اعتبارسنجی درخواست}
+    C -->|معتبر| D[مسیریابی به کنترلر]
+    C -->|نامعتبر| E[بازگشت خطای 400]
+    D --> F[اجرای متد کنترلر]
+    F --> G[پردازش عملیات مدل]
+    G --> H[عملیات پایگاه داده]
+    H --> I[فرمت‌بندی پاسخ]
+    I --> J[ارسال پاسخ به کلاینت]
 ```
 
-### Benutzererstellungsfluss
+### جریان ایجاد کاربر
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant کلاینت
     participant HttpHandler
     participant UserController
     participant UserModel
-    participant Datenbank
+    participant پایگاه_داده
 
-    Client->>HttpHandler: POST /user
-    Note over HttpHandler: Anfrage validieren
-    HttpHandler->>UserController: An Controller weiterleiten
+    کلاینت->>HttpHandler: POST /user
+    Note over HttpHandler: اعتبارسنجی درخواست
+    HttpHandler->>UserController: مسیریابی به کنترلر
     UserController->>UserModel: create()
-    UserModel->>UserModel: E-Mail validieren
-    UserModel->>UserModel: Passwort hashen
-    UserModel->>Datenbank: INSERT-Abfrage
-    Datenbank-->>UserModel: Erfolg
-    UserModel-->>UserController: Erfolg
+    UserModel->>UserModel: اعتبارسنجی ایمیل
+    UserModel->>UserModel: هش کردن رمز عبور
+    UserModel->>پایگاه_داده: پرس و جوی INSERT
+    پایگاه_داده-->>UserModel: موفقیت
+    UserModel-->>UserController: موفقیت
     UserController-->>HttpHandler: 200 OK
-    HttpHandler-->>Client: Antwort
+    HttpHandler-->>کلاینت: پاسخ
 ```
 
-### Fehlerbehandlungsfluss
+### جریان مدیریت خطا
 ```mermaid
 graph TD
-    A[Fehler tritt auf] --> B{Fehlertyp}
-    B -->|Validierung| C[Validierungsfehler formatieren]
-    B -->|Datenbank| D[Datenbankfehler formatieren]
-    B -->|Nicht gefunden| E[404-Fehler formatieren]
-    C --> F[Fehlerstatuscode setzen]
+    A[وقوع خطا] --> B{نوع خطا}
+    B -->|اعتبارسنجی| C[فرمت‌بندی خطای اعتبارسنجی]
+    B -->|پایگاه داده| D[فرمت‌بندی خطای پایگاه داده]
+    B -->|پیدا نشد| E[فرمت‌بندی خطای 404]
+    C --> F[تنظیم کد وضعیت خطا]
     D --> F
     E --> F
-    F --> G[Fehlerantwort senden]
+    F --> G[ارسال پاسخ خطا]
 ```
 
-### Komponenteninteraktion
+### تعامل مؤلفه‌ها
 ```mermaid
 graph LR
-    A[HttpHandler] -->|Weiterleiten| B[Controller]
-    B -->|Verwendet| C[Modelle]
-    C -->|Interagiert| D[Datenbank]
-    B -->|Implementiert| E[IController-Schnittstelle]
-    C -->|Implementiert| F[IModel-Schnittstelle]
-    D -->|Verwaltet von| G[DBConnection]
-    D -->|Schema von| H[DBMigrate]
+    A[HttpHandler] -->|مسیریابی| B[کنترلر]
+    B -->|استفاده می‌کند| C[مدل‌ها]
+    C -->|تعامل می‌کند| D[پایگاه داده]
+    B -->|پیاده‌سازی می‌کند| E[رابط IController]
+    C -->|پیاده‌سازی می‌کند| F[رابط IModel]
+    D -->|مدیریت می‌شود توسط| G[DBConnection]
+    D -->|طرح توسط| H[DBMigrate]
 ```
 
-## Antwortformat
-Alle API-Antworten folgen einem konsistenten Format:
+## فرمت پاسخ
+تمام پاسخ‌های API از یک فرمت سازگار پیروی می‌کنند:
 
-### Erfolgsantwort
+### پاسخ موفقیت
 ```json
 {
     "status_code": 200,
     "status": "success",
     "message": {
-        // Antwortdaten
+        // داده‌های پاسخ
     }
 }
 ```
 
-### Fehlerantwort
+### پاسخ خطا
 ```json
 {
     "status_code": 400,
     "status": "error",
-    "message": "Fehlerbeschreibung"
+    "message": "توضیح خطا"
 }
 ```
 
-## VS Code-Integration
-Das Framework enthält VS Code-Integrationsfunktionen:
-1. Benutzerdefinierte Snippets für schnelle Codegenerierung
-2. IntelliSense-Unterstützung für Framework-Komponenten
-3. Empfohlene Erweiterungen für Python-Entwicklung
-4. Automatische Codeformatierung mit Black
-5. Linting mit Pylint
-6. Importorganisation
-7. Dokumentationsgenerierungsunterstützung
+## ادغام VS Code
+این فریم‌ورک شامل ویژگی‌های ادغام VS Code است:
+1. اسنیپت‌های سفارشی برای تولید سریع کد
+2. پشتیبانی IntelliSense برای مؤلفه‌های فریم‌ورک
+3. افزونه‌های توصیه شده برای توسعه پایتون
+4. فرمت‌بندی خودکار کد با Black
+5. لینتینگ با Pylint
+6. سازماندهی import
+7. پشتیبانی تولید مستندات
 
-## KI-Assistent Funktionen
+## ویژگی‌های دستیار هوش مصنوعی
 
-Das Framework enthält einen intelligenten Code-Assistenten, der Ihnen bei folgenden Aufgaben hilft:
-- Generierung von CRUD-Endpunkten
-- Bereitstellung von Code-Vorschlägen
-- Generierung von Dokumentation
-- Analyse Ihres Codebestands
+این فریم‌ورک شامل یک دستیار کد هوشمند است که می‌تواند در موارد زیر به شما کمک کند:
+- تولید نقاط پایانی CRUD
+- ارائه پیشنهادات کد
+- تولید مستندات
+- تحلیل کدبیس شما
 
-### Erste Schritte mit dem KI-Assistenten
+### شروع کار با دستیار هوش مصنوعی
 
-1. **KI-Assistent Demo ausführen**
-   Führen Sie einfach die Datei `ai.py` in Ihrem Terminal aus:
+1. **اجرای دمو دستیار هوش مصنوعی**
+   به سادگی فایل `ai.py` را در ترمینال خود اجرا کنید:
    ```bash
    python ai.py
    ```
-   Dies zeigt Ihnen Beispiele für die Funktionalitäten des Assistenten:
-   - Generierung von CRUD-Endpunkten für eine "Product"-Ressource
-   - Anzeige von Code-Vorschlägen für UserController
-   - Generierung von Dokumentation für Controller
+   این به شما نمونه‌هایی از قابلیت‌های دستیار را نشان می‌دهد:
+   - تولید نقاط پایانی CRUD برای یک منبع "Product"
+   - نمایش پیشنهادات کد برای UserController
+   - تولید مستندات برای کنترلرها
 
-2. **Verständnis der Demo-Ausgabe**
-   Wenn Sie `ai.py` ausführen, sehen Sie:
-   - Die Ergebnisse der Codebestandsanalyse
-   - Generierte CRUD-Endpunkte für eine Beispiel-Ressource
-   - Code-Vorschläge für häufige Aufgaben
-   - Generierte Dokumentationsbeispiele
+2. **درک خروجی دمو**
+   وقتی `ai.py` را اجرا می‌کنید، خواهید دید:
+   - نتایج تحلیل کدبیس
+   - نقاط پایانی CRUD تولید شده برای یک منبع نمونه
+   - پیشنهادات کد برای کارهای رایج
+   - نمونه‌های مستندات تولید شده
 
-3. **Verwendung des generierten Codes**
-   Die Demo generiert vollständige Codebeispiele, die Sie:
-   - In Ihren eigenen Controllern kopieren und verwenden können
-   - Als Vorlagen für neue Ressourcen nutzen können
-   - Zum Verständnis der Framework-Muster studieren können
+3. **استفاده از کد تولید شده**
+   دمو نمونه‌های کد کامل تولید می‌کند که می‌توانید:
+   - در کنترلرهای خود کپی و استفاده کنید
+   - به عنوان الگو برای منابع جدید استفاده کنید
+   - برای درک الگوهای فریم‌ورک مطالعه کنید
 
-4. **Generierung von Dokumentation**
-   Sie können auch Dokumentation für spezifische Komponenten generieren:
+4. **تولید مستندات**
+   همچنین می‌توانید مستندات را برای مؤلفه‌های خاص تولید کنید:
    ```python
-   # Beispiel: Generierung von Dokumentation für Controller
+   # نمونه: تولید مستندات برای کنترلرها
    docs = assistant.generate_documentation("controller")
    print(docs)
    ```
 
-### Wichtige Hinweise
-- Der Assistent analysiert Ihren Codebestand, um kontextbezogene Vorschläge zu liefern
-- Generierter Code sollte überprüft und an Ihre spezifischen Bedürfnisse angepasst werden
-- Der Assistent ist für Bildungszwecke konzipiert und deckt möglicherweise nicht alle Randfälle ab
-- Testen Sie generierten Code immer, bevor Sie ihn in der Produktion verwenden
+### نکات مهم
+- دستیار کدبیس شما را تحلیل می‌کند تا پیشنهادات مرتبط با زمینه ارائه دهد
+- کد تولید شده باید بررسی و متناسب با نیازهای خاص شما سفارشی شود
+- دستیار برای اهداف آموزشی طراحی شده است و ممکن است تمام موارد خاص را پوشش ندهد
+- همیشه کد تولید شده را قبل از استفاده در تولید تست کنید
 
-### Beispiel-Workflow
-1. Führen Sie `python ai.py` aus, um Beispiele zu sehen
-2. Überprüfen Sie den generierten Code und die Dokumentation
-3. Nutzen Sie die gezeigten Muster, um eigene Ressourcen zu erstellen
-4. Holen Sie sich bei Bedarf Code-Vorschläge
-5. Generieren Sie Dokumentation für Ihren Code
-6. Überprüfen und passen Sie den generierten Code an
-7. Testen Sie Ihre Implementierung
+### گردش کار نمونه
+1. `python ai.py` را اجرا کنید تا نمونه‌ها را ببینید
+2. کد و مستندات تولید شده را بررسی کنید
+3. از الگوهای نشان داده شده برای ایجاد منابع خود استفاده کنید
+4. در صورت نیاز پیشنهادات کد دریافت کنید
+5. مستندات را برای کد خود تولید کنید
+6. کد تولید شده را بررسی و سفارشی کنید
+7. پیاده‌سازی خود را تست کنید
 
-Denken Sie daran: Dies ist ein Bildungs-Framework. Überprüfen Sie generierten Code immer und verstehen Sie, was er tut, bevor Sie ihn in Ihrem Projekt verwenden.
+به یاد داشته باشید: این یک فریم‌ورک آموزشی است. همیشه کد تولید شده را بررسی کنید و بفهمید چه کاری انجام می‌دهد قبل از استفاده از آن در پروژه خود.
 
-## Eine Nachricht vom Entwickler
+## پیامی از توسعه‌دهنده
 
-Vielen Dank, dass Sie sich die Zeit nehmen, dieses Bildungs-Framework zu erkunden! Ich habe dieses Projekt erstellt, um Anfängern zu helfen, die grundlegenden Konzepte der Webentwicklung und Python-Programmierung zu verstehen.
+با تشکر از شما برای صرف وقت برای کاوش در این فریم‌ورک آموزشی! من این پروژه را ایجاد کردم تا به مبتدیان در درک مفاهیم اساسی توسعه وب و برنامه‌نویسی پایتون کمک کنم.
 
-Ich hoffe, dieses Framework dient als hilfreicher Schritt in Ihrer Lernreise. Denken Sie daran, dass jeder Experte einmal ein Anfänger war, und der Schlüssel zum Beherrschen der Programmierung ist kontinuierliche Praxis und Neugier.
+امیدوارم این فریم‌ورک به عنوان یک گام مفید در سفر یادگیری شما عمل کند. به یاد داشته باشید که هر متخصصی زمانی مبتدی بوده است، و کلید تسلط بر برنامه‌نویسی تمرین مداوم و کنجکاوی است.
 
-Viel Erfolg auf Ihrer Lernreise!
+موفق باشید در سفر یادگیری شما!
 
-Ali Khorsandfard
-Entwickler & Pädagoge
+علی خرسندفرد
+توسعه‌دهنده
+
+</div>
