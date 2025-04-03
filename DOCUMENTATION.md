@@ -110,11 +110,24 @@ Using a virtual environment is **crucial** for Python development. Here's why an
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/secure73/micro_py_framework.git
    cd micro_py_framework
    ```
 
-2. Follow the virtual environment setup and activation steps from the Virtual Environment section above.
+2. Create and activate virtual environment (IMPORTANT - do this immediately after cloning):
+   ```bash
+   # Windows
+   python -m venv venv
+   .\venv\Scripts\activate
+
+   # Linux/Mac
+   python -m venv venv
+   source venv/bin/activate
+
+   # Verify activation (should show virtual environment path)
+   # Windows: where python
+   # Linux/Mac: which python
+   ```
 
 3. Install dependencies and set up the application:
    ```bash
@@ -127,6 +140,8 @@ Using a virtual environment is **crucial** for Python development. Here's why an
    # Start the application
    python app.py   # Server will start on port 8001
    ```
+
+> ⚠️ **Important**: Always create and activate the virtual environment immediately after cloning the repository and before installing any dependencies. This ensures a clean, isolated environment for your project.
 
 ## Project Structure
 ```
@@ -264,57 +279,47 @@ micro_py_framework/
 - Tables are automatically created on first run
 
 ### Database Migration (DatabaseMigration.py)
-The `DatabaseMigration.py` file is responsible for database initialization and table creation. It handles:
+The `DatabaseMigration.py` file is responsible for automatic database initialization and table creation. It handles:
 
 1. **Database Connection**
    - Creates a connection to SQLite database (`db.db`)
    - Manages database cursor for executing SQL commands
+   - Uses SQLAlchemy for database operations
 
-2. **Table Creation**
-   - Automatically creates required tables if they don't exist
-   - Currently manages three tables:
-     - `users` table:
-       ```sql
-       CREATE TABLE users(
-           id INTEGER PRIMARY KEY AUTOINCREMENT,
-           email TEXT NOT NULL UNIQUE,
-           password TEXT NOT NULL,
-           name TEXT NOT NULL
-       )
-       ```
-     - `autos` table:
-       ```sql
-       CREATE TABLE autos(
-           id INTEGER PRIMARY KEY AUTOINCREMENT,
-           name TEXT NOT NULL,
-           ps INTEGER NOT NULL
-       )
-       ```
+2. **Automatic Table Creation**
+   - Automatically discovers and creates all tables defined in the `table` directory
+   - Uses SQLAlchemy models to define table structure
+   - Currently manages tables like:
+     - `users`: Stores user information with email, password, and name
+     - `autos`: Stores auto information with name and horsepower (ps)
+   - No manual SQL creation needed - tables are created from model definitions
 
-3. **Usage**
-   - The migration runs automatically when the application starts
-   - Can also be run manually using the migration script:
-     ```bash
-     python migrate.py
-     ```
-   - The migration script provides clear status updates:
+3. **Migration Features**
+   - Automatic table discovery and creation
+   - Column change detection
+   - Migration status tracking
+   - Clear progress indicators with emojis
+   - Detailed migration summary
+   - Example output:
      ```
      🚀 Starting database migration...
-     ✓ No new tables needed to be created.
+     📝 Creating table: users
+     📝 Creating table: autos
+     
+     ✅ Tables created successfully:
+       - users
+       - autos
+     
+     === Migration Summary ===
+     📦 Created Tables:
+       ✓ users
+       ✓ autos
+     
      ✨ Migration process completed!
      ```
-   - Ensures database schema is up-to-date
-   - Prevents errors from missing tables
 
-4. **Features**
-   - Uses `CREATE TABLE IF NOT EXISTS` to prevent duplicate table creation
-   - Handles primary keys with auto-increment
-   - Enforces NOT NULL constraints on required fields
-   - Provides clear migration status messages with emojis
-   - Supports column change detection
-
-5. **Migration Script (migrate.py)**
-   The framework includes a dedicated migration script that can be run independently:
+4. **Migration Script (migrate.py)**
+   The framework includes a dedicated migration script that handles all database setup:
    ```python
    from helper.DatabaseMigration import DatabaseMigration
 
@@ -326,12 +331,22 @@ The `DatabaseMigration.py` file is responsible for database initialization and t
    if __name__ == "__main__":
        main()
    ```
-   This script:
-   - Can be run at any time to ensure database schema is up to date
-   - Shows clear progress with emoji indicators
-   - Creates missing tables if needed
-   - Checks for column changes in existing tables
-   - Provides a summary of all migration actions
+   
+   Features:
+   - Automatic table creation from model definitions
+   - Schema version tracking
+   - Column modification detection
+   - Clear progress indicators
+   - Migration summary generation
+   - Error handling with descriptive messages
+
+5. **Key Benefits**
+   - No manual SQL writing required
+   - Consistent database schema across installations
+   - Automatic schema updates when models change
+   - Clear feedback during migration process
+   - Error detection and reporting
+   - Safe migration process with rollback support
 
 ### Database Connection Management (DBConnection.py)
 The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It provides:
