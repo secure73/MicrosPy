@@ -7,87 +7,52 @@ This is a minimal micro-framework designed for learning the fundamentals of Pyth
 - Python 3.13.2 or higher
 - Virtual environment (recommended)
 
-## Virtual Environment
-Using a virtual environment is **crucial** for Python development. Here's why and how to use it:
+## Installation and Setup
 
-### Why Use Virtual Environment?
-1. **Isolation**: Each project gets its own isolated Python environment
-   - Prevents conflicts between project dependencies
-   - Avoids system-wide Python package pollution
-   - Makes projects reproducible across different machines
+> ⚠️ **Important**: Always create and activate the virtual environment immediately after cloning the repository and before installing any dependencies. This ensures a clean, isolated environment for your project.
 
-2. **Dependency Management**:
-   - Clear separation of project dependencies
-   - Easy to track and install required packages
-   - Simple to export requirements with exact versions
-
-3. **Project Portability**:
-   - Projects can be easily shared with others
-   - No interference with system Python installation
-   - Consistent environment across development team
-
-### Setting Up Virtual Environment
-
-1. **Windows**
+1. Clone the repository:
    ```bash
-   # Create virtual environment
-   python -m venv venv
-
-   # Activate virtual environment
-   .\venv\Scripts\activate
-
-   # Verify activation (should show virtual environment path)
-   where python
+   git clone https://github.com/secure73/micro_py_framework.git
+   ```
+2. go to your cloned local folder for example micro_py_framework is your local target directory where repository is cloned:
+   ```bash
+   cd micro_py_framework
    ```
 
-2. **Linux/Mac**
+4.  ⚠️ **Important** Create and activate virtual environment inside project directory(IMPORTANT - do this immediately after cloning):
    ```bash
-   # Create virtual environment
+   # Windows
    python -m venv venv
+   .\venv\Scripts\activate
 
-   # Activate virtual environment
+   # Linux/Mac
+   python -m venv venv
    source venv/bin/activate
 
    # Verify activation (should show virtual environment path)
-   which python
+   # Windows: where python
+   # Linux/Mac: which python
    ```
 
-3. **Deactivation** (All Platforms)
+5. Install dependencies to set up the application:
    ```bash
-   deactivate
-   ```
-
-### Best Practices
-1. **Always activate** the virtual environment before:
-   - Installing packages
-   - Running the application
-   - Running migrations
-   - Executing tests
-
-2. **Never commit** virtual environment directory:
-   - Add `venv/` to your `.gitignore`
-   - Only commit `requirements.txt`
-
-3. **Maintain requirements**:
-   ```bash
-   # After installing new packages, update requirements.txt
-   pip freeze > requirements.txt
-   ```
-
-4. **Project Setup**:
-   ```bash
-   # Create and activate virtual environment
-   python -m venv venv
-   source venv/bin/activate  # or .\venv\Scripts\activate on Windows
-
    # Install dependencies
    pip install -r requirements.txt
+   ```
 
+6. Migrate Database for sample Database:
+   ```bash
    # Run database migration
    python migrate.py
 
    # Start the application
-   python app.py
+   python app.py   # Server will start on port 8001
+   ```
+7. Run App:
+   ```bash
+   # Start the application
+   python app.py   # Server will start on port 8001
    ```
 
 ### Troubleshooting Virtual Environment
@@ -105,43 +70,6 @@ Using a virtual environment is **crucial** for Python development. Here's why an
    - Delete the virtual environment
    - Create new one with correct Python version
    - Reinstall dependencies
-
-## Installation and Setup
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/secure73/micro_py_framework.git
-   cd micro_py_framework
-   ```
-
-2. Create and activate virtual environment (IMPORTANT - do this immediately after cloning):
-   ```bash
-   # Windows
-   python -m venv venv
-   .\venv\Scripts\activate
-
-   # Linux/Mac
-   python -m venv venv
-   source venv/bin/activate
-
-   # Verify activation (should show virtual environment path)
-   # Windows: where python
-   # Linux/Mac: which python
-   ```
-
-3. Install dependencies and set up the application:
-   ```bash
-   # Install dependencies
-   pip install -r requirements.txt
-
-   # Run database migration
-   python migrate.py
-
-   # Start the application
-   python app.py   # Server will start on port 8001
-   ```
-
-> ⚠️ **Important**: Always create and activate the virtual environment immediately after cloning the repository and before installing any dependencies. This ensures a clean, isolated environment for your project.
 
 ## Project Structure
 ```
@@ -319,18 +247,7 @@ The `DatabaseMigration.py` file is responsible for automatic database initializa
      ```
 
 4. **Migration Script (migrate.py)**
-   The framework includes a dedicated migration script that handles all database setup:
-   ```python
-   from helper.DatabaseMigration import DatabaseMigration
-
-   def main():
-       print("Starting database migration...")
-       migrator = DatabaseMigration()
-       migrator.migrate()
-
-   if __name__ == "__main__":
-       main()
-   ```
+   easily open migrate.py on the root and run it , or write python migrate.py on terminal in project root!
    
    Features:
    - Automatic table creation from model definitions
@@ -372,11 +289,8 @@ The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It
    - Manages database connections and transactions
    - Provides thread-safe database access
 
-4. **Utility Methods**
-   - `create_all()`: Creates all database tables defined in models
-   - `get_session()`: Returns a new database session for operations
 
-5. **Database Support**
+4. **Database Support**
    - **SQLite** (Default):
      ```python
      engine = create_engine("sqlite:///db.db")
@@ -386,11 +300,11 @@ The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It
      engine = create_engine("mysql+pymysql://username:password@localhost:3306/database_name")
      ```
 
-6. **Error Handling**
+5. **Error Handling**
    - Catches and reports database connection failures
    - Provides clear error messages for troubleshooting
 
-7. **Usage in Models**
+6. **Usage in Models**
    ```python
    from table.DBConnection import DBConnection
    
@@ -399,7 +313,7 @@ The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It
            self.Session = DBConnection.Session
    ```
 
-8. **Best Practices**
+7. **Best Practices**
    - Uses connection pooling for better performance
    - Implements proper session management
    - Supports multiple database backends
@@ -504,6 +418,52 @@ curl -X DELETE http://localhost:8001/auto \
   -H "Content-Type: application/json" \
   -d '{"id": 1}'
 ```
+
+## Postman Collection
+The framework includes a Postman collection (`Micro Python.postman_collection.json`) that contains pre-configured requests for example API endpoints. This makes it easy to test the API without writing curl commands.
+
+### Importing the Collection
+1. Open Postman
+2. Click the "Import" button in the top-left corner
+3. Select the "File" tab
+4. Click "Upload Files" and select `Micro Python.postman_collection.json`
+5. Click "Import"
+
+### Using the Collection
+The collection includes the following pre-configured requests:
+
+#### Auto Endpoints
+- **GET /auto**: List all autos
+- **POST /auto**: Create a new auto
+  - Body: JSON with `name` and `ps` fields
+- **PUT /auto**: Update an existing auto
+  - Body: JSON with `id`, `name`, and `ps` fields
+- **DELETE /auto**: Delete an auto
+  - Body: JSON with `id` field
+
+### Collection Features
+- Pre-configured headers (Content-Type: application/json)
+- Example request bodies
+- Organized folder structure
+- Environment variables support
+- Documentation for each endpoint
+
+### Tips for Using Postman
+1. **Environment Setup**
+   - Create a new environment
+   - Add a variable `base_url` with value `http://localhost:8001`
+   - Use `{{base_url}}` in request URLs
+
+2. **Testing Workflow**
+   - Start with GET requests to view data
+   - Use POST to create new entries
+   - Use PUT to modify existing entries
+   - Use DELETE to remove entries
+
+3. **Response Handling**
+   - Check status codes
+   - View formatted JSON responses
+   - Use Postman's test scripts for automation
 
 ## Development Guidelines
 
