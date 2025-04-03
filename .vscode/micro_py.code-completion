@@ -1,0 +1,104 @@
+[
+  {
+    "label": "AutoController",
+    "insertText": "",
+    "detail": "Create new controllers AutoController",
+    "kind": 15
+  },
+  {
+    "label": "UserController",
+    "insertText": "",
+    "detail": "Create new controllers UserController",
+    "kind": 15
+  },
+  {
+    "label": "AutoModel",
+    "insertText": "",
+    "detail": "Create new models AutoModel",
+    "kind": 15
+  },
+  {
+    "label": "AutoModel",
+    "insertText": "",
+    "detail": "Create new models AutoModel",
+    "kind": 15
+  },
+  {
+    "label": "AutoTable",
+    "insertText": "",
+    "detail": "Create new tables AutoTable",
+    "kind": 15
+  },
+  {
+    "label": "DBConnection",
+    "insertText": "",
+    "detail": "Create new tables DBConnection",
+    "kind": 15
+  },
+  {
+    "label": "UserTable",
+    "insertText": "",
+    "detail": "Create new tables UserTable",
+    "kind": 15
+  },
+  {
+    "label": "CodeAssistant",
+    "insertText": "",
+    "detail": "Create new helpers CodeAssistant",
+    "kind": 15
+  },
+  {
+    "label": "DatabaseMigration",
+    "insertText": "",
+    "detail": "Create new helpers DatabaseMigration",
+    "kind": 15
+  },
+  {
+    "label": "FormatCheck",
+    "insertText": "",
+    "detail": "Create new helpers FormatCheck",
+    "kind": 15
+  },
+  {
+    "label": "HttpHandler",
+    "insertText": "",
+    "detail": "Create new helpers HttpHandler",
+    "kind": 15
+  },
+  {
+    "label": "JWTManager",
+    "insertText": "",
+    "detail": "Create new helpers JWTManager",
+    "kind": 15
+  },
+  {
+    "label": "PatternRecognition",
+    "insertText": "",
+    "detail": "Create new helpers PatternRecognition",
+    "kind": 15
+  },
+  {
+    "label": "Response",
+    "insertText": "",
+    "detail": "Create new helpers Response",
+    "kind": 15
+  },
+  {
+    "label": "VSCodeIntegration",
+    "insertText": "",
+    "detail": "Create new helpers VSCodeIntegration",
+    "kind": 15
+  },
+  {
+    "label": "IController",
+    "insertText": "",
+    "detail": "Create new interfaces IController",
+    "kind": 15
+  },
+  {
+    "label": "IModel",
+    "insertText": "",
+    "detail": "Create new interfaces IModel",
+    "kind": 15
+  }
+]

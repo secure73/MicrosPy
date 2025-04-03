@@ -57,7 +57,7 @@ class {controller_name}(IController):
         result = model.remove(data["id"])
         if not result:
             return Response.bad_request(f"Failed to destroy: {model.error}")
-        return Response.success({"success": "Destroyed successfully"})''',
+        return Response.success({"success": "Destroyed successfully"})'''
             },
             'model': {
                 'basic': '''from table.{table_name} import {table_name}
@@ -146,7 +146,7 @@ class {model_name}(IModel):
             except SQLAlchemyError as e:
                 session.rollback()
                 self.error = f"Database failure: {str(e)}"
-                return False''',
+                return False'''
             },
             'table': {
                 'basic': '''from sqlalchemy import Column, Integer, String, Float, DateTime
@@ -176,7 +176,7 @@ class {table_name}(Base):
         for pattern in ['controller/*.py', 'model/*.py', 'table/*.py', 'helper/*.py', 'interface/*.py']:
             files = Path(root_dir).glob(pattern)
             for file in files:
-                with open(file, 'r') as f:
+                with open(file, 'r', encoding='utf-8') as f:
                     content = f.read()
                     self._analyze_file(content, file.name, pattern.split('/')[0])
                     # Analyze patterns
@@ -187,6 +187,12 @@ class {table_name}(Base):
 
     def _analyze_file(self, content: str, filename: str, category: str):
         """Analyzes a single file to extract patterns and relationships."""
+        # Convert category to plural form if needed
+        category = category + 's' if not category.endswith('s') else category
+        
+        if category not in self.project_structure:
+            self.project_structure[category] = {}
+            
         tree = ast.parse(content)
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef):
@@ -208,7 +214,17 @@ class {table_name}(Base):
         file_type = self._get_file_type(current_file)
         
         # Get suggestions from pattern recognition
-        suggestions = self.pattern_recognition.suggest_improvements(context, file_type)
+        try:
+            suggestions = self.pattern_recognition.suggest_improvements(context, file_type)
+        except SyntaxError:
+            # If context is not valid Python code, return a basic suggestion
+            if 'controller' in file_type.lower():
+                return self.patterns['controller']['basic']
+            elif 'model' in file_type.lower():
+                return self.patterns['model']['basic']
+            elif 'table' in file_type.lower():
+                return self.patterns['table']['basic']
+            return "# No suggestions available for this context"
         
         # Add VS Code diagnostics for suggestions
         for suggestion in suggestions:
@@ -239,34 +255,42 @@ class {table_name}(Base):
 
     def generate_crud_endpoints(self, resource_name: str) -> Dict[str, str]:
         """Generates complete CRUD endpoints for a resource."""
-        model_name = f"{resource_name.capitalize()}Model"
+        model_name = f"{resource_name.capitalize()}"
         controller_name = f"{resource_name.capitalize()}Controller"
-        table_name = f"{resource_name.capitalize()}Table"
+        table_name = f"{resource_name.capitalize()}"
         
-        generated_code = {
-            'controller': self.patterns['controller']['basic'].format(
-                model_name=model_name,
-                controller_name=controller_name
-            ),
-            'model': self.patterns['model']['basic'].format(
-                model_name=model_name,
-                table_name=table_name
-            ),
-            'table': self.patterns['table']['basic'].format(
-                table_name=table_name,
-                table_name_lower=resource_name.lower()
-            )
-        }
-        
-        # Add VS Code snippets for the generated code
-        for category, code in generated_code.items():
-            self.vscode.add_completion(
-                f"micro_{category}_{resource_name.lower()}",
-                code,
-                f"Create {resource_name} {category}"
-            )
-        
-        return generated_code
+        try:
+            # Debug: Print the structure of patterns
+            print("Patterns structure:", {k: list(v.keys()) for k, v in self.patterns.items()})
+            
+            # Get the basic patterns
+            controller_pattern = self.patterns['controller']['basic']
+            model_pattern = self.patterns['model']['basic']
+            table_pattern = self.patterns['table']['basic']
+            
+            # Format each pattern with the correct variables
+            generated_code = {
+                'controller': controller_pattern.replace('{model_name}', model_name).replace('{controller_name}', controller_name),
+                'model': model_pattern.replace('{model_name}', model_name).replace('{table_name}', table_name),
+                'table': table_pattern.replace('{table_name}', table_name).replace('{table_name_lower}', resource_name.lower())
+            }
+            return generated_code
+        except KeyError as e:
+            print(f"Error: Missing pattern key - {e}")
+            print("Available patterns:", list(self.patterns.keys()))
+            return {
+                'controller': '',
+                'model': '',
+                'table': ''
+            }
+        except Exception as e:
+            print(f"Error formatting patterns: {e}")
+            print("Pattern content:", {k: v['basic'] for k, v in self.patterns.items()})
+            return {
+                'controller': '',
+                'model': '',
+                'table': ''
+            }
 
     def generate_documentation(self, file_type: str) -> str:
         """Generates documentation based on recognized patterns."""

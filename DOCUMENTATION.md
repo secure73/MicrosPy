@@ -630,284 +630,62 @@ The framework includes VS Code integration features:
 7. Documentation generation support
 
 ## AI Assistant Features
-The framework includes an AI-powered code assistant (`CodeAssistant.py`) that helps with code generation and analysis. The assistant can be used through `ai_assistant_usage.py`.
 
-> ⚠️ **Important Note for Beginners**: The AI Assistant is a development tool and its generated code should be carefully reviewed before use. Always:
-> - Test generated code thoroughly
-> - Verify all imports are correct
-> - Check method names match the framework's conventions
-> - Ensure error handling matches the framework's patterns
-> - Validate response formats
+The framework includes an intelligent code assistant that can help you with:
+- Generating CRUD endpoints
+- Providing code suggestions
+- Generating documentation
+- Analyzing your codebase
 
-### Key Features
-1. **Code Analysis**
-   - Analyzes project structure and patterns
-   - Identifies relationships between components
-   - Generates VS Code snippets based on patterns
-   - Provides code suggestions based on context
+### Getting Started with the AI Assistant
 
-2. **CRUD Endpoint Generation**
-   - Automatically generates complete CRUD endpoints
-   - Creates controller, model, and table files
-   - Maintains consistent patterns across the codebase
-   - Example usage:
-     ```python
-     # Generate CRUD endpoints for a new resource
-     product_endpoints = assistant.generate_crud_endpoints("Product")
-     ```
-
-3. **Code Suggestions**
-   - Provides context-aware code suggestions
-   - Suggests improvements based on patterns
-   - Example usage:
-     ```python
-     # Get suggestions for a controller method
-     suggestions = assistant.suggest_code(context, "UserController.py")
-     ```
-
-4. **Documentation Generation**
-   - Generates documentation based on code patterns
-   - Creates API documentation
-   - Example usage:
-     ```python
-     # Generate documentation for controllers
-     controller_docs = assistant.generate_documentation("controller")
-     ```
-
-### Usage Examples
-1. **Basic Setup**
-   ```python
-   from helper.CodeAssistant import CodeAssistant
-   from pathlib import Path
-
-   # Initialize the AI Assistant
-   assistant = CodeAssistant()
-   
-   # Analyze the codebase
-   root_dir = Path(__file__).parent.parent
-   assistant.analyze_codebase(str(root_dir))
+1. **Run the AI Assistant Demo**
+   Simply run the `ai.py` file in your terminal:
+   ```bash
+   python ai.py
    ```
+   This will show you examples of what the assistant can do:
+   - Generate CRUD endpoints for a "Product" resource
+   - Show code suggestions for UserController
+   - Generate documentation for controllers
 
-2. **Generating CRUD Endpoints**
-   ```python
-   # Generate complete CRUD endpoints for a new resource
-   product_endpoints = assistant.generate_crud_endpoints("Product")
-   
-   # Save generated code to files
-   for file_type, code in product_endpoints.items():
-       file_path = root_dir / file_type / f"Product{file_type.capitalize()}.py"
-       with open(file_path, 'w') as f:
-           f.write(code)
-   ```
+2. **Understanding the Demo Output**
+   When you run `ai.py`, you'll see:
+   - The codebase analysis results
+   - Generated CRUD endpoints for a sample resource
+   - Code suggestions for common tasks
+   - Generated documentation examples
 
-3. **Getting Code Suggestions**
-   ```python
-   # Get suggestions for a specific context
-   context = """
-   class UserController(IController):
-       def get(self, data):
-           # Get suggestions for this method
-   """
-   suggestions = assistant.suggest_code(context, "UserController.py")
-   ```
+3. **Using the Generated Code**
+   The demo generates complete code examples that you can:
+   - Copy and use in your own controllers
+   - Use as templates for new resources
+   - Study to understand the framework patterns
 
 4. **Generating Documentation**
+   You can also generate documentation for specific components:
    ```python
-   # Generate documentation for a specific component type
-   controller_docs = assistant.generate_documentation("controller")
+   # Example: Generate documentation for controllers
+   docs = assistant.generate_documentation("controller")
+   print(docs)
    ```
 
-### Pattern Recognition
-The assistant recognizes and maintains several key patterns:
+### Important Notes
+- The assistant analyzes your codebase to provide context-aware suggestions
+- Generated code should be reviewed and customized for your specific needs
+- The assistant is designed for educational purposes and may not cover all edge cases
+- Always test generated code before using it in production
 
-1. **Controller Pattern**
-   ```python
-   from interface.IController import IController
-   from helper.Response import Response
-   from model.{model_name} import {model_name}
+### Example Workflow
+1. Run `python ai.py` to see examples
+2. Review the generated code and documentation
+3. Use the patterns shown to create your own resources
+4. Get code suggestions when needed
+5. Generate documentation for your code
+6. Review and customize the generated code
+7. Test your implementation
 
-   class {controller_name}(IController):
-       def __init__(self):
-           self.model = {model_name}
-
-       def get(self, data):
-           model = self.model()
-           if "id" in data:
-               result = model.single(int(data["id"]))
-               if not result:
-                   return Response.bad_request("Item not found")
-               return Response.success(result)
-           return Response.success(model.list())
-
-       def post(self, data):
-           model = self.model()
-           created = model.create(**data)
-           if not created:
-               return Response.bad_request(f"Failed to create: {model.error}")
-           return Response.success({"success": "Created successfully"})
-
-       def put(self, data):
-           if "id" not in data:
-               return Response.bad_request("ID is required")
-           model = self.model()
-           updated = model.update(data["id"], **data)
-           if not updated:
-               return Response.bad_request(f"Failed to update: {model.error}")
-           return Response.success({"success": "Updated successfully"})
-
-       def delete(self, data):
-           if "id" not in data:
-               return Response.bad_request("ID is required")
-           model = self.model()
-           result = model.delete(data["id"])
-           if not result:
-               return Response.bad_request(f"Failed to delete: {model.error}")
-           return Response.success({"success": "Deleted successfully"})
-   ```
-
-2. **Model Pattern**
-   ```python
-   from table.{table_name} import {table_name}
-   from table.DBConnection import DBConnection
-   from sqlalchemy.exc import SQLAlchemyError
-   from helper.FormatCheck import FormatCheck
-   from interface.IModel import IModel
-
-   class {model_name}(IModel):
-       def __init__(self):
-           self.Session = DBConnection.Session
-           self.error = None
-
-       def create(self, **data) -> bool:
-           validation_result = self.__validateData(**data)
-           if not validation_result:
-               return False
-           return self.__insert(**data)
-
-       def single(self, id: int) -> Optional[{table_name}]:
-           with self.Session() as session:
-               try:
-                   return session.query({table_name}).filter_by(id=id).first()
-               except SQLAlchemyError as e:
-                   self.error = f"Database failure: {str(e)}"
-                   return None
-
-       def list(self) -> List[Dict]:
-           with self.Session() as session:
-               try:
-                   items = session.query({table_name}).all()
-                   return [item.to_dict() for item in items]
-               except SQLAlchemyError as e:
-                   self.error = f"Database failure: {str(e)}"
-                   return None
-
-       def update(self, id: int, **data) -> bool:
-           with self.Session() as session:
-               try:
-                   item = session.query({table_name}).filter_by(id=id).first()
-                   if not item:
-                       self.error = "Item not found"
-                       return False
-                   
-                   validation_result = self.__validateData(**data)
-                   if not validation_result:
-                       return False
-                   
-                   for key, value in data.items():
-                       setattr(item, key, value)
-                   session.commit()
-                   return True
-               except SQLAlchemyError as e:
-                   session.rollback()
-                   self.error = f"Database Error: {str(e)}"
-                   return False
-
-       def delete(self, id: int) -> bool:
-           with self.Session() as session:
-               try:
-                   item = session.query({table_name}).filter_by(id=id).first()
-                   if not item:
-                       self.error = "Item not found"
-                       return False
-                   
-                   session.delete(item)
-                   session.commit()
-                   return True
-               except SQLAlchemyError as e:
-                   session.rollback()
-                   self.error = f"Database Error: {str(e)}"
-                   return False
-
-       def __validateData(self, **data) -> bool:
-           # Implement validation logic here
-           return True
-
-       def __insert(self, **data) -> bool:
-           with self.Session() as session:
-               try:
-                   new_item = {table_name}(**data)
-                   session.add(new_item)
-                   session.commit()
-                   return True
-               except SQLAlchemyError as e:
-                   session.rollback()
-                   self.error = f"Database failure: {str(e)}"
-                   return False
-   ```
-
-3. **Table Pattern**
-   ```python
-   from sqlalchemy import Column, Integer, String, Float, DateTime
-   from table.DBConnection import Base
-   from datetime import datetime
-
-   class {table_name}(Base):
-       __tablename__ = '{table_name_lower}'
-       
-       id = Column(Integer, primary_key=True, autoincrement=True)
-       created_at = Column(DateTime, default=datetime.utcnow)
-       updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-       
-       def to_dict(self):
-           return {
-               'id': self.id,
-               'created_at': self.created_at.isoformat() if self.created_at else None,
-               'updated_at': self.updated_at.isoformat() if self.updated_at else None
-           }
-   ```
-
-### Best Practices
-1. **Using the Assistant**
-   - Always review generated code before using
-   - Verify all imports are correct
-   - Check method names match framework conventions
-   - Ensure error handling matches framework patterns
-   - Test generated code thoroughly
-
-2. **Code Generation**
-   - Generate complete CRUD endpoints at once
-   - Review and customize generated code
-   - Maintain consistent naming conventions
-   - Follow framework patterns
-   - Add proper validation logic
-
-3. **Documentation**
-   - Generate documentation regularly
-   - Review and update generated docs
-   - Keep documentation in sync with code
-   - Use consistent documentation style
-
-### Limitations
-1. Basic pattern recognition
-2. Limited context awareness
-3. No semantic analysis
-4. Basic code suggestions
-5. No refactoring support
-6. Limited error detection
-7. May generate incorrect method names
-8. May miss required imports
-9. May not include proper error handling
-10. May not match current framework patterns
+Remember: This is an educational framework. Always review generated code and understand what it does before using it in your project.
 
 ## A Note from the Developer
 
