@@ -23,30 +23,40 @@ from model.{model_name} import {model_name}
 
 class {controller_name}(IController):
     def __init__(self):
-        pass
-    
+        self.model = {model_name}
+
     def get(self, data):
-        return Response.success(data)
-    
+        model = self.model()
+        if "id" in data:
+            result = model.single(int(data["id"]))
+            if not result:
+                return Response.bad_request("Item not found")
+            return Response.success(result)
+        return Response.success(model.list())
+
     def post(self, data):
-        model = {model_name}()
+        model = self.model()
         created = model.create(**data)
         if not created:
             return Response.bad_request(f"Failed to create: {model.error}")
         return Response.success({"success": "Created successfully"})
-    
+
     def put(self, data):
-        model = {model_name}()
-        updated = model.update(**data)
+        if "id" not in data:
+            return Response.bad_request("ID is required")
+        model = self.model()
+        updated = model.update(data["id"], **data)
         if not updated:
             return Response.bad_request(f"Failed to update: {model.error}")
         return Response.success({"success": "Updated successfully"})
-    
+
     def destroy(self, data):
-        model = {model_name}()
-        result = model.remove(data.get("id"))
+        if "id" not in data:
+            return Response.bad_request("ID is required")
+        model = self.model()
+        result = model.remove(data["id"])
         if not result:
-            return Response.bad_request("Failed to destroy")
+            return Response.bad_request(f"Failed to destroy: {model.error}")
         return Response.success({"success": "Destroyed successfully"})''',
             },
             'model': {
@@ -55,18 +65,19 @@ from table.DBConnection import DBConnection
 from sqlalchemy.exc import SQLAlchemyError
 from helper.FormatCheck import FormatCheck
 from interface.IModel import IModel
+from typing import Optional, List, Dict
 
 class {model_name}(IModel):
     def __init__(self):
         self.Session = DBConnection.Session
         self.error = None
-    
-    def create(self, **data) -> Optional[bool]:
+
+    def create(self, **data) -> bool:
         validation_result = self.__validateData(**data)
         if not validation_result:
-            return None
+            return False
         return self.__insert(**data)
-    
+
     def single(self, id: int) -> Optional[{table_name}]:
         with self.Session() as session:
             try:
@@ -74,8 +85,8 @@ class {model_name}(IModel):
             except SQLAlchemyError as e:
                 self.error = f"Database failure: {str(e)}"
                 return None
-    
-    def list(self):
+
+    def list(self) -> List[Dict]:
         with self.Session() as session:
             try:
                 items = session.query({table_name}).all()
@@ -83,36 +94,36 @@ class {model_name}(IModel):
             except SQLAlchemyError as e:
                 self.error = f"Database failure: {str(e)}"
                 return None
-    
-    def update(self, id: int, **data) -> Optional[{table_name}]:
-        item = self.single(id)
-        if not item:
-            self.error = "Item not found"
-            return None
-        
-        validation_result = self.__validateData(**data)
-        if not validation_result:
-            return None
-        
+
+    def update(self, id: int, **data) -> bool:
         with self.Session() as session:
             try:
+                item = session.query({table_name}).filter_by(id=id).first()
+                if not item:
+                    self.error = "Item not found"
+                    return False
+                
+                validation_result = self.__validateData(**data)
+                if not validation_result:
+                    return False
+                
                 for key, value in data.items():
                     setattr(item, key, value)
                 session.commit()
-                return self.single(id)
+                return True
             except SQLAlchemyError as e:
                 session.rollback()
                 self.error = f"Database Error: {str(e)}"
-                return None
-    
+                return False
+
     def remove(self, id: int) -> bool:
-        item = self.single(id)
-        if not item:
-            self.error = "Item not found"
-            return False
-        
         with self.Session() as session:
             try:
+                item = session.query({table_name}).filter_by(id=id).first()
+                if not item:
+                    self.error = "Item not found"
+                    return False
+                
                 session.delete(item)
                 session.commit()
                 return True
@@ -120,11 +131,11 @@ class {model_name}(IModel):
                 session.rollback()
                 self.error = f"Database Error: {str(e)}"
                 return False
-    
+
     def __validateData(self, **data) -> bool:
-        # Implement your validation logic here
+        # Implement validation logic here
         return True
-    
+
     def __insert(self, **data) -> bool:
         with self.Session() as session:
             try:
@@ -138,7 +149,7 @@ class {model_name}(IModel):
                 return False''',
             },
             'table': {
-                'basic': '''from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+                'basic': '''from sqlalchemy import Column, Integer, String, Float, DateTime
 from table.DBConnection import Base
 from datetime import datetime
 
@@ -286,27 +297,6 @@ class {table_name}(Base):
     def _suggest_table_code(self, context: str) -> str:
         """Suggests table-specific code."""
         return self.patterns['table']['basic']
-
-    def generate_crud_endpoints(self, resource_name: str) -> Dict[str, str]:
-        """Generates complete CRUD endpoints for a resource."""
-        model_name = f"{resource_name.capitalize()}Model"
-        controller_name = f"{resource_name.capitalize()}Controller"
-        table_name = f"{resource_name.capitalize()}Table"
-        
-        return {
-            'controller': self.patterns['controller']['basic'].format(
-                model_name=model_name,
-                controller_name=controller_name
-            ),
-            'model': self.patterns['model']['basic'].format(
-                model_name=model_name,
-                table_name=table_name
-            ),
-            'table': self.patterns['table']['basic'].format(
-                table_name=table_name,
-                table_name_lower=resource_name.lower()
-            )
-        }
 
     def _get_class_methods(self, node: ast.ClassDef) -> List[str]:
         """Extracts method names from a class definition."""
