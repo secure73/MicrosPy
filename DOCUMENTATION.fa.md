@@ -1,3 +1,5 @@
+<div dir="rtl" style="text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;">
+
 # مستندات فریم‌ورک میکرو پایتون
 
 ## معرفی
@@ -696,3 +698,4 @@ Remember: This is an educational framework. Always review generated code and und
 
 علی خرسندفرد
 توسعه‌دهنده و مربی
+</div>
