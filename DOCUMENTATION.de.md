@@ -1,90 +1,129 @@
 # Micro Python Framework Dokumentation
 
 ## Übersicht
-Dies ist ein Mikro-Framework, das **ausschließlich für Bildungszwecke** entwickelt wurde, um Anfängern das Verständnis der Grundlagen von Python und der RESTful-API-Entwicklung zu erleichtern. Es implementiert eine einfache MVC-Architektur (Model-View-Controller) und bietet grundlegende RESTful-API-Funktionalitäten.
+Dies ist ein minimales Micro-Framework, das **ausschließlich für Bildungszwecke** entwickelt wurde, um Anfängern die Grundlagen von Python und RESTful API-Entwicklung zu vermitteln. Es implementiert eine einfache MVC (Model-View-Controller) Architektur und bietet grundlegende RESTful API-Funktionalität.
 
-> ⚠️ **Wichtiger Hinweis**: Dieses Framework ist **nicht für den Produktionseinsatz geeignet**. Es wurde ausschließlich als Lernwerkzeug entwickelt, um zu verstehen:
+> ⚠️ **Wichtiger Hinweis**: Dieses Framework ist **NICHT für den Produktionseinsatz geeignet**. Es wurde ausschließlich als Lernwerkzeug entwickelt, um zu verstehen:
 > - Wie Frameworks wie Django und FastAPI funktionieren
 > - Python OOP-Prinzipien und Entwurfsmuster
-> - Schichtenarchitektur und Trennung von Belangen
-> - Grundlegende REST-API-Prinzipien und HTTP-Anfrageverarbeitung
+> - Schichtenarchitektur und Trennung von Zuständigkeiten
+> - Grundlegende REST API-Prinzipien und HTTP-Anfrageverarbeitung
 > - Datenbankoperationen und ORM-Konzepte
 > - Grundlegende MVC-Architekturimplementierung
 
-> ⚠️ **Sicherheitswarnung**: Dieses Framework hat **begrenzte Sicherheitsimplementierungen** und sollte niemals in Produktionsumgebungen verwendet werden. Es fehlen:
-> - Angemessene Authentifizierung und Autorisierung
+> ⚠️ **Sicherheitswarnung**: Dieses Framework hat **minimale Sicherheitsimplementierungen** und sollte niemals in Produktionsumgebungen verwendet werden. Es fehlt:
+> - Richtige Authentifizierung und Autorisierung
 > - Eingabesanierung
 > - CSRF-Schutz
 > - Ratenbegrenzung
-> - Produktionsgerechte Fehlerbehandlung
-> - Sicherheitsheader
-> - Und viele andere grundlegende Sicherheitsfunktionen
+> - Produktionsreife Fehlerbehandlung
+> - Sicherheits-Header
+> - Und viele andere wichtige Sicherheitsfunktionen
 
-Dieses Framework dient als ausgezeichneter erster Schritt zum Erlernen von REST-API-Prinzipien und zum Verständnis der Organisation von Web-Frameworks, sollte aber als Lernwerkzeug und nicht als produktionsreife Lösung behandelt werden.
+Dieses Framework dient als ausgezeichneter erster Schritt zum Erlernen von REST API-Prinzipien und zum Verständnis, wie Web-Frameworks strukturiert sind, sollte aber als Lernwerkzeug und nicht als produktionsreife Lösung behandelt werden.
 
 ## Voraussetzungen
 - Python 3.13.2 oder höher
 - Virtuelle Umgebung (empfohlen)
 
-## Installation
+## Installation und Einrichtung
+
+> ⚠️ **Wichtig**: Erstellen und aktivieren Sie die virtuelle Umgebung unmittelbar nach dem Klonen des Repositorys und vor der Installation von Abhängigkeiten. Dies gewährleistet eine saubere, isolierte Umgebung für Ihr Projekt.
 
 1. Repository klonen:
-```bash
-git clone https://github.com/secure73/micro_py_framework.git
-cd micro_py_framework
-```
+   ```bash
+   git clone https://github.com/secure73/micro_py_framework.git
+   ```
+2. Gehen Sie zu Ihrem geklonten lokalen Ordner, zum Beispiel ist micro_py_framework Ihr lokales Zielverzeichnis, in dem das Repository geklont wurde:
+   ```bash
+   cd micro_py_framework
+   ```
 
-2. Virtuelle Umgebung erstellen und aktivieren:
-```bash
-# Windows
-python -m venv venv
-.\venv\Scripts\activate
+4. ⚠️ **Wichtig** Virtuelle Umgebung im Projektverzeichnis erstellen und aktivieren (WICHTIG - tun Sie dies unmittelbar nach dem Klonen):
+   ```bash
+   # Windows
+   python -m venv venv
+   .\venv\Scripts\activate
 
-# Linux/Mac
-python -m venv venv
-source venv/bin/activate
-```
+   # Linux/Mac
+   python -m venv venv
+   source venv/bin/activate
 
-3. Abhängigkeiten installieren:
-```bash
-pip install -r requirements.txt
-```
+   # Aktivierung überprüfen (sollte den Pfad der virtuellen Umgebung anzeigen)
+   # Windows: where python
+   # Linux/Mac: which python
+   ```
+
+5. Abhängigkeiten installieren:
+   ```bash
+   # Abhängigkeiten installieren
+   pip install -r requirements.txt
+   ```
+
+6. Datenbank migrieren:
+   ```bash
+   # Datenbankmigration ausführen
+   python migrate.py
+
+   # Anwendung starten
+   python app.py   # Server startet auf Port 8001
+   ```
+7. Anwendung starten:
+   ```bash
+   # Anwendung starten
+   python app.py   # Server startet auf Port 8001
+   ```
+
+### Fehlerbehebung bei der virtuellen Umgebung
+1. **Virtuelle Umgebung aktiviert sich nicht**:
+   - Python-Installation überprüfen
+   - Sicherstellen, dass die Ausführungsrichtlinie Skripte zulässt (Windows)
+   - Versuchen Sie, eine neue virtuelle Umgebung zu erstellen
+
+2. **Paketinstallation schlägt fehl**:
+   - Überprüfen Sie, ob die virtuelle Umgebung aktiviert ist
+   - Internetverbindung überprüfen
+   - Pip aktualisieren: `python -m pip install --upgrade pip`
+
+3. **Falsche Python-Version**:
+   - Virtuelle Umgebung löschen
+   - Neue mit korrekter Python-Version erstellen
+   - Abhängigkeiten neu installieren
 
 ## Projektstruktur
 ```
 micro_py_framework/
 ├── app.py                 # Hauptanwendungseinstiegspunkt
 ├── controller/            # Controller-Verzeichnis
-│   └── UserController.py  # Benutzerbezogene Operationen
+│   ├── UserController.py  # Benutzerbezogene Operationen
+│   └── AutoController.py  # Auto-bezogene Operationen
 ├── model/                # Modelle-Verzeichnis
-│   └── UserModel.py      # Benutzerdaten-Operationen
-├── table/                # Datenbank-Tabellen
+│   ├── UserModel.py      # Benutzerdaten-Operationen
+│   └── AutoModel.py      # Auto-Daten-Operationen
+├── table/                # Datenbanktabellen
 │   ├── DBConnection.py   # Datenbankverbindungsverwaltung
 │   ├── DBMigrate.py      # Datenbankmigration und Schema
-│   └── UserTable.py      # Benutzer-Tabellenschema
+│   ├── UserTable.py      # Benutzertabellenschema
+│   └── AutoTable.py      # Auto-Tabellenschema
 ├── interface/            # Schnittstellen-Verzeichnis
 │   └── IController.py    # Controller-Schnittstelle
 └── helper/              # Hilfsprogramme
-    ├── HttpHandler.py    # HTTP-Anfragenhandler
+    ├── HttpHandler.py    # HTTP-Anfragehandler
     ├── Response.py       # Antwortformatierung
     ├── JWTManager.py     # JWT-Authentifizierung
-    └── FormatCheck.py    # Eingabevalidierung
+    ├── FormatCheck.py    # Eingabevalidierung
+    ├── CodeAssistant.py  # KI-gestützte Codegenerierung
+    └── DatabaseMigration.py  # Datenbankmigrationshilfe
 ```
-
-## Anwendung starten
-```bash
-python app.py
-```
-Der Server startet standardmäßig auf Port 8001.
 
 ## API-Endpunkte
 
-### User Controller Endpunkte
+### Benutzer-Controller-Endpunkte
 
 1. **Benutzer erstellen**
    - Methode: POST
    - URL: `/user`
-   - Anfrage-Body:
+   - Anfragekörper:
      ```json
      {
          "email": "user@example.com",
@@ -103,7 +142,7 @@ Der Server startet standardmäßig auf Port 8001.
 3. **Benutzer aktualisieren**
    - Methode: PUT
    - URL: `/user`
-   - Anfrage-Body:
+   - Anfragekörper:
      ```json
      {
          "id": 1,
@@ -116,7 +155,51 @@ Der Server startet standardmäßig auf Port 8001.
 4. **Benutzer löschen**
    - Methode: DELETE
    - URL: `/user`
-   - Anfrage-Body:
+   - Anfragekörper:
+     ```json
+     {
+         "id": 1
+     }
+     ```
+   - Antwort: Erfolgsmeldung oder Fehlerdetails
+
+### Auto-Controller-Endpunkte
+
+1. **Auto erstellen**
+   - Methode: POST
+   - URL: `/auto`
+   - Anfragekörper:
+     ```json
+     {
+         "name": "Mercedes Benz",
+         "ps": 750
+     }
+     ```
+   - Antwort: Erfolgsmeldung oder Fehlerdetails
+
+2. **Auto(s) abrufen**
+   - Methode: GET
+   - URL: `/auto` (alle Autos auflisten)
+   - URL: `/auto/{id}` (spezifisches Auto abrufen)
+   - Antwort: Auto-Daten oder Fehlermeldung
+
+3. **Auto aktualisieren**
+   - Methode: PUT
+   - URL: `/auto`
+   - Anfragekörper:
+     ```json
+     {
+         "id": 1,
+         "name": "Aktualisierter Name",
+         "ps": 800
+     }
+     ```
+   - Antwort: Aktualisierte Auto-Daten oder Fehlermeldung
+
+4. **Auto löschen**
+   - Methode: DELETE
+   - URL: `/auto`
+   - Anfragekörper:
      ```json
      {
          "id": 1
@@ -131,52 +214,75 @@ Der Server startet standardmäßig auf Port 8001.
 - Passwort: Mindestens 6 Zeichen
 - Name: Mindestens 2 Zeichen
 
+### Auto-Daten-Validierungsregeln
+- Name: Mindestens 2 Zeichen
+- PS (Leistung): Muss eine positive Ganzzahl sein
+
 ## Datenbank
 
-### SQLite Datenbank
-- Die Anwendung verwendet standardmäßig SQLite als Datenbank
+### SQLite-Datenbank
+- Die Anwendung verwendet SQLite als Standarddatenbank
 - Datenbankdatei: `db.db`
-- Tabellen werden beim ersten Start automatisch erstellt
+- Tabellen werden automatisch beim ersten Start erstellt
 
-### Datenbankmigration (DBMigrate.py)
-Die Datei `DBMigrate.py` ist für die Datenbankinitialisierung und Tabellenerstellung zuständig. Sie behandelt:
+### Datenbankmigration (DatabaseMigration.py)
+Die Datei `DatabaseMigration.py` ist für die automatische Datenbankinitialisierung und Tabellenerstellung verantwortlich. Sie behandelt:
 
 1. **Datenbankverbindung**
    - Erstellt eine Verbindung zur SQLite-Datenbank (`db.db`)
-   - Verwaltet Datenbank-Cursor für SQL-Befehle
+   - Verwaltet den Datenbankcursor für SQL-Befehle
+   - Verwendet SQLAlchemy für Datenbankoperationen
 
-2. **Tabellenerstellung**
-   - Erstellt automatisch erforderliche Tabellen, falls sie nicht existieren
-   - Verwaltet derzeit zwei Tabellen:
-     - `users` Tabelle:
-       ```sql
-       CREATE TABLE users(
-           id INTEGER PRIMARY KEY AUTOINCREMENT,
-           email TEXT NOT NULL UNIQUE,
-           password TEXT NOT NULL,
-           name TEXT NOT NULL
-       )
-       ```
-     - `products` Tabelle:
-       ```sql
-       CREATE TABLE products(
-           id INTEGER PRIMARY KEY AUTOINCREMENT,
-           name TEXT NOT NULL UNIQUE,
-           category TEXT NOT NULL,
-           price FLOAT NOT NULL
-       )
-       ```
+2. **Automatische Tabellenerstellung**
+   - Erkennt und erstellt automatisch alle in dem `table`-Verzeichnis definierten Tabellen
+   - Verwendet SQLAlchemy-Modelle zur Definition der Tabellenstruktur
+   - Verwaltet derzeit Tabellen wie:
+     - `users`: Speichert Benutzerinformationen mit E-Mail, Passwort und Name
+     - `autos`: Speichert Auto-Informationen mit Name und Leistung (PS)
+   - Keine manuelle SQL-Erstellung erforderlich - Tabellen werden aus Modelldefinitionen erstellt
 
-3. **Verwendung**
-   - Die Migration läuft automatisch beim Anwendungsstart
-   - Stellt sicher, dass das Datenbankschema aktuell ist
-   - Verhindert Fehler durch fehlende Tabellen
+3. **Migrationsfunktionen**
+   - Automatische Tabellenerkennung und -erstellung
+   - Spaltenänderungserkennung
+   - Migrationsstatusverfolgung
+   - Klare Fortschrittsindikatoren mit Emojis
+   - Detaillierte Migrationszusammenfassung
+   - Beispielausgabe:
+     ```
+     🚀 Datenbankmigration wird gestartet...
+     📝 Tabelle wird erstellt: users
+     📝 Tabelle wird erstellt: autos
+     
+     ✅ Tabellen erfolgreich erstellt:
+       - users
+       - autos
+     
+     === Migrationszusammenfassung ===
+     📦 Erstellte Tabellen:
+       ✓ users
+       ✓ autos
+     
+     ✨ Migrationsprozess abgeschlossen!
+     ```
 
-4. **Funktionen**
-   - Verwendet `CREATE TABLE IF NOT EXISTS` zur Vermeidung doppelter Tabellenerstellung
-   - Verwaltet Primärschlüssel mit Auto-Increment
-   - Erzwingt eindeutige Einschränkungen für E-Mail und Produktnamen
-   - Verwaltet erforderliche Felder mit NOT NULL Einschränkungen
+4. **Migrationsskript (migrate.py)**
+   Öffnen Sie einfach migrate.py im Stammverzeichnis und führen Sie es aus, oder schreiben Sie python migrate.py im Terminal im Projektstammverzeichnis!
+   
+   Funktionen:
+   - Automatische Tabellenerstellung aus Modelldefinitionen
+   - Schema-Versionsverfolgung
+   - Spaltenänderungserkennung
+   - Klare Fortschrittsindikatoren
+   - Migrationszusammenfassungsgenerierung
+   - Fehlerbehandlung mit beschreibenden Meldungen
+
+5. **Hauptvorteile**
+   - Kein manuelles SQL-Schreiben erforderlich
+   - Konsistentes Datenbankschema über Installationen hinweg
+   - Automatische Schemaaktualisierungen bei Modelländerungen
+   - Klare Rückmeldung während des Migrationsprozesses
+   - Fehlererkennung und -berichterstattung
+   - Sicherer Migrationsprozess mit Rollback-Unterstützung
 
 ### Datenbankverbindungsverwaltung (DBConnection.py)
 Die Datei `DBConnection.py` verwaltet Datenbankverbindungen mit SQLAlchemy ORM. Sie bietet:
@@ -192,7 +298,7 @@ Die Datei `DBConnection.py` verwaltet Datenbankverbindungen mit SQLAlchemy ORM. 
    ```
    - Standardkonfiguration verwendet SQLite-Datenbank
    - Unterstützt MySQL/MariaDB durch Verbindungsstring-Modifikation
-   - `echo=False` deaktiviert SQL-Abfragenprotokollierung für bessere Leistung
+   - `echo=False` deaktiviert SQL-Abfrageprotokollierung für bessere Leistung
 
 3. **Sitzungsverwaltung**
    ```python
@@ -202,62 +308,60 @@ Die Datei `DBConnection.py` verwaltet Datenbankverbindungen mit SQLAlchemy ORM. 
    - Verwaltet Datenbankverbindungen und Transaktionen
    - Bietet threadsicheren Datenbankzugriff
 
-4. **Hilfsmethoden**
-   - `create_all()`: Erstellt alle in Modellen definierten Datenbanktabellen
-   - `get_session()`: Gibt eine neue Datenbanksitzung für Operationen zurück
-
-5. **Datenbankunterstützung**
+4. **Datenbankunterstützung**
    - **SQLite** (Standard):
      ```python
      engine = create_engine("sqlite:///db.db")
      ```
    - **MySQL/MariaDB**:
      ```python
-     engine = create_engine("mysql+pymysql://username:password@localhost:3306/database_name")
+     engine = create_engine("mysql+pymysql://benutzername:passwort@localhost:3306/datenbankname")
      ```
 
-6. **Fehlerbehandlung**
-   - Fängt Datenbankverbindungsfehler ab und meldet sie
-   - Bietet klare Fehlermeldungen für die Fehlersuche
+5. **Fehlerbehandlung**
+   - Fängt und meldet Datenbankverbindungsfehler
+   - Bietet klare Fehlermeldungen zur Fehlerbehebung
 
-7. **Verwendung in Modellen**
+6. **Verwendung in Modellen**
    ```python
    from table.DBConnection import DBConnection
    
-   class YourModel:
+   class IhrModell:
        def __init__(self):
            self.Session = DBConnection.Session
    ```
 
-8. **Best Practices**
+7. **Beste Praktiken**
    - Verwendet Verbindungspooling für bessere Leistung
    - Implementiert ordnungsgemäße Sitzungsverwaltung
    - Unterstützt mehrere Datenbank-Backends
-   - Folgt SQLAlchemy Best Practices
+   - Folgt SQLAlchemy-Best-Practices
 
 ### MySQL-Unterstützung
 - Das Framework unterstützt auch MySQL-Datenbanken
 - Um MySQL zu verwenden, ändern Sie den Verbindungsstring in `table/DBConnection.py`:
   ```python
-  engine = create_engine("mysql+pymysql://username:password@localhost:3306/database_name")
+  engine = create_engine("mysql+pymysql://benutzername:passwort@localhost:3306/datenbankname")
   ```
 
 ## Fehlerbehandlung
-Das Framework enthält grundlegende Fehlerbehandlung für:
+Das Framework umfasst umfassende Fehlerbehandlung für:
 - Ungültige Eingabedaten
 - Datenbankoperationen
-- HTTP-Anfragenvalidierung
-- Nicht gefundene Ressourcen
+- HTTP-Anfragevalidierung
+- Ressource nicht gefunden
+- Datentypvalidierung
+- Fehlende erforderliche Felder
 
 ## Sicherheitshinweise
-1. Dies ist ein Lehr-Framework und nicht für Produktionsumgebungen empfohlen
-2. Passwort-Hashing wird mit bcrypt implementiert
+1. Dies ist ein Bildungs-Framework und wird nicht für den Produktionseinsatz empfohlen
+2. Passwort-Hashing ist mit bcrypt implementiert
 3. Grundlegende Eingabevalidierung wird durch FormatCheck.py bereitgestellt
-4. JWT-Authentifizierungsunterstützung ist über JWTManager.py verfügbar
-5. Kein integriertes Authentifizierungs-/Autorisierungssystem
+4. JWT-Authentifizierung ist über JWTManager.py verfügbar
+5. Kein eingebautes Authentifizierungs-/Autorisierungssystem
 
 ## Eingabevalidierung
-Das Framework enthält ein FormatCheck-Utility für die Validierung von Eingabedaten:
+Das Framework enthält ein FormatCheck-Utility zur Validierung von Eingabedaten:
 
 1. **E-Mail-Validierung**
    ```python
@@ -265,20 +369,20 @@ Das Framework enthält ein FormatCheck-Utility für die Validierung von Eingabed
    ```
    - Verwendet Regex-Muster: `^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-z]+$`
    - Validiert:
-     - Benutzername-Teil: Buchstaben, Zahlen, Punkte, Unterstriche, Pluszeichen, Bindestriche
-     - Domain-Teil: Buchstaben, Zahlen, Bindestriche
+     - Benutzernamenteil: Buchstaben, Zahlen, Punkte, Unterstriche, Pluszeichen, Bindestriche
+     - Domänenteil: Buchstaben, Zahlen, Bindestriche
      - TLD: Nur Buchstaben
-   - Rückgabewert: True wenn gültig, False sonst
+   - Gibt zurück: True wenn gültig, False sonst
 
 2. **Längenvalidierung**
    ```python
-   FormatCheck.minimumLength("password", 6)
+   FormatCheck.minimumLength("passwort", 6)
    ```
-   - Prüft, ob String die Mindestlängenanforderung erfüllt
+   - Überprüft, ob String die Mindestlänge erfüllt
    - Parameter:
      - input_string: zu validierender String
      - min_length: erforderliche Mindestlänge
-   - Rückgabewert: True wenn Länge >= min_length, False sonst
+   - Gibt zurück: True wenn Länge >= min_length, False sonst
 
 3. **Verwendungsbeispiele**
    ```python
@@ -286,11 +390,11 @@ Das Framework enthält ein FormatCheck-Utility für die Validierung von Eingabed
    if not FormatCheck.email(user_email):
        return Response.bad_request("Ungültiges E-Mail-Format")
 
-   # Passwort-Längenprüfung
-   if not FormatCheck.minimumLength(password, 6):
+   # Passwortlängenprüfung
+   if not FormatCheck.minimumLength(passwort, 6):
        return Response.bad_request("Passwort muss mindestens 6 Zeichen lang sein")
 
-   # Namen-Längenprüfung
+   # Namenslängenprüfung
    if not FormatCheck.minimumLength(name, 2):
        return Response.bad_request("Name muss mindestens 2 Zeichen lang sein")
    ```
@@ -302,36 +406,82 @@ Das Framework enthält ein FormatCheck-Utility für die Validierung von Eingabed
 
 ## Beispielverwendung
 
-### Neuen Benutzer erstellen
+### Neues Auto erstellen
 ```bash
-curl -X POST http://localhost:8001/user \
+curl -X POST http://localhost:8001/auto \
   -H "Content-Type: application/json" \
-  -d '{"email": "user@example.com", "password": "password123", "name": "John Doe"}'
+  -d '{"name": "Mercedes Benz", "ps": 750}'
 ```
 
-### Alle Benutzer abrufen
+### Alle Autos abrufen
 ```bash
-curl http://localhost:8001/user
+curl http://localhost:8001/auto
 ```
 
-### Spezifischen Benutzer abrufen
+### Spezifisches Auto abrufen
 ```bash
-curl http://localhost:8001/user/1
+curl http://localhost:8001/auto/1
 ```
 
-### Benutzer aktualisieren
+### Auto aktualisieren
 ```bash
-curl -X PUT http://localhost:8001/user \
+curl -X PUT http://localhost:8001/auto \
   -H "Content-Type: application/json" \
-  -d '{"id": 1, "name": "Aktualisierter Name"}'
+  -d '{"id": 1, "name": "Aktualisierter Name", "ps": 800}'
 ```
 
-### Benutzer löschen
+### Auto löschen
 ```bash
-curl -X DELETE http://localhost:8001/user \
+curl -X DELETE http://localhost:8001/auto \
   -H "Content-Type: application/json" \
   -d '{"id": 1}'
 ```
+
+## Postman-Sammlung
+Das Framework enthält eine Postman-Sammlung (`Micro Python.postman_collection.json`), die vorkonfigurierte Anfragen für Beispiel-API-Endpunkte enthält. Dies macht es einfach, die API zu testen, ohne curl-Befehle schreiben zu müssen.
+
+### Sammlung importieren
+1. Postman öffnen
+2. Auf den "Import"-Button in der oberen linken Ecke klicken
+3. Den "File"-Tab auswählen
+4. Auf "Upload Files" klicken und `Micro Python.postman_collection.json` auswählen
+5. Auf "Import" klicken
+
+### Sammlung verwenden
+Die Sammlung enthält folgende vorkonfigurierte Anfragen:
+
+#### Auto-Endpunkte
+- **GET /auto**: Alle Autos auflisten
+- **POST /auto**: Neues Auto erstellen
+  - Body: JSON mit `name` und `ps` Feldern
+- **PUT /auto**: Bestehendes Auto aktualisieren
+  - Body: JSON mit `id`, `name` und `ps` Feldern
+- **DELETE /auto**: Auto löschen
+  - Body: JSON mit `id` Feld
+
+### Sammlungsfunktionen
+- Vorkonfigurierte Header (Content-Type: application/json)
+- Beispielanfragekörper
+- Organisierte Ordnerstruktur
+- Umgebungsvariablen-Unterstützung
+- Dokumentation für jeden Endpunkt
+
+### Tipps für die Verwendung von Postman
+1. **Umgebung einrichten**
+   - Neue Umgebung erstellen
+   - Variable `base_url` mit Wert `http://localhost:8001` hinzufügen
+   - `{{base_url}}` in Anfrage-URLs verwenden
+
+2. **Testworkflow**
+   - Mit GET-Anfragen beginnen, um Daten anzuzeigen
+   - POST zum Erstellen neuer Einträge verwenden
+   - PUT zum Ändern bestehender Einträge verwenden
+   - DELETE zum Entfernen von Einträgen verwenden
+
+3. **Antwortbehandlung**
+   - Statuscodes überprüfen
+   - Formatierte JSON-Antworten anzeigen
+   - Postman-Testskripte für Automatisierung verwenden
 
 ## Entwicklungsrichtlinien
 
@@ -347,12 +497,12 @@ curl -X DELETE http://localhost:8001/user \
 4. Datenbankoperationen implementieren
 
 ## Einschränkungen
-1. Kein integriertes Authentifizierungssystem
+1. Kein eingebautes Authentifizierungssystem
 2. Begrenzte Fehlerbehandlung
 3. Grundlegende Eingabevalidierung
-4. Keine Anfragenratenbegrenzung
-5. Kein integriertes Logging-System
-6. Kein integriertes Caching-Mechanismus
+4. Keine Anfrage-Ratenbegrenzung
+5. Kein eingebautes Protokollierungssystem
+6. Kein eingebauter Caching-Mechanismus
 
 ## Best Practices
 1. Immer virtuelle Umgebung verwenden
@@ -360,56 +510,61 @@ curl -X DELETE http://localhost:8001/user \
 3. Eingabedaten vor der Verarbeitung validieren
 4. Datenbankfehler angemessen behandeln
 5. Geeignete HTTP-Statuscodes in Antworten verwenden
+6. Konsistenten Fehlerbehandlungsmustern folgen
+7. Typ-Hinweise für bessere Code-Klarheit verwenden
+8. API-Endpunkte und ihre Anforderungen dokumentieren
 
 ## Fehlerbehebung
-1. Wenn Datenbankverbindung fehlschlägt:
-   - Prüfen Sie, ob die Datenbankdatei existiert
-   - Überprüfen Sie die Datenbankanmeldedaten (bei MySQL)
-   - Überprüfen Sie die Datenbankberechtigungen
+1. Bei Datenbankverbindungsfehlern:
+   - Überprüfen, ob Datenbankdatei existiert
+   - Datenbankanmeldedaten überprüfen (bei MySQL)
+   - Datenbankberechtigungen überprüfen
 
-2. Wenn Server nicht startet:
-   - Prüfen Sie, ob Port 8001 verfügbar ist
-   - Überprüfen Sie, ob alle Abhängigkeiten installiert sind
-   - Überprüfen Sie die Python-Versionskompatibilität
+2. Bei Serverstartfehlern:
+   - Überprüfen, ob Port 8001 verfügbar ist
+   - Überprüfen, ob alle Abhängigkeiten installiert sind
+   - Python-Version-Kompatibilität überprüfen
 
-3. Wenn Anfragen fehlschlagen:
-   - Überprüfen Sie das Anfrageformat
-   - Überprüfen Sie die Eingabevalidierungsregeln
-   - Stellen Sie sicher, dass die richtige HTTP-Methode verwendet wird
+3. Bei Anfragefehlern:
+   - Anfrageformat überprüfen
+   - Eingabevalidierungsregeln überprüfen
+   - Sicherstellen, dass die richtige HTTP-Methode verwendet wird
+   - Überprüfen, ob der Content-Type-Header korrekt gesetzt ist
+   - Überprüfen, ob erforderliche Felder bereitgestellt wurden
 
-## HTTP-Anfragen-Lebenszyklus
+## HTTP-Anfragelebenszyklus
 
-### Allgemeiner Anfragenfluss
+### Allgemeiner Anfragefluss
 ```mermaid
 graph TD
     A[Client-Anfrage] --> B[HttpHandler]
-    B --> C{Anfragenvalidierung}
-    C -->|Gültig| D[Route zum Controller]
-    C -->|Ungültig| E[400 Fehler zurückgeben]
+    B --> C{Anfragevalidierung}
+    C -->|Gültig| D[An Controller weiterleiten]
+    C -->|Ungültig| E[400-Fehler zurückgeben]
     D --> F[Controller-Methode ausführen]
-    F --> G[Modell-Operationen verarbeiten]
+    F --> G[Model-Operationen verarbeiten]
     G --> H[Datenbankoperationen]
     H --> I[Antwort formatieren]
     I --> J[Antwort an Client senden]
 ```
 
-### Benutzererstellung-Fluss
+### Benutzererstellungsfluss
 ```mermaid
 sequenceDiagram
     participant Client
     participant HttpHandler
     participant UserController
     participant UserModel
-    participant Database
+    participant Datenbank
 
     Client->>HttpHandler: POST /user
     Note over HttpHandler: Anfrage validieren
-    HttpHandler->>UserController: Route zum Controller
+    HttpHandler->>UserController: An Controller weiterleiten
     UserController->>UserModel: create()
     UserModel->>UserModel: E-Mail validieren
     UserModel->>UserModel: Passwort hashen
-    UserModel->>Database: INSERT Abfrage
-    Database-->>UserModel: Erfolg
+    UserModel->>Datenbank: INSERT-Abfrage
+    Datenbank-->>UserModel: Erfolg
     UserModel-->>UserController: Erfolg
     UserController-->>HttpHandler: 200 OK
     HttpHandler-->>Client: Antwort
@@ -421,8 +576,8 @@ graph TD
     A[Fehler tritt auf] --> B{Fehlertyp}
     B -->|Validierung| C[Validierungsfehler formatieren]
     B -->|Datenbank| D[Datenbankfehler formatieren]
-    B -->|Nicht gefunden| E[404 Fehler formatieren]
-    C --> F[Fehler-Statuscode setzen]
+    B -->|Nicht gefunden| E[404-Fehler formatieren]
+    C --> F[Fehlerstatuscode setzen]
     D --> F
     E --> F
     F --> G[Fehlerantwort senden]
@@ -431,307 +586,113 @@ graph TD
 ### Komponenteninteraktion
 ```mermaid
 graph LR
-    A[HttpHandler] -->|Routet| B[Controller]
+    A[HttpHandler] -->|Weiterleiten| B[Controller]
     B -->|Verwendet| C[Modelle]
     C -->|Interagiert| D[Datenbank]
-    B -->|Implementiert| E[IController Schnittstelle]
-    C -->|Implementiert| F[IModel Schnittstelle]
+    B -->|Implementiert| E[IController-Schnittstelle]
+    C -->|Implementiert| F[IModel-Schnittstelle]
     D -->|Verwaltet von| G[DBConnection]
     D -->|Schema von| H[DBMigrate]
 ```
 
-## Antwortverarbeitung
+## Antwortformat
+Alle API-Antworten folgen einem konsistenten Format:
 
-### Response-Klasse (helper/Response.py)
-Die `Response`-Klasse bietet eine standardisierte Möglichkeit zur Formatierung von API-Antworten. Sie gewährleistet eine konsistente Antwortstruktur über alle Endpunkte hinweg.
-
-#### Antwortstruktur
+### Erfolgsantwort
 ```json
 {
-    "status_code": 200,      // HTTP-Statuscode
-    "status": "success",     // "success" oder "error"
-    "message": {}            // Antwortdaten oder Fehlermeldung
+    "status_code": 200,
+    "status": "success",
+    "message": {
+        // Antwortdaten
+    }
 }
 ```
 
-#### Verfügbare Methoden
+### Fehlerantwort
+```json
+{
+    "status_code": 400,
+    "status": "error",
+    "message": "Fehlerbeschreibung"
+}
+```
 
-1. **Basis-Antwortmethode**
-   ```python
-   @staticmethod
-   def response(status_code, data)
+## VS Code-Integration
+Das Framework enthält VS Code-Integrationsfunktionen:
+1. Benutzerdefinierte Snippets für schnelle Codegenerierung
+2. IntelliSense-Unterstützung für Framework-Komponenten
+3. Empfohlene Erweiterungen für Python-Entwicklung
+4. Automatische Codeformatierung mit Black
+5. Linting mit Pylint
+6. Importorganisation
+7. Dokumentationsgenerierungsunterstützung
+
+## KI-Assistent Funktionen
+
+Das Framework enthält einen intelligenten Code-Assistenten, der Ihnen bei folgenden Aufgaben hilft:
+- Generierung von CRUD-Endpunkten
+- Bereitstellung von Code-Vorschlägen
+- Generierung von Dokumentation
+- Analyse Ihres Codebestands
+
+### Erste Schritte mit dem KI-Assistenten
+
+1. **KI-Assistent Demo ausführen**
+   Führen Sie einfach die Datei `ai.py` in Ihrem Terminal aus:
+   ```bash
+   python ai.py
    ```
-   - Erstellt ein standardisiertes Antwortobjekt
-   - Bestimmt automatisch den Status basierend auf dem Statuscode
-   - Statuscodes >= 400 werden als "error" markiert
-   - Statuscodes < 400 werden als "success" markiert
+   Dies zeigt Ihnen Beispiele für die Funktionalitäten des Assistenten:
+   - Generierung von CRUD-Endpunkten für eine "Product"-Ressource
+   - Anzeige von Code-Vorschlägen für UserController
+   - Generierung von Dokumentation für Controller
 
-2. **Erfolgsantwort**
+2. **Verständnis der Demo-Ausgabe**
+   Wenn Sie `ai.py` ausführen, sehen Sie:
+   - Die Ergebnisse der Codebestandsanalyse
+   - Generierte CRUD-Endpunkte für eine Beispiel-Ressource
+   - Code-Vorschläge für häufige Aufgaben
+   - Generierte Dokumentationsbeispiele
+
+3. **Verwendung des generierten Codes**
+   Die Demo generiert vollständige Codebeispiele, die Sie:
+   - In Ihren eigenen Controllern kopieren und verwenden können
+   - Als Vorlagen für neue Ressourcen nutzen können
+   - Zum Verständnis der Framework-Muster studieren können
+
+4. **Generierung von Dokumentation**
+   Sie können auch Dokumentation für spezifische Komponenten generieren:
    ```python
-   @staticmethod
-   def success(data)
-   ```
-   - Gibt eine 200 OK Antwort zurück
-   - Wird für erfolgreiche Operationen verwendet
-   - Beispiel:
-     ```python
-     Response.success({"user": "created"})
-     # Gibt zurück:
-     # {
-     #     "status_code": 200,
-     #     "status": "success",
-     #     "message": {"user": "created"}
-     # }
-     ```
-
-3. **Ungültige Anfrage-Antwort**
-   ```python
-   @staticmethod
-   def bad_request(message)
-   ```
-   - Gibt eine 400 Bad Request Antwort zurück
-   - Wird für Validierungsfehler oder ungültige Eingaben verwendet
-   - Beispiel:
-     ```python
-     Response.bad_request("Ungültiges E-Mail-Format")
-     # Gibt zurück:
-     # {
-     #     "status_code": 400,
-     #     "status": "error",
-     #     "message": "Ungültiges E-Mail-Format"
-     # }
-     ```
-
-4. **Nicht autorisierte Antwort**
-   ```python
-   @staticmethod
-   def unauthorized(message)
-   ```
-   - Gibt eine 401 Unauthorized Antwort zurück
-   - Wird für Authentifizierungsfehler verwendet
-   - Beispiel:
-     ```python
-     Response.unauthorized("Ungültige Anmeldedaten")
-     # Gibt zurück:
-     # {
-     #     "status_code": 401,
-     #     "status": "error",
-     #     "message": "Ungültige Anmeldedaten"
-     # }
-     ```
-
-5. **Interner Fehler-Antwort**
-   ```python
-   @staticmethod
-   def internal_error(message)
-   ```
-   - Gibt eine 500 Internal Server Error Antwort zurück
-   - Wird für serverseitige Fehler verwendet
-   - Beispiel:
-     ```python
-     Response.internal_error("Datenbankverbindung fehlgeschlagen")
-     # Gibt zurück:
-     # {
-     #     "status_code": 500,
-     #     "status": "error",
-     #     "message": "Datenbankverbindung fehlgeschlagen"
-     # }
-     ```
-
-#### Verwendungsbeispiele
-
-1. **In Controllern**
-   ```python
-   def post(self, data):
-       try:
-           # Daten verarbeiten
-           return Response.success({"message": "Erfolgreich erstellt"})
-       except ValidationError:
-           return Response.bad_request("Ungültige Eingabe")
-       except Exception:
-           return Response.internal_error("Serverfehler")
+   # Beispiel: Generierung von Dokumentation für Controller
+   docs = assistant.generate_documentation("controller")
+   print(docs)
    ```
 
-2. **Fehlerbehandlung**
-   ```python
-   if not user_data:
-       return Response.bad_request("Benutzer nicht gefunden")
-   ```
+### Wichtige Hinweise
+- Der Assistent analysiert Ihren Codebestand, um kontextbezogene Vorschläge zu liefern
+- Generierter Code sollte überprüft und an Ihre spezifischen Bedürfnisse angepasst werden
+- Der Assistent ist für Bildungszwecke konzipiert und deckt möglicherweise nicht alle Randfälle ab
+- Testen Sie generierten Code immer, bevor Sie ihn in der Produktion verwenden
 
-3. **Erfolgsantwort**
-   ```python
-   return Response.success({
-       "user": {
-           "id": 1,
-           "name": "John Doe",
-           "email": "john@example.com"
-       }
-   })
-   ```
+### Beispiel-Workflow
+1. Führen Sie `python ai.py` aus, um Beispiele zu sehen
+2. Überprüfen Sie den generierten Code und die Dokumentation
+3. Nutzen Sie die gezeigten Muster, um eigene Ressourcen zu erstellen
+4. Holen Sie sich bei Bedarf Code-Vorschläge
+5. Generieren Sie Dokumentation für Ihren Code
+6. Überprüfen und passen Sie den generierten Code an
+7. Testen Sie Ihre Implementierung
 
-#### Best Practices
-1. Immer die Response-Klasse für konsistente API-Antworten verwenden
-2. Geeignete Statuscodes für verschiedene Szenarien verwenden
-3. Klare und beschreibende Fehlermeldungen bereitstellen
-4. Konsistente Antwortdatenstruktur beibehalten
-5. success() für erfolgreiche Operationen verwenden
-6. Spezifische Fehlermethoden (bad_request, unauthorized, internal_error) für verschiedene Fehlertypen verwenden
-
-## Authentifizierung
-
-### JWT-Authentifizierung (helper/JWTManager.py)
-Das Framework enthält JWT (JSON Web Token) Unterstützung für die Authentifizierung:
-
-1. **Token-Erstellung**
-   ```python
-   jwt_manager = JWTManager()
-   token = jwt_manager.create({"user_id": 123, "role": "admin"})
-   ```
-   - Erstellt JWT-Token mit Ablaufzeit
-   - Standardablaufzeit: 60 Minuten
-   - Verwendet HS256-Algorithmus
-   - Fügt automatisch Ablaufzeitstempel hinzu
-
-2. **Token-Überprüfung**
-   ```python
-   decoded = jwt_manager.verify(token)
-   if decoded:
-       # Token ist gültig
-       user_data = decoded
-   else:
-       # Token ist ungültig oder abgelaufen
-   ```
-   - Überprüft Token-Gültigkeit
-   - Prüft Ablaufzeit
-   - Gibt dekodierte Nutzdaten oder False zurück
-
-3. **Konfiguration**
-   ```python
-   self.__secret_key = "ihr-geheimer-schlüssel"
-   self.__algorithm = "HS256"
-   self.__expiration_minutes = 60
-   ```
-   - Konfigurierbarer geheimer Schlüssel
-   - Konfigurierbarer Algorithmus
-   - Konfigurierbare Ablaufzeit
-
-4. **Verwendungsbeispiel**
-   ```python
-   # Token erstellen
-   jwt_manager = JWTManager()
-   user_data = {"user_id": 123, "role": "admin"}
-   token = jwt_manager.create(user_data)
-
-   # Token überprüfen
-   decoded = jwt_manager.verify(token)
-   if decoded:
-       print("Dekodierte Daten:", decoded)
-   ```
-
-5. **Sicherheitshinweise**
-   - Geheimer Schlüssel sollte in Umgebungsvariablen gespeichert werden
-   - Token laufen nach 60 Minuten standardmäßig ab
-   - Verwendet branchenüblichen HS256-Algorithmus
-   - Behandelt Token-Ablauf ordnungsgemäß 
-
-## Postman-Sammlung
-Das Framework enthält eine Postman-Sammlung (`Micro Python.postman_collection.json`) mit vorkonfigurierten Anfragen für die Beispiel-API-Endpunkte. Dies erleichtert das Testen der API ohne curl-Befehle schreiben zu müssen.
-
-### Sammlung importieren
-1. Öffnen Sie Postman
-2. Klicken Sie auf die "Import"-Schaltfläche in der oberen linken Ecke
-3. Wählen Sie den "File"-Tab
-4. Klicken Sie auf "Upload Files" und wählen Sie `Micro Python.postman_collection.json`
-5. Klicken Sie auf "Import"
-
-### Sammlung verwenden
-Die Sammlung enthält folgende vorkonfigurierte Anfragen:
-
-#### Auto-Endpunkte
-- **GET /auto**: Liste aller Autos
-- **POST /auto**: Neues Auto erstellen
-  - Body: JSON mit Feldern `name` und `ps`
-- **PUT /auto**: Auto aktualisieren
-  - Body: JSON mit Feldern `id`, `name` und `ps`
-- **DELETE /auto**: Auto löschen
-  - Body: JSON mit Feld `id`
-
-### Sammlungsfunktionen
-- Vorkonfigurierte Header (Content-Type: application/json)
-- Beispielanfrage-Bodies
-- Organisierte Ordnerstruktur
-- Umgebungsvariablen-Unterstützung
-- Dokumentation für jeden Endpunkt
-
-### Postman-Tipps
-1. **Umgebung einrichten**
-   - Neue Umgebung erstellen
-   - Variable `base_url` mit Wert `http://localhost:8001` hinzufügen
-   - `{{base_url}}` in Anfrage-URLs verwenden
-
-2. **Test-Workflow**
-   - Mit GET-Anfragen beginnen, um Daten anzuzeigen
-   - POST für neue Einträge verwenden
-   - PUT für bestehende Einträge verwenden
-   - DELETE für Einträge entfernen
-
-3. **Antwortverarbeitung**
-   - Statuscodes überprüfen
-   - Formatierte JSON-Antworten anzeigen
-   - Postman-Testskripte für Automatisierung verwenden
-
-## KI-Assistent-Funktionen
-Das Framework enthält einen intelligenten Code-Assistenten (`CodeAssistant.py`), der bei der Code-Generierung und -Analyse hilft. Der Assistent kann über `ai_assistant_usage.py` verwendet werden.
-
-> ⚠️ **Wichtiger Hinweis für Anfänger**: Der KI-Assistent ist ein Entwicklungswerkzeug, und generierter Code sollte vor der Verwendung sorgfältig überprüft werden. Immer:
-> - Generierten Code gründlich testen
-> - Alle Importe validieren
-> - Methodennamen mit Framework-Konventionen abgleichen
-> - Fehlerbehandlung mit Framework-Mustern abgleichen
-> - Antwortformate validieren
-
-### Hauptfunktionen
-1. **Code-Analyse**
-   - Projektstruktur- und Musteranalyse
-   - Komponentenbeziehungen identifizieren
-   - VS Code-Snippets basierend auf Mustern generieren
-   - Kontextbasierte Code-Vorschläge
-
-2. **CRUD-Endpunkt-Generierung**
-   - Automatische Generierung vollständiger CRUD-Endpunkte
-   - Controller-, Model- und Tabellendateien erstellen
-   - Konsistente Muster über Codebase hinweg
-   - Verwendungsbeispiel:
-     ```python
-     # CRUD-Endpunkte für neue Ressource generieren
-     product_endpoints = assistant.generate_crud_endpoints("Product")
-     ```
-
-3. **Code-Vorschläge**
-   - Kontextbasierte Code-Vorschläge
-   - Verbesserungsvorschläge basierend auf Mustern
-   - Verwendungsbeispiel:
-     ```python
-     # Vorschläge für Controller-Methode erhalten
-     suggestions = assistant.suggest_code(context, "UserController.py")
-     ```
-
-4. **Dokumentationsgenerierung**
-   - Dokumentation basierend auf Code-Mustern generieren
-   - API-Dokumentation erstellen
-   - Verwendungsbeispiel:
-     ```python
-     # Dokumentation für Controller generieren
-     controller_docs = assistant.generate_documentation("controller")
-     ```
+Denken Sie daran: Dies ist ein Bildungs-Framework. Überprüfen Sie generierten Code immer und verstehen Sie, was er tut, bevor Sie ihn in Ihrem Projekt verwenden.
 
 ## Eine Nachricht vom Entwickler
 
-Vielen Dank, dass Sie sich die Zeit genommen haben, dieses Bildungs-Framework zu erkunden! Ich habe dieses Projekt entwickelt, um Anfängern das Verständnis der grundlegenden Konzepte der Webentwicklung und Python-Programmierung zu erleichtern.
+Vielen Dank, dass Sie sich die Zeit nehmen, dieses Bildungs-Framework zu erkunden! Ich habe dieses Projekt erstellt, um Anfängern zu helfen, die grundlegenden Konzepte der Webentwicklung und Python-Programmierung zu verstehen.
 
-Ich hoffe, dieses Framework dient als hilfreicher Schritt in Ihrer Lernreise. Denken Sie daran, dass jeder Experte einmal ein Anfänger war und dass der Schlüssel zum Beherrschen der Programmierung in kontinuierlicher Praxis und Neugier liegt.
+Ich hoffe, dieses Framework dient als hilfreicher Schritt in Ihrer Lernreise. Denken Sie daran, dass jeder Experte einmal ein Anfänger war, und der Schlüssel zum Beherrschen der Programmierung ist kontinuierliche Praxis und Neugier.
 
-Alles Gute für Ihre Lernreise!
+Viel Erfolg auf Ihrer Lernreise!
 
 Ali Khorsandfard
-Entwickler und Pädagoge
+Entwickler & Pädagoge
