@@ -1,7 +1,26 @@
 # Micro Python Framework Documentation
 
 ## Overview
-This is a minimal micro-framework designed for learning the fundamentals of Python and RESTful API development. It implements a simple MVC (Model-View-Controller) architecture and provides basic RESTful API functionality.
+This is a minimal micro-framework designed **exclusively for educational purposes** to help beginners understand the fundamentals of Python and RESTful API development. It implements a simple MVC (Model-View-Controller) architecture and provides basic RESTful API functionality.
+
+> ⚠️ **Important Note**: This framework is **NOT suitable for production use**. It is designed solely as a learning tool to help you understand:
+> - How frameworks like Django and FastAPI work under the hood
+> - Python OOP principles and design patterns
+> - Layered architecture and separation of concerns
+> - Basic REST API principles and HTTP request handling
+> - Database operations and ORM concepts
+> - Basic MVC architecture implementation
+
+> ⚠️ **Security Warning**: This framework has **minimal security implementations** and should never be used in production environments. It lacks:
+> - Proper authentication and authorization
+> - Input sanitization
+> - CSRF protection
+> - Rate limiting
+> - Production-grade error handling
+> - Security headers
+> - And many other essential security features
+
+This framework serves as an excellent first step for learning REST API principles and understanding how web frameworks are structured, but it should be treated as a learning tool rather than a production-ready solution.
 
 ## Prerequisites
 - Python 3.13.2 or higher
