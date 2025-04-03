@@ -7,42 +7,142 @@ This is a minimal micro-framework designed for learning the fundamentals of Pyth
 - Python 3.13.2 or higher
 - Virtual environment (recommended)
 
-## Installation
+## Virtual Environment
+Using a virtual environment is **crucial** for Python development. Here's why and how to use it:
+
+### Why Use Virtual Environment?
+1. **Isolation**: Each project gets its own isolated Python environment
+   - Prevents conflicts between project dependencies
+   - Avoids system-wide Python package pollution
+   - Makes projects reproducible across different machines
+
+2. **Dependency Management**:
+   - Clear separation of project dependencies
+   - Easy to track and install required packages
+   - Simple to export requirements with exact versions
+
+3. **Project Portability**:
+   - Projects can be easily shared with others
+   - No interference with system Python installation
+   - Consistent environment across development team
+
+### Setting Up Virtual Environment
+
+1. **Windows**
+   ```bash
+   # Create virtual environment
+   python -m venv venv
+
+   # Activate virtual environment
+   .\venv\Scripts\activate
+
+   # Verify activation (should show virtual environment path)
+   where python
+   ```
+
+2. **Linux/Mac**
+   ```bash
+   # Create virtual environment
+   python -m venv venv
+
+   # Activate virtual environment
+   source venv/bin/activate
+
+   # Verify activation (should show virtual environment path)
+   which python
+   ```
+
+3. **Deactivation** (All Platforms)
+   ```bash
+   deactivate
+   ```
+
+### Best Practices
+1. **Always activate** the virtual environment before:
+   - Installing packages
+   - Running the application
+   - Running migrations
+   - Executing tests
+
+2. **Never commit** virtual environment directory:
+   - Add `venv/` to your `.gitignore`
+   - Only commit `requirements.txt`
+
+3. **Maintain requirements**:
+   ```bash
+   # After installing new packages, update requirements.txt
+   pip freeze > requirements.txt
+   ```
+
+4. **Project Setup**:
+   ```bash
+   # Create and activate virtual environment
+   python -m venv venv
+   source venv/bin/activate  # or .\venv\Scripts\activate on Windows
+
+   # Install dependencies
+   pip install -r requirements.txt
+
+   # Run database migration
+   python migrate.py
+
+   # Start the application
+   python app.py
+   ```
+
+### Troubleshooting Virtual Environment
+1. **Virtual environment not activating**:
+   - Check Python installation
+   - Ensure execution policy allows scripts (Windows)
+   - Try creating a new virtual environment
+
+2. **Package installation fails**:
+   - Verify virtual environment is activated
+   - Check internet connection
+   - Update pip: `python -m pip install --upgrade pip`
+
+3. **Wrong Python version**:
+   - Delete the virtual environment
+   - Create new one with correct Python version
+   - Reinstall dependencies
+
+## Installation and Setup
 
 1. Clone the repository:
-```bash
-git clone <repository-url>
-cd micro_py_framework
-```
+   ```bash
+   git clone <repository-url>
+   cd micro_py_framework
+   ```
 
-2. Create and activate a virtual environment:
-```bash
-# Windows
-python -m venv venv
-.\venv\Scripts\activate
+2. Follow the virtual environment setup and activation steps from the Virtual Environment section above.
 
-# Linux/Mac
-python -m venv venv
-source venv/bin/activate
-```
+3. Install dependencies and set up the application:
+   ```bash
+   # Install dependencies
+   pip install -r requirements.txt
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+   # Run database migration
+   python migrate.py
+
+   # Start the application
+   python app.py   # Server will start on port 8001
+   ```
 
 ## Project Structure
 ```
 micro_py_framework/
 ├── app.py                 # Main application entry point
 ├── controller/            # Controllers directory
-│   └── UserController.py  # User-related operations
+│   ├── UserController.py  # User-related operations
+│   └── AutoController.py  # Auto-related operations
 ├── model/                # Models directory
-│   └── UserModel.py      # User data operations
+│   ├── UserModel.py      # User data operations
+│   └── AutoModel.py      # Auto data operations
 ├── table/                # Database tables
 │   ├── DBConnection.py   # Database connection management
 │   ├── DBMigrate.py      # Database migration and schema
-│   └── UserTable.py      # User table schema
+│   ├── UserTable.py      # User table schema
+│   └── AutoTable.py      # Auto table schema
 ├── interface/            # Interfaces directory
 │   └── IController.py    # Controller interface
 └── helper/              # Helper utilities
@@ -51,14 +151,8 @@ micro_py_framework/
     ├── JWTManager.py     # JWT authentication
     ├── FormatCheck.py    # Input validation
     ├── CodeAssistant.py  # AI-powered code generation
-    └── ai_assistant_usage.py  # AI Assistant usage examples
+    └── DatabaseMigration.py  # Database migration helper
 ```
-
-## Running the Application
-```bash
-python app.py
-```
-The server will start on port 8001 by default.
 
 ## API Endpoints
 
@@ -107,12 +201,60 @@ The server will start on port 8001 by default.
      ```
    - Response: Success message or error details
 
+### Auto Controller Endpoints
+
+1. **Create Auto**
+   - Method: POST
+   - URL: `/auto`
+   - Request Body:
+     ```json
+     {
+         "name": "Mercedes Benz",
+         "ps": 750
+     }
+     ```
+   - Response: Success message or error details
+
+2. **Get Auto(s)**
+   - Method: GET
+   - URL: `/auto` (list all autos)
+   - URL: `/auto/{id}` (get specific auto)
+   - Response: Auto data or error message
+
+3. **Update Auto**
+   - Method: PUT
+   - URL: `/auto`
+   - Request Body:
+     ```json
+     {
+         "id": 1,
+         "name": "Updated Name",
+         "ps": 800
+     }
+     ```
+   - Response: Updated auto data or error message
+
+4. **Delete Auto**
+   - Method: DELETE
+   - URL: `/auto`
+   - Request Body:
+     ```json
+     {
+         "id": 1
+     }
+     ```
+   - Response: Success message or error details
+
 ## Data Validation
 
 ### User Data Validation Rules
 - Email: Must follow standard email format
 - Password: Minimum 6 characters
 - Name: Minimum 2 characters
+
+### Auto Data Validation Rules
+- Name: Minimum 2 characters
+- PS (horsepower): Must be a positive integer
 
 ## Database
 
@@ -121,8 +263,8 @@ The server will start on port 8001 by default.
 - Database file: `db.db`
 - Tables are automatically created on first run
 
-### Database Migration (DBMigrate.py)
-The `DBMigrate.py` file is responsible for database initialization and table creation. It handles:
+### Database Migration (DatabaseMigration.py)
+The `DatabaseMigration.py` file is responsible for database initialization and table creation. It handles:
 
 1. **Database Connection**
    - Creates a connection to SQLite database (`db.db`)
@@ -130,7 +272,7 @@ The `DBMigrate.py` file is responsible for database initialization and table cre
 
 2. **Table Creation**
    - Automatically creates required tables if they don't exist
-   - Currently manages two tables:
+   - Currently manages three tables:
      - `users` table:
        ```sql
        CREATE TABLE users(
@@ -140,26 +282,56 @@ The `DBMigrate.py` file is responsible for database initialization and table cre
            name TEXT NOT NULL
        )
        ```
-     - `products` table:
+     - `autos` table:
        ```sql
-       CREATE TABLE products(
+       CREATE TABLE autos(
            id INTEGER PRIMARY KEY AUTOINCREMENT,
-           name TEXT NOT NULL UNIQUE,
-           category TEXT NOT NULL,
-           price FLOAT NOT NULL
+           name TEXT NOT NULL,
+           ps INTEGER NOT NULL
        )
        ```
 
 3. **Usage**
    - The migration runs automatically when the application starts
+   - Can also be run manually using the migration script:
+     ```bash
+     python migrate.py
+     ```
+   - The migration script provides clear status updates:
+     ```
+     🚀 Starting database migration...
+     ✓ No new tables needed to be created.
+     ✨ Migration process completed!
+     ```
    - Ensures database schema is up-to-date
    - Prevents errors from missing tables
 
 4. **Features**
    - Uses `CREATE TABLE IF NOT EXISTS` to prevent duplicate table creation
    - Handles primary keys with auto-increment
-   - Enforces unique constraints on email and product names
-   - Manages required fields with NOT NULL constraints
+   - Enforces NOT NULL constraints on required fields
+   - Provides clear migration status messages with emojis
+   - Supports column change detection
+
+5. **Migration Script (migrate.py)**
+   The framework includes a dedicated migration script that can be run independently:
+   ```python
+   from helper.DatabaseMigration import DatabaseMigration
+
+   def main():
+       print("Starting database migration...")
+       migrator = DatabaseMigration()
+       migrator.migrate()
+
+   if __name__ == "__main__":
+       main()
+   ```
+   This script:
+   - Can be run at any time to ensure database schema is up to date
+   - Shows clear progress with emoji indicators
+   - Creates missing tables if needed
+   - Checks for column changes in existing tables
+   - Provides a summary of all migration actions
 
 ### Database Connection Management (DBConnection.py)
 The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It provides:
@@ -226,11 +398,13 @@ The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It
   ```
 
 ## Error Handling
-The framework includes basic error handling for:
+The framework includes comprehensive error handling for:
 - Invalid input data
 - Database operations
 - HTTP request validation
 - Resource not found
+- Data type validation
+- Missing required fields
 
 ## Security Notes
 1. This is an educational framework and is not recommended for production use
@@ -285,33 +459,33 @@ The framework includes a FormatCheck utility for validating input data:
 
 ## Example Usage
 
-### Creating a New User
+### Creating a New Auto
 ```bash
-curl -X POST http://localhost:8001/user \
+curl -X POST http://localhost:8001/auto \
   -H "Content-Type: application/json" \
-  -d '{"email": "user@example.com", "password": "password123", "name": "John Doe"}'
+  -d '{"name": "Mercedes Benz", "ps": 750}'
 ```
 
-### Getting All Users
+### Getting All Autos
 ```bash
-curl http://localhost:8001/user
+curl http://localhost:8001/auto
 ```
 
-### Getting a Specific User
+### Getting a Specific Auto
 ```bash
-curl http://localhost:8001/user/1
+curl http://localhost:8001/auto/1
 ```
 
-### Updating a User
+### Updating an Auto
 ```bash
-curl -X PUT http://localhost:8001/user \
+curl -X PUT http://localhost:8001/auto \
   -H "Content-Type: application/json" \
-  -d '{"id": 1, "name": "Updated Name"}'
+  -d '{"id": 1, "name": "Updated Name", "ps": 800}'
 ```
 
-### Deleting a User
+### Deleting an Auto
 ```bash
-curl -X DELETE http://localhost:8001/user \
+curl -X DELETE http://localhost:8001/auto \
   -H "Content-Type: application/json" \
   -d '{"id": 1}'
 ```
@@ -343,6 +517,9 @@ curl -X DELETE http://localhost:8001/user \
 3. Validate input data before processing
 4. Handle database errors appropriately
 5. Use proper HTTP status codes in responses
+6. Follow consistent error handling patterns
+7. Use type hints for better code clarity
+8. Document API endpoints and their requirements
 
 ## Troubleshooting
 1. If database connection fails:
@@ -359,348 +536,38 @@ curl -X DELETE http://localhost:8001/user \
    - Verify request format
    - Check input validation rules
    - Ensure proper HTTP method is used
+   - Verify content-type header is set correctly
+   - Check if required fields are provided
 
-## HTTP Request Lifecycle
+## Response Format
+All API responses follow a consistent format:
 
-### General Request Flow
-```mermaid
-graph TD
-    A[Client Request] --> B[HttpHandler]
-    B --> C{Request Validation}
-    C -->|Valid| D[Route to Controller]
-    C -->|Invalid| E[Return 400 Error]
-    D --> F[Execute Controller Method]
-    F --> G[Process Model Operations]
-    G --> H[Database Operations]
-    H --> I[Format Response]
-    I --> J[Send Response to Client]
-```
-
-### User Creation Flow
-```mermaid
-sequenceDiagram
-    participant Client
-    participant HttpHandler
-    participant UserController
-    participant UserModel
-    participant Database
-
-    Client->>HttpHandler: POST /user
-    Note over HttpHandler: Validate Request
-    HttpHandler->>UserController: Route to Controller
-    UserController->>UserModel: create()
-    UserModel->>UserModel: Validate Email
-    UserModel->>UserModel: Hash Password
-    UserModel->>Database: INSERT Query
-    Database-->>UserModel: Success
-    UserModel-->>UserController: Success
-    UserController-->>HttpHandler: 200 OK
-    HttpHandler-->>Client: Response
-```
-
-### Error Handling Flow
-```mermaid
-graph TD
-    A[Error Occurs] --> B{Error Type}
-    B -->|Validation| C[Format Validation Error]
-    B -->|Database| D[Format Database Error]
-    B -->|Not Found| E[Format 404 Error]
-    C --> F[Set Error Status Code]
-    D --> F
-    E --> F
-    F --> G[Send Error Response]
-```
-
-### Component Interaction
-```mermaid
-graph LR
-    A[HttpHandler] -->|Routes| B[Controllers]
-    B -->|Uses| C[Models]
-    C -->|Interacts| D[Database]
-    B -->|Implements| E[IController Interface]
-    C -->|Implements| F[IModel Interface]
-    D -->|Managed by| G[DBConnection]
-    D -->|Schema by| H[DBMigrate]
-```
-
-## Response Handling
-
-### Response Class (helper/Response.py)
-The `Response` class provides a standardized way to format API responses. It ensures consistent response structure across all endpoints.
-
-#### Response Structure
+### Success Response
 ```json
 {
-    "status_code": 200,      // HTTP status code
-    "status": "success",     // "success" or "error"
-    "message": {}            // Response data or error message
+    "status_code": 200,
+    "status": "success",
+    "message": {
+        // Response data
+    }
 }
 ```
 
-#### Available Methods
-
-1. **Base Response Method**
-   ```python
-   @staticmethod
-   def response(status_code, data)
-   ```
-   - Creates a standardized response object
-   - Automatically determines status based on status code
-   - Status codes >= 400 are marked as "error"
-   - Status codes < 400 are marked as "success"
-
-2. **Success Response**
-   ```python
-   @staticmethod
-   def success(data)
-   ```
-   - Returns a 200 OK response
-   - Used for successful operations
-   - Example:
-     ```python
-     Response.success({"user": "created"})
-     # Returns:
-     # {
-     #     "status_code": 200,
-     #     "status": "success",
-     #     "message": {"user": "created"}
-     # }
-     ```
-
-3. **Bad Request Response**
-   ```python
-   @staticmethod
-   def bad_request(message)
-   ```
-   - Returns a 400 Bad Request response
-   - Used for validation errors or invalid input
-   - Example:
-     ```python
-     Response.bad_request("Invalid email format")
-     # Returns:
-     # {
-     #     "status_code": 400,
-     #     "status": "error",
-     #     "message": "Invalid email format"
-     # }
-     ```
-
-4. **Unauthorized Response**
-   ```python
-   @staticmethod
-   def unauthorized(message)
-   ```
-   - Returns a 401 Unauthorized response
-   - Used for authentication failures
-   - Example:
-     ```python
-     Response.unauthorized("Invalid credentials")
-     # Returns:
-     # {
-     #     "status_code": 401,
-     #     "status": "error",
-     #     "message": "Invalid credentials"
-     # }
-     ```
-
-5. **Internal Error Response**
-   ```python
-   @staticmethod
-   def internal_error(message)
-   ```
-   - Returns a 500 Internal Server Error response
-   - Used for server-side errors
-   - Example:
-     ```python
-     Response.internal_error("Database connection failed")
-     # Returns:
-     # {
-     #     "status_code": 500,
-     #     "status": "error",
-     #     "message": "Database connection failed"
-     # }
-     ```
-
-#### Usage Examples
-
-1. **In Controllers**
-   ```python
-   def post(self, data):
-       try:
-           # Process data
-           return Response.success({"message": "Created successfully"})
-       except ValidationError:
-           return Response.bad_request("Invalid input")
-       except Exception:
-           return Response.internal_error("Server error")
-   ```
-
-2. **Error Handling**
-   ```python
-   if not user_data:
-       return Response.bad_request("User not found")
-   ```
-
-3. **Success Response**
-   ```python
-   return Response.success({
-       "user": {
-           "id": 1,
-           "name": "John Doe",
-           "email": "john@example.com"
-       }
-   })
-   ```
-
-#### Best Practices
-1. Always use the Response class for consistent API responses
-2. Use appropriate status codes for different scenarios
-3. Provide clear and descriptive error messages
-4. Keep response data structure consistent
-5. Use success() for successful operations
-6. Use specific error methods (bad_request, unauthorized, internal_error) for different error types 
-
-## Authentication
-
-### JWT Authentication (helper/JWTManager.py)
-The framework includes JWT (JSON Web Token) support for authentication:
-
-1. **Token Creation**
-   ```python
-   jwt_manager = JWTManager()
-   token = jwt_manager.create({"user_id": 123, "role": "admin"})
-   ```
-   - Creates JWT tokens with expiration
-   - Default expiration: 60 minutes
-   - Uses HS256 algorithm
-   - Automatically adds expiration timestamp
-
-2. **Token Verification**
-   ```python
-   decoded = jwt_manager.verify(token)
-   if decoded:
-       # Token is valid
-       user_data = decoded
-   else:
-       # Token is invalid or expired
-   ```
-   - Verifies token validity
-   - Checks expiration
-   - Returns decoded payload or False
-
-3. **Configuration**
-   ```python
-   self.__secret_key = "your-secret-key"
-   self.__algorithm = "HS256"
-   self.__expiration_minutes = 60
-   ```
-   - Configurable secret key
-   - Configurable algorithm
-   - Configurable expiration time
-
-4. **Usage Example**
-   ```python
-   # Creating a token
-   jwt_manager = JWTManager()
-   user_data = {"user_id": 123, "role": "admin"}
-   token = jwt_manager.create(user_data)
-
-   # Verifying a token
-   decoded = jwt_manager.verify(token)
-   if decoded:
-       print("Decoded Data:", decoded)
-   ```
-
-5. **Security Notes**
-   - Secret key should be stored in environment variables
-   - Tokens expire after 60 minutes by default
-   - Uses industry-standard HS256 algorithm
-   - Handles token expiration gracefully 
-
-## AI Assistant
-
-### Overview
-The framework includes an AI-powered code assistant that helps developers by:
-- Analyzing code patterns
-- Generating CRUD endpoints
-- Providing code suggestions
-- Generating documentation
-
-### Features
-
-1. **Code Analysis**
-   ```python
-   from helper.CodeAssistant import CodeAssistant
-   assistant = CodeAssistant()
-   assistant.analyze_codebase("path/to/project")
-   ```
-   - Analyzes project structure
-   - Identifies patterns and relationships
-   - Understands code organization
-
-2. **CRUD Endpoint Generation**
-   ```python
-   # Generate complete CRUD endpoints for a new resource
-   endpoints = assistant.generate_crud_endpoints("Product")
-   ```
-   - Creates controller, model, and table files
-   - Implements standard CRUD operations
-   - Follows framework conventions
-
-3. **Code Suggestions**
-   ```python
-   # Get suggestions while writing code
-   suggestions = assistant.suggest_code(your_code_context, "filename.py")
-   ```
-   - Provides contextual suggestions
-   - Identifies common patterns
-   - Suggests improvements
-
-4. **Documentation Generation**
-   ```python
-   # Generate documentation based on code patterns
-   docs = assistant.generate_documentation("controller")
-   ```
-   - Creates documentation from code
-   - Identifies component relationships
-   - Documents patterns and conventions
-
-### Usage Example
-```python
-from helper.CodeAssistant import CodeAssistant
-from pathlib import Path
-
-def main():
-    # Initialize the AI Assistant
-    assistant = CodeAssistant()
-    
-    # Analyze the codebase
-    root_dir = Path(__file__).parent.parent
-    assistant.analyze_codebase(str(root_dir))
-    
-    # Generate CRUD endpoints
-    product_endpoints = assistant.generate_crud_endpoints("Product")
-    
-    # Get code suggestions
-    suggestions = assistant.suggest_code(context, "UserController.py")
-    
-    # Generate documentation
-    controller_docs = assistant.generate_documentation("controller")
-
-if __name__ == "__main__":
-    main()
+### Error Response
+```json
+{
+    "status_code": 400,
+    "status": "error",
+    "message": "Error description"
+}
 ```
 
-### Best Practices
-1. Always analyze the codebase before generating code
-2. Review generated code before using in production
-3. Use suggestions as guidance, not absolute rules
-4. Customize generated code to match your needs
-5. Keep documentation up to date
-
-### Limitations
-1. Generated code may need manual adjustments
-2. Suggestions are based on existing patterns
-3. May not understand complex business logic
-4. Requires existing codebase for analysis
-5. Limited to framework conventions
+## VS Code Integration
+The framework includes VS Code integration features:
+1. Custom snippets for quick code generation
+2. IntelliSense support for framework components
+3. Recommended extensions for Python development
+4. Automatic code formatting with Black
+5. Linting with Pylint
+6. Import organization
+7. Documentation generation support
