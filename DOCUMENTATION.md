@@ -908,3 +908,14 @@ The assistant recognizes and maintains several key patterns:
 8. May miss required imports
 9. May not include proper error handling
 10. May not match current framework patterns
+
+## A Note from the Developer
+
+Thank you for taking the time to explore this educational framework! I created this project to help beginners understand the fundamental concepts of web development and Python programming.
+
+I hope this framework serves as a helpful stepping stone in your learning journey. Remember that every expert was once a beginner, and the key to mastering programming is consistent practice and curiosity.
+
+Best wishes for your learning journey!
+
+Ali Khorsandfard
+Developer & Educator
