@@ -103,7 +103,6 @@ This framework serves as an excellent first step for learning REST API principle
    - Automatic schema updates when models change
    - Clear feedback during migration process
    - Error detection and reporting
-   - Safe migration process with rollback support
 
 ### Troubleshooting Virtual Environment
 1. **Virtual environment not activating**:
