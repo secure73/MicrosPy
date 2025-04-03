@@ -64,9 +64,6 @@ This framework serves as an excellent first step for learning REST API principle
    ```bash
    # Run database migration
    python migrate.py
-
-   # Start the application
-   python app.py   # Server will start on port 8001
    ```
 7. Run App:
    ```bash

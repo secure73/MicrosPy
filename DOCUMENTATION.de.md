@@ -64,9 +64,6 @@ Dieses Framework dient als ausgezeichneter erster Schritt zum Erlernen von REST 
    ```bash
    # Datenbankmigration ausführen
    python migrate.py
-
-   # Anwendung starten
-   python app.py   # Server startet auf Port 8001
    ```
 7. Anwendung starten:
    ```bash

@@ -696,6 +696,6 @@ Remember: This is an educational framework. Always review generated code and und
 
 موفق باشید در سفر یادگیری شما!
 
-علی خرسندفرد
+علی خورسندفرد
 توسعه‌دهنده و مربی
 </div>

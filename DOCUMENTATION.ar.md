@@ -66,9 +66,6 @@
    ```bash
    # تنفيذ ترحيل قاعدة البيانات
    python migrate.py
-
-   # تشغيل التطبيق
-   python app.py   # يبدأ الخادم على المنفذ 8001
    ```
 7. تشغيل التطبيق:
    ```bash
@@ -696,6 +693,6 @@ Remember: This is an educational framework. Always review generated code and und
 
 حظًا سعيدًا في رحلة تعلمك!
 
-علي خرسندفرد
+علي خورسندفرد
 مطور ومدرب
 </div>
