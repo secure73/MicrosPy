@@ -7,6 +7,7 @@ class VSCodeIntegration:
     def __init__(self):
         self.snippets = {
             'controller': {},
+            'authenticated_controller': {},
             'model': {},
             'table': {},
             'helper': {}
@@ -17,6 +18,9 @@ class VSCodeIntegration:
     def generate_snippets(self, patterns: Dict[str, Any]) -> None:
         """Generates VS Code snippets from code patterns."""
         for category, category_patterns in patterns.items():
+            if category not in self.snippets:
+                continue
+                
             for pattern_name, pattern in category_patterns.items():
                 snippet_name = f"micro_py_{category}_{pattern_name}"
                 self.snippets[category][snippet_name] = {

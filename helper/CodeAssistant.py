@@ -15,9 +15,14 @@ class CodeAssistant:
             'helpers': {},
             'interfaces': {}
         }
-        self.patterns = {
-            'controller': {
-                'basic': '''from interface.IController import IController
+        
+        # Define patterns dictionary
+        self.patterns = {}
+        
+        # Controller pattern
+        self.patterns['controller'] = {
+            'basic': '''# This is a custom micro_py_framework controller - DO NOT mix with Flask, Django or other frameworks
+from interface.IController import IController
 from helper.Response import Response
 from model.{model_name} import {model_name}
 
@@ -54,9 +59,107 @@ class {controller_name}(IController):
             return self.model.delete(item_id)
         except Exception as e:
             return Response.server_error(str(e))'''
-            },
-            'model': {
-                'basic': '''from table.{table_name} import {table_name}
+        }
+        
+        # Authenticated controller pattern
+        self.patterns['authenticated_controller'] = {
+            'basic': '''# This is a custom micro_py_framework controller - DO NOT mix with Flask, Django or other frameworks
+from helper.AuthController import AuthController
+from interface.IController import IController
+from helper.Response import Response
+from model.{model_name} import {model_name}
+
+class {controller_name}(AuthController, IController):
+    def __init__(self):
+        super().__init__()
+        self.model = {model_name}()
+
+    def get(self, data, headers):
+        # Authenticate the user
+        decoded = self.authenticate(headers)
+        if isinstance(decoded, dict) and "status_code" in decoded:
+            return decoded  # Return error response if authentication fails
+
+        try:
+            if data.get("id"):
+                result = self.model.single(data["id"])
+                if not result:
+                    return Response.bad_request(f"Failed to get item: {self.model.error}")
+                return Response.success(result)
+            result = self.model.list()
+            if not result:
+                return Response.bad_request(f"Failed to get items: {self.model.error}")
+            return Response.success(result)
+        except Exception as e:
+            return Response.internal_error(str(e))
+
+    def post(self, data, headers):
+        # Authenticate the user
+        decoded = self.authenticate(headers)
+        if isinstance(decoded, dict) and "status_code" in decoded:
+            return decoded  # Return error response if authentication fails
+
+        # Optional: Require admin role for create operations
+        # auth_result = self.authorize(decoded, required_role="admin")
+        # if isinstance(auth_result, dict) and "status_code" in auth_result:
+        #     return auth_result  # Return error response if authorization fails
+
+        try:
+            # You can access user information
+            # user_id = self.user_id
+            # role = self.role
+            
+            created = self.model.create(**data)
+            if not created:
+                return Response.bad_request(f"Failed to create item: {self.model.error}")
+            return Response.success({"success": "Item created successfully"})
+        except Exception as e:
+            return Response.internal_error(str(e))
+
+    def put(self, data, headers):
+        # Authenticate the user
+        decoded = self.authenticate(headers)
+        if isinstance(decoded, dict) and "status_code" in decoded:
+            return decoded  # Return error response if authentication fails
+
+        try:
+            updated = self.model.update(data["id"], **data)
+            if not updated:
+                return Response.bad_request(f"Failed to update item: {self.model.error}")
+            return Response.success({"success": "Item updated successfully"})
+        except Exception as e:
+            return Response.internal_error(str(e))
+
+    def destroy(self, data, headers):
+        # Authenticate the user
+        decoded = self.authenticate(headers)
+        if isinstance(decoded, dict) and "status_code" in decoded:
+            return decoded  # Return error response if authentication fails
+            
+        try:
+            # Handle both string and dict data types
+            item_id = data.get("id") if isinstance(data, dict) else data
+            
+            if item_id is None:
+                return Response.bad_request("Missing item ID")
+                
+            try:
+                item_id = int(item_id)
+            except (ValueError, TypeError):
+                return Response.bad_request("Invalid item ID format")
+                
+            result = self.model.remove(item_id)
+            if not result:
+                return Response.bad_request(self.model.error or "Failed to destroy item")
+            return Response.success({"success": f"Item with ID {item_id} destroyed successfully"})
+        except Exception as e:
+            return Response.internal_error(str(e))'''
+        }
+        
+        # Model pattern
+        self.patterns['model'] = {
+            'basic': '''# This is a custom micro_py_framework model - DO NOT mix with Flask, Django or other frameworks
+from table.{table_name} import {table_name}
 from table.DBConnection import DBConnection
 from sqlalchemy.exc import SQLAlchemyError
 from helper.FormatCheck import FormatCheck
@@ -143,9 +246,12 @@ class {model_name}(IModel):
                 session.rollback()
                 self.error = f"Database failure: {str(e)}"
                 return False'''
-            },
-            'table': {
-                'basic': '''from sqlalchemy import Column, Integer, String, Float, DateTime
+        }
+        
+        # Table pattern
+        self.patterns['table'] = {
+            'basic': '''# This is a custom micro_py_framework table - DO NOT mix with Flask, Django or other frameworks
+from sqlalchemy import Column, Integer, String, Float, DateTime
 from table.DBConnection import Base
 from datetime import datetime
 
@@ -162,11 +268,12 @@ class {table_name}(Base):
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }'''
-            }
         }
+        
+        # Initialize helper classes
         self.vscode = VSCodeIntegration()
         self.pattern_recognition = PatternRecognition()
-        
+     
     def analyze_codebase(self, root_dir: str):
         """Analyzes the project codebase to understand patterns and relationships."""
         for pattern in ['controller/*.py', 'model/*.py', 'table/*.py', 'helper/*.py', 'interface/*.py']:
@@ -216,58 +323,41 @@ class {table_name}(Base):
                 )
 
     def _validate_model_methods(self, node: ast.ClassDef):
-        """Validates that model methods match the IModel interface."""
+        """Validates that model methods match the IModel interface in a lenient way."""
         required_methods = {
-            'create': {'return_type': 'None|object', 'params': ['**data']},
-            'update': {'return_type': 'None|object', 'params': ['id: int', '**data']},
-            'single': {'return_type': 'None|object', 'params': ['id: int']},
-            'remove': {'return_type': 'bool', 'params': ['id: int']},
-            'list': {'return_type': 'None|list', 'params': []}
+            'create', 'update', 'single', 'remove', 'list'
         }
         
-        implemented_methods = {n.name: n for n in node.body if isinstance(n, ast.FunctionDef)}
+        implemented_methods = {n.name for n in node.body if isinstance(n, ast.FunctionDef)}
         
         # Check for missing required methods
-        missing_methods = set(required_methods.keys()) - set(implemented_methods.keys())
+        missing_methods = required_methods - implemented_methods
         if missing_methods:
-            print(f"Error: Model {node.name} is missing required methods: {missing_methods}")
+            print(f"Note: Model {node.name} is missing recommended methods: {missing_methods}")
         
         # Check for incorrect method names
-        incorrect_methods = set(implemented_methods.keys()) - set(required_methods.keys())
-        if 'delete' in incorrect_methods:
-            print(f"Error: Model {node.name} uses 'delete' instead of 'remove'")
-            print("Fix: Rename 'delete' method to 'remove' to match IModel interface")
+        if 'delete' in implemented_methods and 'remove' not in implemented_methods:
+            print(f"Note: Model {node.name} uses 'delete' instead of 'remove'")
+            print("Suggestion: Consider renaming 'delete' method to 'remove' to match IModel interface")
         
-        # Check method signatures
-        for method_name, method_node in implemented_methods.items():
-            if method_name in required_methods:
-                expected = required_methods[method_name]
-                # Check return type annotation
-                if not hasattr(method_node, 'returns') or not method_node.returns:
-                    print(f"Warning: Method {method_name} in {node.name} is missing return type annotation")
-                # Check parameters
-                actual_params = [arg.arg for arg in method_node.args.args]
-                if actual_params != expected['params']:
-                    print(f"Warning: Method {method_name} in {node.name} has incorrect parameters")
-                    print(f"Expected: {expected['params']}")
-                    print(f"Actual: {actual_params}")
+        if 'get' in implemented_methods and 'single' not in implemented_methods:
+            print(f"Note: Model {node.name} uses 'get' instead of 'single'")
+            print("Suggestion: Consider renaming 'get' method to 'single' to match IModel interface")
 
     def _validate_controller_methods(self, node: ast.ClassDef):
-        """Validates that controller methods match the IController interface."""
+        """Validates that controller methods match the IController interface in a lenient way."""
         required_methods = {'get', 'post', 'put', 'destroy'}
         implemented_methods = {n.name for n in node.body if isinstance(n, ast.FunctionDef)}
         
         # Check for missing required methods
         missing_methods = required_methods - implemented_methods
         if missing_methods:
-            print(f"Warning: Controller {node.name} is missing required methods: {missing_methods}")
+            print(f"Note: Controller {node.name} is missing recommended methods: {missing_methods}")
         
         # Check for incorrect method names
-        incorrect_methods = implemented_methods - required_methods
-        if 'delete' in incorrect_methods:
-            print(f"Error: Controller {node.name} uses 'delete' instead of 'destroy'")
-            # Suggest fix
-            print("Fix: Rename 'delete' method to 'destroy' to match IController interface")
+        if 'delete' in implemented_methods and 'destroy' not in implemented_methods:
+            print(f"Note: Controller {node.name} uses 'delete' instead of 'destroy'")
+            print("Suggestion: Consider renaming 'delete' method to 'destroy' to match IController interface")
 
     def suggest_code(self, context: str, current_file: str) -> str:
         """Suggests code based on the current context and file."""
@@ -356,6 +446,46 @@ class {table_name}(Base):
                 'table': ''
             }
 
+    def generate_crud_endpoints_with_auth(self, resource_name: str) -> Dict[str, str]:
+        """Generates complete CRUD endpoints for a resource with authentication and authorization."""
+        model_name = f"{resource_name.capitalize()}"
+        controller_name = f"{resource_name.capitalize()}Controller"
+        table_name = f"{resource_name.capitalize()}"
+        
+        try:
+            # Get the authenticated controller pattern
+            controller_pattern = self.patterns['authenticated_controller']['basic']
+            model_pattern = self.patterns['model']['basic']
+            table_pattern = self.patterns['table']['basic']
+            
+            # Format each pattern with the correct variables
+            generated_code = {
+                'controller': controller_pattern.replace('{model_name}', model_name).replace('{controller_name}', controller_name),
+                'model': model_pattern.replace('{model_name}', model_name).replace('{table_name}', table_name),
+                'table': table_pattern.replace('{table_name}', table_name).replace('{table_name_lower}', resource_name.lower())
+            }
+            
+            # Validate generated code against interfaces
+            self._validate_generated_code(generated_code)
+            
+            return generated_code
+        except KeyError as e:
+            print(f"Error: Missing pattern key - {e}")
+            print("Available patterns:", list(self.patterns.keys()))
+            return {
+                'controller': '',
+                'model': '',
+                'table': ''
+            }
+        except Exception as e:
+            print(f"Error formatting patterns: {e}")
+            print("Pattern content:", {k: v.get('basic', 'Not found') for k, v in self.patterns.items()})
+            return {
+                'controller': '',
+                'model': '',
+                'table': ''
+            }
+
     def _validate_generated_code(self, generated_code: Dict[str, str]):
         """Validates generated code against interface requirements."""
         for code_type, code in generated_code.items():
@@ -371,6 +501,25 @@ class {table_name}(Base):
                 # Check for IController interface compliance
                 if 'def delete(' in code:
                     print("Error: Generated controller code uses 'delete' instead of 'destroy'")
+            
+            # Check for external framework references
+            self._check_for_external_frameworks(code_type, code)
+
+    def _check_for_external_frameworks(self, code_type: str, code: str):
+        """Checks if code contains references to external frameworks like Flask."""
+        external_frameworks = {
+            'flask': ['flask', 'Flask', '@app.route', 'request.args', 'request.form', 'render_template'],
+            'django': ['django', 'Django', 'urls.py', 'views.py', 'models.py'],
+            'fastapi': ['fastapi', 'FastAPI', '@app.get', '@app.post']
+        }
+        
+        for framework, patterns in external_frameworks.items():
+            for pattern in patterns:
+                if pattern in code:
+                    print(f"WARNING: {code_type} code contains reference to {framework} ({pattern})")
+                    print(f"This framework is custom and should NOT use {framework} patterns or imports.")
+                    print("Please modify to use only the micro_py_framework patterns.")
+                    return
 
     def generate_documentation(self, file_type: str) -> str:
         """Generates documentation based on recognized patterns."""

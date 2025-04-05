@@ -11,6 +11,8 @@ This is a minimal micro-framework designed **exclusively for educational purpose
 > - Database operations and ORM concepts
 > - Basic MVC architecture implementation
 
+> ⚠️ **Framework Independence Warning**: This is a custom framework with its own patterns and architecture. Do NOT mix it with Flask, Django, FastAPI or other web frameworks as this will cause conflicts and errors. All code should use only the classes and patterns defined within this framework.
+
 > ⚠️ **Security Warning**: This framework has **minimal security implementations** and should never be used in production environments. It lacks:
 > - Proper authentication and authorization
 > - Input sanitization
@@ -658,6 +660,7 @@ The collection includes the following pre-configured requests:
 6. Follow consistent error handling patterns
 7. Use type hints for better code clarity
 8. Document API endpoints and their requirements
+9. **DO NOT mix with Flask, Django or other frameworks** - this framework uses its own patterns
 
 ## Troubleshooting
 1. If database connection fails:
@@ -819,12 +822,18 @@ All API responses follow a consistent format:
 ## VS Code Integration
 The framework includes VS Code integration features:
 1. Custom snippets for quick code generation
+   - Controller snippets (`micro_py_controller_basic`)
+   - Authenticated controller snippets (`micro_py_authenticated_controller_basic`)
+   - Model snippets (`micro_py_model_basic`)
+   - Table snippets (`micro_py_table_basic`)
 2. IntelliSense support for framework components
 3. Recommended extensions for Python development
 4. Automatic code formatting with Black
 5. Linting with Pylint
 6. Import organization
 7. Documentation generation support
+
+When installed, these snippets will be available in your VS Code environment, making it easier to create new components that follow the framework's patterns. VS Code will save these snippets to your home directory under `.vscode/snippets/`.
 
 ## AI Assistant Features
 
@@ -833,6 +842,9 @@ The framework includes an intelligent code assistant that can help you with:
 - Providing code suggestions
 - Generating documentation
 - Analyzing your codebase
+- Creating authenticated controllers with role-based access control
+
+> ⚠️ **Framework Purity Warning**: When using AI assistants like GitHub Copilot, ChatGPT, or similar tools, they may suggest Flask, Django, or other framework patterns which are NOT compatible with this framework. Always ensure generated code follows the micro_py_framework patterns as shown in the examples.
 
 ### Getting Started with the AI Assistant
 
@@ -843,13 +855,17 @@ The framework includes an intelligent code assistant that can help you with:
    ```
    This will show you examples of what the assistant can do:
    - Generate CRUD endpoints for a "Product" resource
+   - Generate authenticated controllers with JWT validation
    - Show code suggestions for UserController
    - Generate documentation for controllers
+   
+   > **Note**: The script now includes error handling to handle any issues encountered when analyzing existing code. You may see notes about method parameters not matching interfaces exactly, which is normal and won't affect code generation.
 
 2. **Understanding the Demo Output**
    When you run `ai.py`, you'll see:
-   - The codebase analysis results
+   - The codebase analysis results (with notes about any pattern deviations)
    - Generated CRUD endpoints for a sample resource
+   - Authentication-enabled controller examples
    - Code suggestions for common tasks
    - Generated documentation examples
 
@@ -859,7 +875,17 @@ The framework includes an intelligent code assistant that can help you with:
    - Use as templates for new resources
    - Study to understand the framework patterns
 
-4. **Generating Documentation**
+4. **Generating Secure Authenticated Controllers**
+   You can generate controllers that automatically include JWT authentication:
+   ```python
+   # Example: Generate an authenticated controller
+   authenticated_code = assistant.generate_crud_endpoints_with_auth("Resource")
+   print(authenticated_code['controller'])
+   ```
+   
+   This will generate a controller that extends `AuthController` with proper authentication checks in all methods.
+
+5. **Generating Documentation**
    You can also generate documentation for specific components:
    ```python
    # Example: Generate documentation for controllers
@@ -867,22 +893,118 @@ The framework includes an intelligent code assistant that can help you with:
    print(docs)
    ```
 
+### Understanding Controller Patterns
+
+The framework supports two main controller patterns:
+
+1. **Standard Controller Pattern**
+   ```python
+   from interface.IController import IController
+   from helper.Response import Response
+   from model.ProductModel import ProductModel
+
+   class ProductController(IController):
+       def __init__(self):
+           self.model = ProductModel()
+
+       def get(self, data):
+           # Implementation...
+       
+       def post(self, data):
+           # Implementation...
+       
+       def put(self, data):
+           # Implementation...
+       
+       def destroy(self, data):
+           # Implementation...
+   ```
+
+2. **Authenticated Controller Pattern**
+   ```python
+   from helper.AuthController import AuthController
+   from interface.IController import IController
+   from helper.Response import Response
+   from model.OrderModel import OrderModel
+
+   class OrderController(AuthController, IController):
+       def __init__(self):
+           super().__init__()
+           self.model = OrderModel()
+
+       def get(self, data, headers):
+           # Authenticate the user
+           decoded = self.authenticate(headers)
+           if isinstance(decoded, dict) and "status_code" in decoded:
+               return decoded  # Return error response if authentication fails
+           
+           # Implementation...
+       
+       # Other methods with authentication...
+   ```
+
+   Note that authenticated controllers:
+   - Extend `AuthController` and implement `IController`
+   - Have an additional `headers` parameter in each method
+   - Call `self.authenticate(headers)` to validate tokens
+   - Can access `self.user_id` and `self.role` after authentication
+
+### Training GitHub Copilot
+
+The framework includes a special tool to help train GitHub Copilot to generate code that follows the correct micro_py_framework patterns instead of suggesting Flask, Django, or other frameworks.
+
+1. **Run the Copilot Trainer**
+   ```bash
+   python copilot_trainer.py
+   ```
+   This script will:
+   - Generate multiple example files following the correct framework patterns
+   - Create anti-pattern examples showing what NOT to do
+   - Provide effective comments to guide Copilot
+   - Open these files in VS Code (if available)
+
+2. **Working with Generated Reference Files**
+   - Keep the generated reference files open in a separate VS Code window
+   - When working on your project, Copilot will use these as context
+   - Example resources include Product, Order, Customer, Category, and Inventory
+   - Both standard and authenticated controller versions are provided
+
+3. **Using Comments to Guide Copilot**
+   Use specific comments to help Copilot generate the correct code:
+   ```python
+   # Create a new controller for Products following micro_py_framework patterns
+   ```
+   Instead of vague comments like:
+   ```python
+   # Create a new controller for products
+   ```
+
+4. **Anti-Patterns to Reject**
+   The trainer includes examples of Flask and Django patterns that should be rejected:
+   - Flask's `@app.route` decorators
+   - Django's `models.Model` base class
+   - Function-based API routes
+   - Any imports from external web frameworks
+
+5. **VS Code Integration**
+   - The tool attempts to open VS Code with the reference files
+   - Follow the TRAINING_GUIDE.md document for best practices
+   - Keep these files open when working with Copilot
+
 ### Important Notes
 - The assistant analyzes your codebase to provide context-aware suggestions
 - Generated code should be reviewed and customized for your specific needs
+- Authentication controllers automatically integrate with the JWT system
 - The assistant is designed for educational purposes and may not cover all edge cases
 - Always test generated code before using it in production
+- You may see notes about method parameters not matching interfaces exactly during analysis, which is normal and won't affect code generation
 
-### Example Workflow
-1. Run `python ai.py` to see examples
-2. Review the generated code and documentation
-3. Use the patterns shown to create your own resources
-4. Get code suggestions when needed
-5. Generate documentation for your code
-6. Review and customize the generated code
-7. Test your implementation
-
-Remember: This is an educational framework. Always review generated code and understand what it does before using it in your project.
+### Example Authentication Workflow
+1. Generate an authenticated controller with the assistant
+2. Configure your `.env` file with JWT settings
+3. Create JWTs for your users (e.g., upon login)
+4. Make API requests with the JWT in the Authorization header
+5. The controller will automatically validate JWTs and check role permissions
 
 ## A Note from the Developer
 

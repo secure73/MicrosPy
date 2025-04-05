@@ -18,9 +18,9 @@
     "kind": 15
   },
   {
-    "label": "AutoModel",
+    "label": "UserModel",
     "insertText": "",
-    "detail": "Create new models AutoModel",
+    "detail": "Create new models UserModel",
     "kind": 15
   },
   {
@@ -39,6 +39,12 @@
     "label": "UserTable",
     "insertText": "",
     "detail": "Create new tables UserTable",
+    "kind": 15
+  },
+  {
+    "label": "AuthController",
+    "insertText": "",
+    "detail": "Create new helpers AuthController",
     "kind": 15
   },
   {
