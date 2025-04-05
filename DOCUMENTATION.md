@@ -60,12 +60,40 @@ This framework serves as an excellent first step for learning REST API principle
    pip install -r requirements.txt
    ```
 
-6. Migrate Database for sample Database:
+6. Configure the environment variables:
+   ```bash
+   # Create a .env file in the project root directory
+   # Windows
+   copy .env.example .env
+   
+   # Linux/Mac
+   cp .env.example .env
+   
+   # Then edit the .env file with your configuration
+   # At minimum, set TOKEN_SECRET for JWT authentication
+   ```
+   
+   Here's an example `.env` file:
+   ```
+   # JWT Configuration
+   TOKEN_SECRET=your_secret_key_here
+   ACCESS_TOKEN_VALIDITY=300
+   REFRESH_TOKEN_VALIDITY=43200
+   JWT_ALGORITHM=HS256
+   
+   # Database Configuration
+   DB_HOST=sqlite:///db.db
+   DB_USER=
+   DB_PASSWORD=
+   DB_NAME=
+   ```
+
+7. Migrate Database for sample Database:
    ```bash
    # Run database migration
    python migrate.py
    ```
-7. Run App:
+8. Run App:
    ```bash
    # Start the application
    python app.py   # Server will start on port 8001
@@ -137,13 +165,15 @@ micro_py_framework/
 │   └── AutoTable.py      # Auto table schema
 ├── interface/            # Interfaces directory
 │   └── IController.py    # Controller interface
-└── helper/              # Helper utilities
-    ├── HttpHandler.py    # HTTP request handler
-    ├── Response.py       # Response formatting
-    ├── JWTManager.py     # JWT authentication
-    ├── FormatCheck.py    # Input validation
-    ├── CodeAssistant.py  # AI-powered code generation
-    └── DatabaseMigration.py  # Database migration helper
+├── helper/              # Helper utilities
+│   ├── HttpHandler.py    # HTTP request handler
+│   ├── Response.py       # Response formatting
+│   ├── JWTManager.py     # JWT authentication
+│   ├── AuthController.py # Authentication & authorization controller
+│   ├── FormatCheck.py    # Input validation
+│   ├── CodeAssistant.py  # AI-powered code generation
+│   └── DatabaseMigration.py  # Database migration helper
+└── .env                 # Environment variables configuration file
 ```
 
 ## API Endpoints
@@ -250,6 +280,18 @@ micro_py_framework/
 
 ## Database
 
+### Configuration with Environment Variables
+- The application uses environment variables for database configuration
+- Database connection settings are defined in the `.env` file
+- Example configuration for different database types:
+  ```
+  # SQLite (Default)
+  DB_HOST=sqlite:///db.db
+  
+  # MySQL/MariaDB
+  DB_HOST=mysql+pymysql://username:password@localhost:3306/database_name
+  ```
+
 ### SQLite Database
 - The application uses SQLite as the default database
 - Database file: `db.db`
@@ -265,10 +307,11 @@ The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It
 
 2. **Connection Configuration**
    ```python
-   engine = create_engine("sqlite:///db.db", echo=False)
+   # Uses the DB_HOST environment variable from .env file
+   engine = create_engine(os.getenv("DB_HOST", "sqlite:///db.db"), echo=False)
    ```
    - Default configuration uses SQLite database
-   - Supports MySQL/MariaDB through connection string modification
+   - Supports MySQL/MariaDB through connection string modification in .env
    - `echo=False` disables SQL query logging for better performance
 
 3. **Session Management**
@@ -279,16 +322,16 @@ The `DBConnection.py` file manages database connections using SQLAlchemy ORM. It
    - Manages database connections and transactions
    - Provides thread-safe database access
 
-
 4. **Database Support**
    - **SQLite** (Default):
-     ```python
-     engine = create_engine("sqlite:///db.db")
+     ```
+     DB_HOST=sqlite:///db.db
      ```
    - **MySQL/MariaDB**:
-     ```python
-     engine = create_engine("mysql+pymysql://username:password@localhost:3306/database_name")
      ```
+     DB_HOST=mysql+pymysql://username:password@localhost:3306/database_name
+     ```
+   - To change database type, simply update the DB_HOST variable in your .env file
 
 5. **Error Handling**
    - Catches and reports database connection failures
@@ -328,7 +371,136 @@ The framework includes comprehensive error handling for:
 2. Password hashing is implemented using bcrypt
 3. Basic input validation is provided through FormatCheck.py
 4. JWT authentication support is available through JWTManager.py
-5. No built-in authentication/authorization system
+5. Authentication and authorization can be implemented using AuthController which provides a role-based access control system
+
+## Authentication and Authorization
+
+The framework now includes a robust authentication and authorization system using JWT (JSON Web Tokens) for securing API endpoints.
+
+### JWT Authentication
+
+1. **Setting up JWT Environment Variables**
+   - The framework uses environment variables for JWT configuration
+   - Required variables in `.env` file:
+     ```
+     TOKEN_SECRET=your_secret_key_here
+     ACCESS_TOKEN_VALIDITY=300
+     REFRESH_TOKEN_VALIDITY=43200
+     ```
+   - `TOKEN_SECRET`: Your secret key for signing tokens
+   - `ACCESS_TOKEN_VALIDITY`: Validity period in seconds for access tokens (default: 300 seconds / 5 minutes)
+   - `REFRESH_TOKEN_VALIDITY`: Validity period in seconds for refresh tokens (default: 43200 seconds / 12 hours)
+
+2. **JWTManager Class**
+   ```python
+   from helper.JWTManager import JWTManager
+
+   jwt_manager = JWTManager()
+   
+   # Create tokens
+   user_data = {"user_id": 123, "role": "admin"}
+   access_token = jwt_manager.create_access_token(user_data)
+   refresh_token = jwt_manager.create_refresh_token(user_data)
+   
+   # Verify token
+   decoded = jwt_manager.verify(token)
+   if decoded:
+       # Token is valid
+       user_id = decoded.get("user_id")
+       role = decoded.get("role")
+   ```
+
+### AuthController
+
+The `AuthController` class provides a simple way to add authentication and authorization to your controllers:
+
+1. **Setting up AuthController**
+   ```python
+   from helper.AuthController import AuthController
+   from helper.Response import Response
+
+   class YourController(AuthController):
+       def __init__(self):
+           super().__init__()
+           
+       def get(self, data, headers):
+           # Authenticate the request
+           decoded = self.authenticate(headers)
+           if isinstance(decoded, dict) and "status_code" in decoded:
+               return decoded  # Return error response if authentication fails
+               
+           # Continue with your logic
+           return Response.success({"data": "Your data"})
+   ```
+
+2. **Role-Based Access Control**
+   ```python
+   def post(self, data, headers):
+       # Authenticate the user
+       decoded = self.authenticate(headers)
+       if isinstance(decoded, dict) and "status_code" in decoded:
+           return decoded
+       
+       # Authorize for specific role
+       auth_result = self.authorize(decoded, required_role="admin")
+       if isinstance(auth_result, dict) and "status_code" in auth_result:
+           return auth_result
+       
+       # Continue with authorized operation
+       return Response.success({"message": "Operation successful"})
+   ```
+
+3. **Accessing User Information**
+   After successful authentication, user information is available in the controller:
+   ```python
+   # User ID from the token
+   user_id = self.user_id
+   
+   # User role from the token
+   role = self.role
+   ```
+
+### Making Authenticated Requests
+
+1. **Using Authorization Header**
+   ```bash
+   curl -X GET http://localhost:8001/resource \
+     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+   ```
+
+2. **Example in Postman**
+   - Add a header with key `Authorization` and value `Bearer YOUR_TOKEN`
+   - This should be included in all requests that require authentication
+
+## Environment Variables
+
+The framework now supports environment variables using `python-dotenv`:
+
+1. **Setting up environment variables**
+   - Create a `.env` file in the root directory
+   - Define your variables:
+     ```
+     TOKEN_SECRET=your_secret_key_here
+     ACCESS_TOKEN_VALIDITY=300
+     REFRESH_TOKEN_VALIDITY=43200
+     ```
+   
+2. **Accessing environment variables**
+   ```python
+   import os
+   
+   # After load_dotenv() has been called in app.py
+   secret_key = os.getenv("TOKEN_SECRET")
+   ```
+
+3. **Loading .env file**
+   The framework automatically loads the `.env` file in `app.py`:
+   ```python
+   from dotenv import load_dotenv
+   
+   # Load environment variables from .env file
+   load_dotenv()
+   ```
 
 ## Input Validation
 The framework includes a FormatCheck utility for validating input data:
@@ -511,11 +683,62 @@ graph TD
     B --> C{Request Validation}
     C -->|Valid| D[Route to Controller]
     C -->|Invalid| E[Return 400 Error]
-    D --> F[Execute Controller Method]
+    D --> F1{Authentication Required?}
+    F1 -->|Yes| F2[Check Authorization Header]
+    F2 -->|Valid Token| F3[Decode & Extract User Info]
+    F2 -->|Invalid/Missing Token| F4[Return 403 Forbidden]
+    F3 -->|Required Role Check| F5{Has Required Role?}
+    F5 -->|Yes| F[Execute Controller Method]
+    F5 -->|No| F6[Return 403 Forbidden]
+    F1 -->|No| F[Execute Controller Method]
     F --> G[Process Model Operations]
     G --> H[Database Operations]
     H --> I[Format Response]
     I --> J[Send Response to Client]
+```
+
+### Authenticated Request Flow
+```mermaid
+sequenceDiagram
+    participant Client
+    participant HttpHandler
+    participant AuthController
+    participant JWTManager
+    participant Controller
+    participant Model
+    participant Database
+
+    Client->>HttpHandler: Request with Authorization header
+    HttpHandler->>Controller: Route with headers
+    Controller->>AuthController: authenticate(headers)
+    AuthController->>AuthController: Extract token from Bearer
+    AuthController->>JWTManager: verify(token)
+    JWTManager-->>AuthController: decoded token or false
+    
+    alt Invalid Token
+        AuthController-->>Controller: Forbidden response
+        Controller-->>HttpHandler: 403 Response
+        HttpHandler-->>Client: Forbidden
+    else Valid Token
+        AuthController-->>Controller: decoded token data
+        
+        opt Role-Based Check
+            Controller->>AuthController: authorize(token, required_role)
+            alt Insufficient Permissions
+                AuthController-->>Controller: Forbidden response
+                Controller-->>HttpHandler: 403 Response
+                HttpHandler-->>Client: Forbidden
+            else Authorization OK
+                AuthController-->>Controller: true
+                Controller->>Model: Database operation
+                Model->>Database: Execute query
+                Database-->>Model: Result
+                Model-->>Controller: Processed data
+                Controller-->>HttpHandler: 200 OK
+                HttpHandler-->>Client: Success Response
+            end
+        end
+    end
 ```
 
 ### User Creation Flow
@@ -560,9 +783,11 @@ graph LR
     B -->|Uses| C[Models]
     C -->|Interacts| D[Database]
     B -->|Implements| E[IController Interface]
-    C -->|Implements| F[IModel Interface]
-    D -->|Managed by| G[DBConnection]
-    D -->|Schema by| H[DBMigrate]
+    B -->|May extend| F[AuthController]
+    F -->|Uses| G[JWTManager]
+    C -->|Implements| H[IModel Interface]
+    D -->|Managed by| I[DBConnection]
+    D -->|Schema by| J[DBMigrate]
 ```
 
 ## Response Format

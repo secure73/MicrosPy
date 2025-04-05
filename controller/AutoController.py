@@ -1,12 +1,17 @@
 from interface.IController import IController
 from model.AutoModel import AutoModel
 from helper.Response import Response
+from helper.AuthController import AuthController
 
-class AutoController(IController):
+class AutoController(AuthController, IController):
     def __init__(self):
-        pass
+        super().__init__()
     
-    def get(self,data):
+    def get(self, data, headers):
+        decoded = self.authenticate(headers)
+        if isinstance(decoded, dict) and "status_code" in decoded:
+            return decoded  # Return error response if authentication fails
+
         autoModel = AutoModel()
         if data.get("id"):
             result = autoModel.single(data["id"])
@@ -18,10 +23,20 @@ class AutoController(IController):
             return Response.bad_request(f"Failed to get autos {autoModel.error}")
         return Response.success(result)
     
-    def post(self, data):  
+    def post(self, data, headers):
+        # Authenticate the user
+        decoded = self.authenticate(headers)
+        if isinstance(decoded, dict) and "status_code" in decoded:
+            return decoded  # Return error response if authentication fails
+
+        # Authorize the user for admin role
+        auth_result = self.authorize(decoded, required_role="admin")
+        if isinstance(auth_result, dict) and "status_code" in auth_result:
+            return auth_result  # Return error response if authorization fails
+
         autoModel = AutoModel()
         created = autoModel.create(data["name"], data["ps"])
-        if not created: 
+        if not created:
             return Response.bad_request(f"Failed to create auto {autoModel.error}")
         return Response.success({"success": "Auto created successfully"})
     

@@ -1,6 +1,11 @@
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 from helper.HttpHandler import run
-from controller.UserController import UserController
-from controller.AutoController import AutoController
+import controller.UserController
+import controller.AutoController
 
 # Start the server
 if __name__ == '__main__':

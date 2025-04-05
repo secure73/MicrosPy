@@ -63,7 +63,7 @@ class HttpHandler(BaseHTTPRequestHandler):
             else:
                 data = self._load_data(method_HTTP)
             
-            response_data = method_to_call(data)
+            response_data = method_to_call(data, self.headers)
             status_code = response_data.get("status_code", 200)
             return self._send_response(status_code, response_data)
         
