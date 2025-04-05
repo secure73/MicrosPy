@@ -62,7 +62,7 @@ This framework serves as an excellent first step for learning REST API principle
 
 6. Configure the environment variables:
    ```bash
-   # Create a .env file in the project root directory
+   # Rename .env.example to .env
    # Windows
    copy .env.example .env
    
@@ -73,7 +73,9 @@ This framework serves as an excellent first step for learning REST API principle
    # At minimum, set TOKEN_SECRET for JWT authentication
    ```
    
-   Here's an example `.env` file:
+   > ⚠️ **Important**: The project includes an `.env.example` file that you should rename to `.env`. This file contains template environment variables that you should customize for your setup.
+   
+   Here's what your `.env` file should contain:
    ```
    # JWT Configuration
    TOKEN_SECRET=your_secret_key_here
@@ -86,6 +88,7 @@ This framework serves as an excellent first step for learning REST API principle
    DB_USER=
    DB_PASSWORD=
    DB_NAME=
+   DB_PORT=
    ```
 
 7. Migrate Database for sample Database:
