@@ -1,4 +1,4 @@
-# Micro Python Framework Documentation
+#MicrosPy : Micro Python Framework Documentation
 
 ## Table of Contents
 - [Overview](#overview)
